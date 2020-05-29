@@ -53,7 +53,7 @@ final class DrawingBoard {
         // Add the Scene to the Stage
         primaryStage.setScene(scene);
         // Set the Title of the Stage
-        primaryStage.setTitle("Drawing Basic Shapes on a Canvas");
+        primaryStage.setTitle("Drawing Basewqetrewtewtic Shapes on a Canvas");
         // Display the Stage
         primaryStage.show();
         System.out.println("!");
