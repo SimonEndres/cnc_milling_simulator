@@ -5,6 +5,7 @@ final class DrawingBoard {
 	
 	DrawingBoard(Stage primaryStage) {
 		 primaryStage.setTitle("My First JavaFX App");
+		 System.out.println("Hallo");
 		 primaryStage.show();
 	}
 }
