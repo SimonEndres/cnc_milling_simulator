@@ -10,8 +10,8 @@ import javafx.scene.shape.ArcType;
 final class DrawingBoard {
 	
 	DrawingBoard(Stage primaryStage) {
-		 // Create the Canvas with a width of 400 px and a height of 200 px.
-        Canvas canvas = new Canvas(800, 800);
+		 // Create the Canvas with a width of 40xcv0 px and a height of 200 px.
+        Canvas canvas = new Canvas(600, 600);
         // Get the graphics context of the canvas
         GraphicsContext gc = canvas.getGraphicsContext2D();
         // Set line width
