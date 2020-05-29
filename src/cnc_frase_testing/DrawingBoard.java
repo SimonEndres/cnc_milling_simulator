@@ -57,5 +57,6 @@ final class DrawingBoard {
         // Display the Stage
         primaryStage.show();       
 		 primaryStage.show();
+		 System.out.println("UFF");
 	}
 }
