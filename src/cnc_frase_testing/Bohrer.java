@@ -5,13 +5,13 @@ public class Bohrer {
 	private String farbe;
 	private Integer [] position;
 	private boolean status;
-	private char drehrichtung;
+	private String drehrichtung;
 	private boolean kühlmittel;
 	private boolean speedMode;
 	
 	
 
-	public Bohrer(String farbe, boolean status, char drehrichtung, boolean kühlmittel, boolean speedMode) {
+	public Bohrer(String farbe, boolean status, String drehrichtung, boolean kühlmittel, boolean speedMode) {
 		this.farbe = farbe;
 		this.position = new Integer [] {0,0};
 		this.status = status;
@@ -46,16 +46,16 @@ public class Bohrer {
 		this.status = status;
 	}
 
-	public char getDrehrichtung() {
+	public String getDrehrichtung() {
 		return drehrichtung;
 	}
 
-	public void setDrehrichtung(char drehrichtung) {
-		if (drehrichtung == 'r' || drehrichtung == 'l') {
+	public void setDrehrichtung(String drehrichtung) {
+		if (drehrichtung.equals("rechts") || drehrichtung.equals("links")) {
 			this.drehrichtung = drehrichtung;
 		} else {
-			System.out.println("Die eingegebene Drehrichtung existiert nicht. Drehrichtung auf r gesetzt");
-			this.drehrichtung = 'r';
+			System.out.println("Die eingegebene Drehrichtung existiert nicht. Drehrichtung auf rechts gesetzt");
+			this.drehrichtung = "rechts";
 		}
 	}
 
@@ -65,6 +65,9 @@ public class Bohrer {
 
 	public void setKühlmittel(boolean kühlmittel) {
 		this.kühlmittel = kühlmittel;
+		if (!kühlmittel) {
+			this.speedMode = false;
+		}
 	}
 
 	public boolean isSpeedMode() {
