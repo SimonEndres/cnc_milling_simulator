@@ -1,6 +1,9 @@
 package cnc_frase_testing;
 import javafx.stage.Stage;
 
+import javafx.scene.Group;
+
+
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -8,6 +11,8 @@ import java.nio.file.Paths;
 import org.json.JSONObject;
 
 import javafx.scene.Scene;
+
+
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.canvas.Canvas;
@@ -16,25 +21,37 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundImage;
 import javafx.scene.layout.BorderPane;
+
 import javafx.scene.paint.Color;
-import javafx.scene.shape.ArcType;
+import javafx.scene.shape.Circle;
 
 final class DrawingBoard {
 	
+
+	final private Stage primaryStage;
+	final private Scene mainScene;
+	final private BorderPane mainSceneLayout;
+	final private Group cutLine;
+//	private Bohrer b1;
+	
+//        b1 = new Bohrer(this);
 	DrawingBoard(Stage primaryStage){
-		primaryStage.setTitle("CNC-Fraese Simulator");
-		BorderPane menueLayout = new BorderPane();
-		Scene menue = new Scene(menueLayout, 600, 600);
+		this.cutLine = new Group();
+		this.primaryStage= primaryStage;
+		this.primaryStage.setTitle("Drawing Operations Test");
+		this.mainSceneLayout = new BorderPane();
+		this.mainScene = new Scene(mainSceneLayout, 600, 600);
 		
 		Label menueLabel = new Label("Menue");
-		menueLayout.setTop(menueLabel);
-		primaryStage.setScene(menue);
+		this.mainSceneLayout.setTop(menueLabel);
+		primaryStage.setScene(mainScene);
 		primaryStage.show();
 		
 		JSONObject json = loadJson();
 		
-		Bohrer bohrer = new Bohrer(json.getString("farbe"), json.getBoolean("status"), json.getString("drehrichtung"), json.getBoolean("kuehlmittel"), json.getBoolean("speedMode"));
+		Bohrer bohrer = new Bohrer(this, json.getString("farbe"), json.getBoolean("status"), json.getString("drehrichtung"), json.getBoolean("kühlmittel"), json.getBoolean("speedMode"));
 		System.out.println(bohrer.getDrehrichtung());
+		this.mainSceneLayout.setCenter(cutLine);
 	}
 	//Tim
 	private JSONObject loadJson() {
@@ -47,6 +64,16 @@ final class DrawingBoard {
 			System.out.println(e);
 		}
 		return null;
-		
 	}
+	
+	void drawCircle(int x, int y) {
+		Circle bohrkopf = new Circle();
+        bohrkopf.setCenterX((float)x);
+        bohrkopf.setCenterY((float)y);
+        bohrkopf.setRadius(2.0f);
+
+        bohrkopf.setFill(Color.ORANGE);
+        cutLine.getChildren().add(bohrkopf);
+   }
 }
+
