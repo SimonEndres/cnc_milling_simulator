@@ -11,15 +11,7 @@ import java.nio.file.Paths;
 import org.json.JSONObject;
 
 import javafx.scene.Scene;
-
-
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Label;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundImage;
 import javafx.scene.layout.BorderPane;
 
 import javafx.scene.paint.Color;
@@ -32,9 +24,7 @@ final class DrawingBoard {
 	final private Scene mainScene;
 	final private BorderPane mainSceneLayout;
 	final private Group cutLine;
-//	private Bohrer b1;
-	
-//        b1 = new Bohrer(this);
+
 	DrawingBoard(Stage primaryStage){
 		this.cutLine = new Group();
 		this.primaryStage= primaryStage;
