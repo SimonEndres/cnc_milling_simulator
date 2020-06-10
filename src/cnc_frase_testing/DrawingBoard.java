@@ -29,27 +29,29 @@ final class DrawingBoard {
 	
 
 	final private Stage primaryStage;
-	final private Group root;
 	final private Scene mainScene;
+	final private BorderPane mainSceneLayout;
+	final private Group cutLine;
 //	private Bohrer b1;
 	
 //        b1 = new Bohrer(this);
 	DrawingBoard(Stage primaryStage){
+		this.cutLine = new Group();
 		this.primaryStage= primaryStage;
 		this.primaryStage.setTitle("Drawing Operations Test");
-        this.root = new Group();
-		BorderPane menueLayout = new BorderPane();
-		mainScene = new Scene(menueLayout, 600, 600);
+		this.mainSceneLayout = new BorderPane();
+		this.mainScene = new Scene(mainSceneLayout, 600, 600);
 		
 		Label menueLabel = new Label("Menue");
-		menueLayout.setTop(menueLabel);
+		this.mainSceneLayout.setTop(menueLabel);
 		primaryStage.setScene(mainScene);
 		primaryStage.show();
 		
 		JSONObject json = loadJson();
 		
-		Bohrer bohrer = new Bohrer(json.getString("farbe"), json.getBoolean("status"), json.getString("drehrichtung"), json.getBoolean("kühlmittel"), json.getBoolean("speedMode"));
+		Bohrer bohrer = new Bohrer(this, json.getString("farbe"), json.getBoolean("status"), json.getString("drehrichtung"), json.getBoolean("kühlmittel"), json.getBoolean("speedMode"));
 		System.out.println(bohrer.getDrehrichtung());
+		this.mainSceneLayout.setCenter(cutLine);
 	}
 	
 	private JSONObject loadJson() {
@@ -65,21 +67,13 @@ final class DrawingBoard {
 	}
 	
 	void drawCircle(int x, int y) {
-		Circle r = new Circle();
-        r.setCenterX((float)x);
-        r.setCenterY((float)y);
-        r.setRadius(2.0f);
+		Circle bohrkopf = new Circle();
+        bohrkopf.setCenterX((float)x);
+        bohrkopf.setCenterY((float)y);
+        bohrkopf.setRadius(2.0f);
 
-        r.setFill(Color.ORANGE);
-        root.getChildren().add(r);
-        
-	    try {
-			Thread.sleep(10);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
+        bohrkopf.setFill(Color.ORANGE);
+        cutLine.getChildren().add(bohrkopf);
    }
 }
 

@@ -8,15 +8,18 @@ public class Bohrer {
 	private String drehrichtung;
 	private boolean kühlmittel;
 	private boolean speedMode;
+	final DrawingBoard arbeitsFlaeche;
 	
 	
 
-	public Bohrer(String farbe, boolean status, String drehrichtung, boolean kühlmittel, boolean speedMode) {
+	public Bohrer(DrawingBoard arbeitsFlaeche,String farbe, boolean status, String drehrichtung, boolean kühlmittel, boolean speedMode) {
 		this.farbe = farbe;
 		this.position = new Integer [] {0,0};
 		this.status = status;
 		this.kühlmittel = kühlmittel;
 		this.speedMode = speedMode;
+		this.arbeitsFlaeche = arbeitsFlaeche;
+		drawLine(1,200,1,200);
 		
 		setDrehrichtung(drehrichtung);
 	}
@@ -84,5 +87,14 @@ public class Bohrer {
 				this.speedMode = false;
 			}
 		}
+	}
+	public void drawLine(int x1, int x2, int y1, int y2)
+	{
+	   int m = (y2 - y1)/(x2 - x1);
+	   for (int x  = x1; x <= x2; x++) 
+	   {    
+	      int y = Math.round(m * x + y1);    
+	      arbeitsFlaeche.drawCircle(x, y);
+	   }
 	}
 }
