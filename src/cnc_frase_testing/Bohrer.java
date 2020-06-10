@@ -1,21 +1,21 @@
 package cnc_frase_testing;
-
+//Tim
 public class Bohrer {
 	
 	private String farbe;
 	private Integer [] position;
 	private boolean status;
 	private String drehrichtung;
-	private boolean kühlmittel;
+	private boolean kuehlmittel;
 	private boolean speedMode;
 	
 	
 
-	public Bohrer(String farbe, boolean status, String drehrichtung, boolean kühlmittel, boolean speedMode) {
+	public Bohrer(String farbe, boolean status, String drehrichtung, boolean kuehlmittel, boolean speedMode) {
 		this.farbe = farbe;
 		this.position = new Integer [] {0,0};
 		this.status = status;
-		this.kühlmittel = kühlmittel;
+		this.kuehlmittel = kuehlmittel;
 		this.speedMode = speedMode;
 		
 		setDrehrichtung(drehrichtung);
@@ -59,13 +59,13 @@ public class Bohrer {
 		}
 	}
 
-	public boolean isKühlmittel() {
-		return kühlmittel;
+	public boolean isKuehlmittel() {
+		return kuehlmittel;
 	}
 
-	public void setKühlmittel(boolean kühlmittel) {
-		this.kühlmittel = kühlmittel;
-		if (!kühlmittel) {
+	public void setKühlmittel(boolean kuehlmittel) {
+		this.kuehlmittel = kuehlmittel;
+		if (!kuehlmittel) {
 			this.speedMode = false;
 		}
 	}
@@ -77,7 +77,7 @@ public class Bohrer {
 	public void setSpeedMode(boolean speedMode) {
 		this.speedMode = speedMode;
 		if (speedMode) {
-			if (isKühlmittel()) {
+			if (isKuehlmittel()) {
 				this.speedMode = speedMode;
 			} else {
 				System.out.println("SpeedMode ohne Kühlmittel nicht möglich");

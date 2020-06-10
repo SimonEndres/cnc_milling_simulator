@@ -33,10 +33,10 @@ final class DrawingBoard {
 		
 		JSONObject json = loadJson();
 		
-		Bohrer bohrer = new Bohrer(json.getString("farbe"), json.getBoolean("status"), json.getString("drehrichtung"), json.getBoolean("kühlmittel"), json.getBoolean("speedMode"));
+		Bohrer bohrer = new Bohrer(json.getString("farbe"), json.getBoolean("status"), json.getString("drehrichtung"), json.getBoolean("kuehlmittel"), json.getBoolean("speedMode"));
 		System.out.println(bohrer.getDrehrichtung());
 	}
-	
+	//Tim
 	private JSONObject loadJson() {
 		File file = new File("data/CNC-Fraese.json");
 		try {
