@@ -1,8 +1,4 @@
 package cnc_frase_testing;
-import javafx.stage.Stage;
-
-import javafx.scene.Group;
-
 
 import java.io.File;
 import java.nio.file.Files;
@@ -10,10 +6,12 @@ import java.nio.file.Paths;
 
 import org.json.JSONObject;
 
+import javafx.stage.Stage;
+
 import javafx.scene.Scene;
+import javafx.scene.Group;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
-
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
