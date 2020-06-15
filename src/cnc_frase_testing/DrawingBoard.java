@@ -27,7 +27,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
 final class DrawingBoard {
-
+	
 	final private Stage primaryStage;
 	final private Scene mainScene;
 	final private BorderPane mainSceneLayout;
