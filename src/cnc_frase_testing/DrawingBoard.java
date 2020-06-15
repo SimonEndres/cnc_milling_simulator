@@ -12,7 +12,7 @@ import org.json.JSONObject;
 
 import javafx.stage.Stage;
 import javafx.stage.FileChooser;
-
+import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.scene.Scene;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -33,10 +33,11 @@ final class DrawingBoard {
 	final private BorderPane mainSceneLayout;
 	final private Group cutLine;
 	final private HBox bottomBox;
-    private Desktop desktop = Desktop.getDesktop();
+	private JSONObject json; 
+	private Desktop desktop = Desktop.getDesktop();
 
-	DrawingBoard(Stage primaryStage){
-		this.primaryStage= primaryStage;
+	DrawingBoard(Stage primaryStage) {
+		this.primaryStage = primaryStage;
 		this.mainSceneLayout = new BorderPane();
 		this.mainScene = new Scene(mainSceneLayout, 600, 600);
 		this.cutLine = new Group();
@@ -50,21 +51,20 @@ final class DrawingBoard {
 		primaryStage.setScene(mainScene);
 		primaryStage.show();
 
-		
-
 //		UI Bottom part
 		HBox startBtnBox = new HBox(new Button("Start/Pause"));
 		startBtnBox.setAlignment(Pos.CENTER_LEFT);
 		HBox.setHgrow(startBtnBox, Priority.ALWAYS);
-		HBox.setMargin(startBtnBox, new Insets(0,20,20,20));
+		HBox.setMargin(startBtnBox, new Insets(0, 20, 20, 20));
 		HBox cancelBtnBox = new HBox(new Button("Cancel"));
 		cancelBtnBox.setAlignment(Pos.CENTER_RIGHT);
 		HBox.setHgrow(cancelBtnBox, Priority.ALWAYS);
-		HBox.setMargin(cancelBtnBox, new Insets(0,20,20,20));
+		HBox.setMargin(cancelBtnBox, new Insets(0, 20, 20, 20));
 		bottomBox.getChildren().addAll(startBtnBox, cancelBtnBox);
 		this.mainSceneLayout.setBottom(bottomBox);
-		
+
 //		UI Top part
+//		JSON-file contains customizable settings for the UI
 		Button uploadBtn = new Button("Upload Settingsdatei");
 		
 		uploadBtn.setOnAction(new EventHandler<ActionEvent>(){
@@ -78,25 +78,27 @@ final class DrawingBoard {
 	                }
 	            }
 	    });
+		fileChooser.setTitle("Upload Settingsdatei");
+		fileChooser.getExtensionFilters().add(new ExtensionFilter("Json-Files", "*.json"));
+		uploadBtn.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				File file = fileChooser.showOpenDialog(primaryStage);
+				loadJson(file);
+			}
+		});
 		this.mainSceneLayout.setTop(uploadBtn);
 		
-		
-//		JSON-file contains customizable settings for the UI
-		JSONObject json = loadJson();
-		Bohrer bohrer = new Bohrer(this, json.getString("farbe"), json.getBoolean("status"), json.getString("drehrichtung"), json.getBoolean("kuehlmittel"), json.getBoolean("speedMode"));
 	}
 	
-	//Tim
-	private JSONObject loadJson() {
-		File file = new File("data/CNC-Fraese.json");
+	private void loadJson(File file) {
 		try {
 			String jsonData = new String(Files.readAllBytes(Paths.get(file.toURI())), "UTF-8");
 			JSONObject json = new JSONObject(jsonData);
-			return json;
+			this.json = json;
 		} catch (Exception e) {
 			System.out.println(e);
 		}
-		return null;
 	}
 
 	void drawCircle(int x, int y) {
