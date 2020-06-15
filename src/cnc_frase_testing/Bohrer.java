@@ -2,7 +2,7 @@ package cnc_frase_testing;
 //Tim
 public class Bohrer {
 	
-	private String farbe;
+	final private String farbe;
 	private Integer [] position;
 	private boolean status;
 	private String drehrichtung;
@@ -27,10 +27,6 @@ public class Bohrer {
 
 	public String getFarbe() {
 		return farbe;
-	}
-
-	public void setFarbe(String farbe) {
-		this.farbe = farbe;
 	}
 
 	public Integer[] getPosition() {
