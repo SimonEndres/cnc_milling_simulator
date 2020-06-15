@@ -12,7 +12,7 @@ import org.json.JSONObject;
 
 import javafx.stage.Stage;
 import javafx.stage.FileChooser;
-
+import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.scene.Scene;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -64,6 +64,9 @@ final class DrawingBoard {
 		
 //		UI Top part
 		Button uploadBtn = new Button("Upload Settingsdatei");
+		
+		fileChooser.setTitle("Upload Settingsdatei");
+		fileChooser.getExtensionFilters().add(new ExtensionFilter("Json-Files", "*.json"));
 		
 		uploadBtn.setOnAction(new EventHandler<ActionEvent>(){
 			 @Override
