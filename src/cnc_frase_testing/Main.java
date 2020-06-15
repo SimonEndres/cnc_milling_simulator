@@ -6,10 +6,12 @@ import javafx.stage.Stage;
 public class Main extends Application{
     @Override
     public void start(Stage primaryStage) throws Exception {
-    	new DrawingBoard(primaryStage);
+        new DrawingBoard(primaryStage);
     }
 
-	public static void main(String[] args) {
-	    Application.launch(args);
-	}
+    public static void main(String[] args) {
+        Application.launch(args);
+        CNC_Fraese cncFraese = new CNC_Fraese();
+        cncFraese.fraesen();
+    }
 }

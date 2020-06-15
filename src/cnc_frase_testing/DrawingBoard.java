@@ -77,7 +77,7 @@ final class DrawingBoard {
 	                    System.out.println("Geklappt");
 	                }
 	            }
-	        });
+	    });
 		this.mainSceneLayout.setTop(uploadBtn);
 		
 		
@@ -85,8 +85,8 @@ final class DrawingBoard {
 		JSONObject json = loadJson();
 		Bohrer bohrer = new Bohrer(this, json.getString("farbe"), json.getBoolean("status"), json.getString("drehrichtung"), json.getBoolean("kuehlmittel"), json.getBoolean("speedMode"));
 	}
+	
 	//Tim
-
 	private JSONObject loadJson() {
 		File file = new File("data/CNC-Fraese.json");
 		try {

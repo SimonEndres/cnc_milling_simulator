@@ -11,7 +11,15 @@ public class Bohrer {
 	final DrawingBoard arbeitsFlaeche;
 	
 	
-
+	public Bohrer(DrawingBoard arbeitsFlaeche) {
+		this.farbe = "rot";
+		this.position = new Integer [] {0,0};
+		this.status = false;
+		this.kuehlmittel = false;
+		this.speedMode = false;
+		this.arbeitsFlaeche = arbeitsFlaeche;
+		setDrehrichtung("rechts");
+	}
 
 	public Bohrer(DrawingBoard arbeitsFlaeche,String farbe, boolean status, String drehrichtung, boolean kuehlmittel, boolean speedMode) {
 		this.farbe = farbe;
