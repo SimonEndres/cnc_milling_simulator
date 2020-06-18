@@ -25,6 +25,8 @@ public class CNC_Fraese {
 				switch (befehl.getString("Nummer")) {
 					case "00":
 						//bohrer.M00;
+						//Für Log: Finish:
+						//drawingBoard.Log(count,befehl.getString("Befehlsart"),befehl.getString("Nummer"));
 						break;
 					case "01":
 						//bohrer.M01;
