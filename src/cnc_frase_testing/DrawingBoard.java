@@ -35,13 +35,16 @@ final class DrawingBoard {
 	final private HBox bottomBox;
 	private JSONObject json; 
 	private Desktop desktop = Desktop.getDesktop();
+	
+	private CNC_Fraese cnc_fraese;
 
-	DrawingBoard(Stage primaryStage) {
+	DrawingBoard(Stage primaryStage, CNC_Fraese cnc_fraese) {
 		this.primaryStage = primaryStage;
 		this.mainSceneLayout = new BorderPane();
 		this.mainScene = new Scene(mainSceneLayout, 600, 600);
 		this.cutLine = new Group();
 		this.bottomBox = new HBox();
+		this.cnc_fraese = cnc_fraese;
 		final FileChooser fileChooser = new FileChooser();
 
 		this.mainSceneLayout.setCenter(cutLine);
@@ -84,21 +87,22 @@ final class DrawingBoard {
 			@Override
 			public void handle(ActionEvent event) {
 				File file = fileChooser.showOpenDialog(primaryStage);
-				loadJson(file);
+				cnc_fraese.fraesen(loadJson(file));
 			}
 		});
 		this.mainSceneLayout.setTop(uploadBtn);
 		
 	}
 	
-	private void loadJson(File file) {
+	private JSONObject loadJson(File file) {
+		JSONObject json = null;
 		try {
 			String jsonData = new String(Files.readAllBytes(Paths.get(file.toURI())), "UTF-8");
-			JSONObject json = new JSONObject(jsonData);
-			this.json = json;
+			json = new JSONObject(jsonData);
 		} catch (Exception e) {
 			System.out.println(e);
 		}
+		return json;
 	}
 
 	void drawCircle(int x, int y) {

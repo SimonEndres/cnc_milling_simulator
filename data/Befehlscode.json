@@ -1,0 +1,16 @@
+{
+	"Befehle":[ 
+		{
+			"Befehlsart":"M",
+			"Nummer":03,
+			"XKoordinate":null,
+			"YKoordinate":null,
+		},
+		{
+			"Befehlsart":"G",
+			"Nummer":01,
+			"XKoordinate":50,
+			"YKoordinate":30,
+		}
+	]
+}
