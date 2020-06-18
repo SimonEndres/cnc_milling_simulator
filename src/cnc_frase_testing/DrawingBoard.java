@@ -102,7 +102,7 @@ final class DrawingBoard {
 		} catch (Exception e) {
 			System.out.println(e);
 		}
-		return json;
+		return json; 
 	}
 
 	void drawCircle(int x, int y) {
