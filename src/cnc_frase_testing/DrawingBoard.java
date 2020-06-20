@@ -104,15 +104,16 @@ final class DrawingBoard {
 		}
 		return json; 
 	}
-
-	void drawCircle(int x, int y) {
+// zum zeichnen eines Punktes auf der Oberfläche
+	void drawPoint(int x, int y, boolean fraesen) {
 		Circle bohrkopf = new Circle();
 		bohrkopf.setCenterX((float) x);
 		bohrkopf.setCenterY((float) y);
 		bohrkopf.setRadius(2.0f);
 
 		bohrkopf.setFill(Color.ORANGE);
-		cutLine.getChildren().add(bohrkopf);
+		if (fraesen)
+			cutLine.getChildren().add(bohrkopf);
 	}
 
 	private void openFile(File file) {

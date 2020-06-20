@@ -1,19 +1,19 @@
 package cnc_frase_testing;
+
 //Tim
 public class Bohrer {
-	
+
 	final private String farbe;
-	private Integer [] position;
+	private double[] position;
 	private boolean status;
 	private String drehrichtung;
 	private boolean kuehlmittel;
 	private boolean speedMode;
 	final DrawingBoard arbeitsFlaeche;
-	
-	
+
 	public Bohrer(DrawingBoard arbeitsFlaeche) {
 		this.farbe = "rot";
-		this.position = new Integer [] {0,0};
+		this.position = new double[] { 0.0, 0.0 };
 		this.status = false;
 		this.kuehlmittel = false;
 		this.speedMode = false;
@@ -21,15 +21,15 @@ public class Bohrer {
 		setDrehrichtung("rechts");
 	}
 
-	public Bohrer(DrawingBoard arbeitsFlaeche,String farbe, boolean status, String drehrichtung, boolean kuehlmittel, boolean speedMode) {
+	public Bohrer(DrawingBoard arbeitsFlaeche, String farbe, boolean status, String drehrichtung, boolean kuehlmittel,
+			boolean speedMode) {
 		this.farbe = farbe;
-		this.position = new Integer [] {0,0};
+		this.position = new double[] { 0.0, 0.0 };
 		this.status = status;
 		this.kuehlmittel = kuehlmittel;
 		this.speedMode = speedMode;
 		this.arbeitsFlaeche = arbeitsFlaeche;
-		drawLine(1,200,1,200);
-		
+
 		setDrehrichtung(drehrichtung);
 	}
 
@@ -37,7 +37,7 @@ public class Bohrer {
 		return farbe;
 	}
 
-	public Integer[] getPosition() {
+	public double[] getPosition() {
 		return position;
 	}
 
@@ -93,13 +93,45 @@ public class Bohrer {
 			}
 		}
 	}
-	public void drawLine(int x1, int x2, int y1, int y2)
-	{
-	   int m = (y2 - y1)/(x2 - x1);
-	   for (int x  = x1; x <= x2; x++) 
-	   {    
-	      int y = Math.round(m * x + y1);    
-	      arbeitsFlaeche.drawCircle(x, y);
-	   }
+
+//Simon, Jonas vorläufiges Ergebnis --> Effiziens muss angepasst werden+
+//Boolean fraesen true -> Linie wird gezeichnet; false -> bohrkopf bewegt sich lediglich 
+	public void drawLine(int x2, int y2, boolean fraesen) {
+		double deltaY = y2 - position[1];
+		double deltaX = x2 - position[0];
+		double tmpPositionY = position[1];
+		if (deltaX != 0) {
+			double m = (deltaY) / (deltaX);
+			for (double x = position[0]; x <= x2; x += 0.001) {
+				double y = Math.round(m * x + tmpPositionY);
+				arbeitsFlaeche.drawPoint((int) x, (int) y, fraesen);
+				this.position[0] = x;
+				this.position[1] = y;
+			}
+		} else {
+			for (double y = position[1]; y <= y2; y += 0.001) {
+				arbeitsFlaeche.drawPoint((int) position[0], (int) y, fraesen);
+				this.position[1] = y;
+			}
+		}
 	}
+
+	// G-Codes:
+	public void drawCircle(int x2, int y2, int i, int j) {
+		int h = (int) position[0] + i; // x coordinate of circle center
+		int k = (int) position[1] + j; // y coordinate of circle center
+		double deltaY = k - position[1];
+		double deltaX = h - position[0];
+		int radius = (int)Math.sqrt(deltaY*deltaY + deltaX*deltaX);
+		for (int alpha = 0; alpha < 360; alpha++) {
+//			if (position[0]==x2 || position[1] == y2) Funktioniert noch nicht, da die Koordinaten beim Kreis random berechnet werden
+//				break;
+			int x = (int) (h + radius * Math.cos(alpha));
+			int y = (int) (k + radius * Math.sin(alpha));
+			arbeitsFlaeche.drawPoint(x, y, true);
+//			this.position[0] = x;
+//			this.position[1] = y;
+		}
+	}
+
 }
