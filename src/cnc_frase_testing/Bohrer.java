@@ -123,11 +123,12 @@ public class Bohrer {
 		double deltaY = k - position[1];
 		double deltaX = h - position[0];
 		int radius = (int)Math.sqrt(deltaY*deltaY + deltaX*deltaX);
+//		int anfangsWinkel = 
 		for (int alpha = 0; alpha < 360; alpha++) {
-//			if (position[0]==x2 || position[1] == y2) Funktioniert noch nicht, da die Koordinaten beim Kreis random berechnet werden
+//			if (position[0]==x2 || position[1] == y2) //Funktioniert noch nicht, da die Koordinaten beim Kreis random berechnet werden
 //				break;
-			int x = (int) (h + radius * Math.cos(alpha));
-			int y = (int) (k + radius * Math.sin(alpha));
+			int x = (int) (h + radius * Math.cos(alpha*Math.PI/180));
+			int y = (int) (k + radius * Math.sin(alpha*Math.PI/180));
 			arbeitsFlaeche.drawPoint(x, y, true);
 //			this.position[0] = x;
 //			this.position[1] = y;

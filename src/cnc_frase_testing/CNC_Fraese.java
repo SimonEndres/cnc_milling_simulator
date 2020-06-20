@@ -12,8 +12,8 @@ public class CNC_Fraese {
 	CNC_Fraese(Stage primaryStage){
 		drawingBoard = new DrawingBoard(primaryStage,this);
 		bohrer = new Bohrer(drawingBoard);
-		bohrer.drawLine(40, 40, true);
-		bohrer.drawCircle(20, 20, 40, 40);
+		bohrer.drawLine(100, 100, true);
+		bohrer.drawCircle(200, 200, 50, 50);
 	}
 	public void fraesen (JSONObject befehlsJson) {
 		JSONArray befehlsArray = new JSONArray();
