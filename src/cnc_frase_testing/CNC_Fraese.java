@@ -1,4 +1,10 @@
 package cnc_frase_testing;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -15,6 +21,7 @@ public class CNC_Fraese {
 		bohrer.drawLine(100, 100, true);
 		bohrer.drawCircle(200, 200, 50, 50);
 	}
+	
 	public void fraesen (JSONObject befehlsJson) {
 		JSONArray befehlsArray = new JSONArray();
 		befehlsArray = (JSONArray) befehlsJson.getJSONArray("Befehle");
@@ -22,88 +29,85 @@ public class CNC_Fraese {
 		for(int count = 0; count < befehlsArray.length(); count++) {
 			JSONObject befehl = befehlsArray.getJSONObject(count);
 			String befehlsart = befehl.getString("Befehlsart");
-			if (befehlsart.equals("M")){
-				//Befehlsart ist M -> Aufruf der Bohrerfunktion entsprechend der Nummer
-				switch (befehl.getString("Nummer")) {
-					case "00":
-						//bohrer.M00;
-						//Für Log: Finish:
-						//drawingBoard.Log(count,befehl.getString("Befehlsart"),befehl.getString("Nummer"));
-						break;
-					case "01":
-						//bohrer.M01;
-						break;
-					case "02":
-						//bohrer.M02;
-						break;
-					case "03":
-						//bohrer.M03;
-						System.out.println("M03");
-						break;
-					case "04":
-						//bohrer.M04;
-						break;
-					case "05":
-						//bohrer.M05;
-						break;
-					case "06":
-						//bohrer.M06;
-						break;
-					case "07":
-						//bohrer.M07;
-						break;
-					case "08":
-						//bohrer.M08;
-						//Problem: 08, 09 als Int out of Range... deshalb String
-						break;
-					case "09":
-						//bohrer.M09;
-						break;
-					case "10":
-						//bohrer.M10;
-						break;
-					case "11":
-						//bohrer.M11;
-						break;
-					case "12":
-						//bohrer.M12;
-						break;
-					case "13":
-						//bohrer.M13;
-						break;
-					case "14":
-						//bohrer.M14;
-						break;
-					case "":
-						System.out.println("Befehlsnummer existiert nicht für M");
-						break;
-				}
-			} else if (befehlsart.equals("G")){
-				//Befehlsart ist G -> Aufruf der Bohrerfunktion entsprechend der Nummer
-				switch (befehl.getString("Nummer")) {
+			BefehlSwitch(befehl,befehlsart);
+//			try {
+//				File file = new File ("C:\\Program Files\\CNC_Fraese_Log.txt");
+//				if (!file.exists()) {
+//					file.createNewFile();
+//				}
+//				BufferedWriter logOutput = new BufferedWriter(new FileWriter(file));
+//				logOutput.write(count + ": " + befehlsart);
+//				logOutput.close();
+//			} catch (IOException e) {
+//				e.printStackTrace();
+//			}
+		}
+	}
+	
+	private void BefehlSwitch (JSONObject befehl, String befehlsart) {
+		if (befehlsart.equals("M")){
+			//Befehlsart ist M -> Aufruf der Bohrerfunktion entsprechend der Nummer
+			switch (befehl.getString("Nummer")) {
 				case "00":
-					//bohrer.G00(befehl.getInt("XKoordinate"),befehl.getInt("YKoordinate"));
-					break;
-				case "01":
-					//bohrer.G01(befehl.getInt("XKoordinate"),befehl.getInt("YKoordinate"));
-					System.out.println("G01");
+					//Programmhalt;
 					break;
 				case "02":
-					//bohrer.G02(befehl.getInt("XKoordinate"),befehl.getInt("YKoordinate"));
+					//ProgrammEnde;
 					break;
 				case "03":
-					//bohrer.G03(befehl.getInt("XKoordinate"),befehl.getInt("YKoordinate"));
+					bohrer.setSpindelStatus(true);
+					bohrer.setDrehrichtung("rechts");
 					break;
-				case "28":
-					//bohrer.G28(befehl.getInt("XKoordinate"),befehl.getInt("YKoordinate"));
+				case "04":
+					bohrer.setSpindelStatus(true);
+					bohrer.setDrehrichtung("links");
+					break;
+				case "05":
+					bohrer.setSpindelStatus(false);
+					break;
+				case "08":
+					bohrer.setKühlmittel(true);
+					//Problem: 08, 09 als Int out of Range... deshalb String
+					break;
+				case "09":
+					bohrer.setKühlmittel(false);
+					break;
+				case "13":
+					bohrer.setSpindelStatus(true);
+					bohrer.setDrehrichtung("rechts");
+					bohrer.setKühlmittel(true);
+					break;
+				case "14":
+					//bohrer.M14;
 					break;
 				case "":
-					System.out.println("Befehlsnummer existiert nicht für G");
+					System.out.println("Befehlsnummer existiert nicht für M");
 					break;
-				}
-			} else {
-				System.out.println("Der eingegebene Befehl existiert nicht");
 			}
-		};
+		} else if (befehlsart.equals("G")){
+			//Befehlsart ist G -> Aufruf der Bohrerfunktion entsprechend der Nummer
+			switch (befehl.getString("Nummer")) {
+			case "00":
+				bohrer.drawLine(befehl.getInt("XKoordinate"), befehl.getInt("YKoordinate"), false);
+				break;
+			case "01":
+				bohrer.drawLine(befehl.getInt("XKoordinate"),befehl.getInt("YKoordinate"), true);
+				System.out.println("G01");
+				break;
+			case "02":
+				bohrer.drawCircle(befehl.getInt("XKoordinate"),befehl.getInt("YKoordinate"),befehl.getInt("I"),befehl.getInt("J"));
+				break;
+			case "03":
+				//bohrer.drawCircleLinks(befehl.getInt("XKoordinate"),befehl.getInt("YKoordinate"),befehl.getInt("I"),befehl.getInt("J"));					break;
+			case "28":
+				//bohrer.G28(befehl.getInt("XKoordinate"),befehl.getInt("YKoordinate"));
+				break;
+			case "":
+				System.out.println("Befehlsnummer existiert nicht für G");
+				break;
+			}
+		} else {
+			System.out.println("Der eingegebene Befehl existiert nicht");
+		}
 	}
 }

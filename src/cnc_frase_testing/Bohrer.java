@@ -5,7 +5,7 @@ public class Bohrer {
 
 	final private String farbe;
 	private double[] position;
-	private boolean status;
+	private boolean spindelStatus;
 	private String drehrichtung;
 	private boolean kuehlmittel;
 	private boolean speedMode;
@@ -14,7 +14,7 @@ public class Bohrer {
 	public Bohrer(DrawingBoard arbeitsFlaeche) {
 		this.farbe = "rot";
 		this.position = new double[] { 0.0, 0.0 };
-		this.status = false;
+		this.spindelStatus = false;
 		this.kuehlmittel = false;
 		this.speedMode = false;
 		this.arbeitsFlaeche = arbeitsFlaeche;
@@ -25,7 +25,7 @@ public class Bohrer {
 			boolean speedMode) {
 		this.farbe = farbe;
 		this.position = new double[] { 0.0, 0.0 };
-		this.status = status;
+		this.spindelStatus = status;
 		this.kuehlmittel = kuehlmittel;
 		this.speedMode = speedMode;
 		this.arbeitsFlaeche = arbeitsFlaeche;
@@ -47,11 +47,11 @@ public class Bohrer {
 	}
 
 	public boolean isStatus() {
-		return status;
+		return spindelStatus;
 	}
 
-	public void setStatus(boolean status) {
-		this.status = status;
+	public void setSpindelStatus(boolean status) {
+		this.spindelStatus = status;
 	}
 
 	public String getDrehrichtung() {
@@ -73,7 +73,9 @@ public class Bohrer {
 
 	public void setKühlmittel(boolean kuehlmittel) {
 		this.kuehlmittel = kuehlmittel;
-		if (!kuehlmittel) {
+		if (kuehlmittel) {
+			this.speedMode = true;
+		} else {
 			this.speedMode = false;
 		}
 	}
@@ -81,7 +83,7 @@ public class Bohrer {
 	public boolean isSpeedMode() {
 		return speedMode;
 	}
-
+	//evtl unnötig, je nach Verhalten von Speedmode
 	public void setSpeedMode(boolean speedMode) {
 		this.speedMode = speedMode;
 		if (speedMode) {

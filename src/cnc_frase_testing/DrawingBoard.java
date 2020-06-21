@@ -87,7 +87,10 @@ final class DrawingBoard {
 			@Override
 			public void handle(ActionEvent event) {
 				File file = fileChooser.showOpenDialog(primaryStage);
-				cnc_fraese.fraesen(loadJson(file));
+				if (file!=null) {
+					cnc_fraese.fraesen(loadJson(file));
+				}
+				
 			}
 		});
 		this.mainSceneLayout.setTop(uploadBtn);
