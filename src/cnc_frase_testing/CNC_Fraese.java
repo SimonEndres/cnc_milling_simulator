@@ -19,7 +19,7 @@ public class CNC_Fraese {
 		drawingBoard = new DrawingBoard(primaryStage,this);
 		bohrer = new Bohrer(drawingBoard);
 		bohrer.drawLine(100, 100, true);
-		bohrer.drawCircle(200, 200, 50, 50);
+		bohrer.drawCircle(200, 200, 50, 50, false);
 	}
 	
 	public void fraesen (JSONObject befehlsJson) {
@@ -95,7 +95,7 @@ public class CNC_Fraese {
 				System.out.println("G01");
 				break;
 			case "02":
-				bohrer.drawCircle(befehl.getInt("XKoordinate"),befehl.getInt("YKoordinate"),befehl.getInt("I"),befehl.getInt("J"));
+				bohrer.drawCircle(befehl.getInt("XKoordinate"),befehl.getInt("YKoordinate"),befehl.getInt("I"),befehl.getInt("J"), true);//boolean muss noch aufgenommen werden
 				break;
 			case "03":
 				//bohrer.drawCircleLinks(befehl.getInt("XKoordinate"),befehl.getInt("YKoordinate"),befehl.getInt("I"),befehl.getInt("J"));					break;
