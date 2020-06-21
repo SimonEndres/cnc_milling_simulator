@@ -140,7 +140,7 @@ public class Bohrer {
 				System.out.println("( "+ x + " / " + y + " )");
 			}
 		} else { //im Uhrzeigersinn
-			for (double alpha = begingAngle*180/Math.PI; alpha > (targetAngle*180/Math.PI - 360); alpha --) {
+			for (double alpha = begingAngle*180/Math.PI; alpha > (targetAngle*180/Math.PI - 360); alpha--) {
 				int x = (int) (mX + radius * Math.cos(alpha * Math.PI / 180));
 				int y = (int) (mY - radius * Math.sin(alpha * Math.PI / 180));
 				arbeitsFlaeche.drawPoint(x, y, true);
