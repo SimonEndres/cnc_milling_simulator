@@ -36,15 +36,15 @@ final class DrawingBoard {
 	private JSONObject json; 
 	private Desktop desktop = Desktop.getDesktop();
 	
-	private CNC_Fraese cnc_fraese;
+	private Controller cnc_fraese;
 
-	DrawingBoard(Stage primaryStage, CNC_Fraese cnc_fraese) {
+	DrawingBoard(Stage primaryStage) {
 		this.primaryStage = primaryStage;
 		this.mainSceneLayout = new BorderPane();
 		this.mainScene = new Scene(mainSceneLayout, 600, 600);
 		this.cutLine = new Group();
 		this.bottomBox = new HBox();
-		this.cnc_fraese = cnc_fraese;
+		this.cnc_fraese = new Controller(this);
 		final FileChooser fileChooser = new FileChooser();
 
 		this.mainSceneLayout.setCenter(cutLine);
@@ -94,7 +94,6 @@ final class DrawingBoard {
 						e.printStackTrace();
 					}
 				}
-				
 			}
 		});
 		this.mainSceneLayout.setTop(uploadBtn);

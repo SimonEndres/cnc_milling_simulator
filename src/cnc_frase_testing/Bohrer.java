@@ -1,10 +1,16 @@
 package cnc_frase_testing;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Vector;
+
 //Tim
 public class Bohrer {
 
 	final private String farbe;
-	public double[] position;
+	public double[] positionOLD;
+	private ArrayList<Vector<Integer>> position = new ArrayList<Vector<Integer>>();
+	private Vector<Integer> test;
 	private boolean spindelStatus;
 	private String drehrichtung;
 	private boolean kuehlmittel;
@@ -13,7 +19,8 @@ public class Bohrer {
 
 	public Bohrer(DrawingBoard arbeitsFlaeche) {
 		this.farbe = "rot";
-		this.position = new double[] { 0.0, 0.0 };
+		this.positionOLD = new double[] { 0.0, 0.0 };
+//		this.position ;
 		this.spindelStatus = false;
 		this.kuehlmittel = false;
 		this.speedMode = false;
@@ -21,29 +28,17 @@ public class Bohrer {
 		setDrehrichtung("rechts");
 	}
 
-	public Bohrer(DrawingBoard arbeitsFlaeche, String farbe, boolean status, String drehrichtung, boolean kuehlmittel,
-			boolean speedMode) {
-		this.farbe = farbe;
-		this.position = new double[] { 0.0, 0.0 };
-		this.spindelStatus = status;
-		this.kuehlmittel = kuehlmittel;
-		this.speedMode = speedMode;
-		this.arbeitsFlaeche = arbeitsFlaeche;
-
-		setDrehrichtung(drehrichtung);
-	}
-
 	public String getFarbe() {
 		return farbe;
 	}
 
 	public double[] getPosition() {
-		return position;
+		return positionOLD;
 	}
 
 	public void setPosition(int x, int y) {
-		this.position[0] = x;
-		this.position[1] = y;
+		this.positionOLD[0] = x;
+		this.positionOLD[1] = y;
 	}
 
 	public boolean isStatus() {
@@ -100,21 +95,21 @@ public class Bohrer {
 //Simon, Jonas vorläufiges Ergebnis --> Effiziens muss angepasst werden+
 //Boolean fraesen true -> Linie wird gezeichnet; false -> bohrkopf bewegt sich lediglich 
 	public void drawLine(int x2, int y2, boolean fraesen) {
-		double deltaY = y2 - position[1];
-		double deltaX = x2 - position[0];
-		double tmpPositionY = position[1];
+		double deltaY = y2 - positionOLD[1];
+		double deltaX = x2 - positionOLD[0];
+		double tmpPositionY = positionOLD[1];
 		if (deltaX != 0) {
 			double m = (deltaY) / (deltaX);
-			for (double x = position[0]; x <= x2; x += 0.001) {
+			for (double x = positionOLD[0]; x <= x2; x += 0.001) {
 				double y = Math.round(m * x + tmpPositionY);
 				arbeitsFlaeche.drawPoint((int) x, (int) y, fraesen);
-				this.position[0] = x;
-				this.position[1] = y;
+				this.positionOLD[0] = x;
+				this.positionOLD[1] = y;
 			}
 		} else {
-			for (double y = position[1]; y <= y2; y += 0.001) {
-				arbeitsFlaeche.drawPoint((int) position[0], (int) y, fraesen);
-				this.position[1] = y;
+			for (double y = positionOLD[1]; y <= y2; y += 0.001) {
+				arbeitsFlaeche.drawPoint((int) positionOLD[0], (int) y, fraesen);
+				this.positionOLD[1] = y;
 			}
 		}
 	}
@@ -123,20 +118,20 @@ public class Bohrer {
 //	Simon und Jonas
 //	Circle Direction true -> gegen den Uhrzeigersinn; false -> mit dem Uhrzeigersinn
 	public void drawCircle(int x2, int y2, int i, int j, boolean circleDirection) {
-		int mX = (int) position[0] + i; // x coordinate of circle center
-		int mY = (int) position[1] + j; // y coordinate of circle center
-		double deltaY = mY - position[1];
-		double deltaX = mX - position[0];
+		int mX = (int) positionOLD[0] + i; // x coordinate of circle center
+		int mY = (int) positionOLD[1] + j; // y coordinate of circle center
+		double deltaY = mY - positionOLD[1];
+		double deltaX = mX - positionOLD[0];
 		int radius = (int) Math.sqrt(deltaY * deltaY + deltaX * deltaX);
-		double begingAngle = calcAngle(mX, mY, position[0], position[1]);
+		double begingAngle = calcAngle(mX, mY, positionOLD[0], positionOLD[1]);
 		double targetAngle = calcAngle(mX, mY, x2, y2);
 		if (circleDirection) { //gegen den Uhrzeigersinn
 			for (double alpha = begingAngle*180/Math.PI; alpha < targetAngle*180/Math.PI ; alpha++) {
 				int x = (int) (mX + radius * Math.cos(alpha * Math.PI / 180));
 				int y = (int) (mY - radius * Math.sin(alpha * Math.PI / 180));
 				arbeitsFlaeche.drawPoint(x, y, true);
-				this.position[0] = x;
-				this.position[1] = y;
+				this.positionOLD[0] = x;
+				this.positionOLD[1] = y;
 				//System.out.println("( "+ x + " / " + y + " )");
 			}
 		} else { //im Uhrzeigersinn
@@ -144,8 +139,8 @@ public class Bohrer {
 				int x = (int) (mX + radius * Math.cos(alpha * Math.PI / 180));
 				int y = (int) (mY - radius * Math.sin(alpha * Math.PI / 180));
 				arbeitsFlaeche.drawPoint(x, y, true);
-				this.position[0] = x;
-				this.position[1] = y;
+				this.positionOLD[0] = x;
+				this.positionOLD[1] = y;
 				//System.out.println("( "+ x + " / " + y + " )");
 			}
 		}
