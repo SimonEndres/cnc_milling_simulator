@@ -19,8 +19,10 @@ public class CNC_Fraese {
 	CNC_Fraese(Stage primaryStage){
 		drawingBoard = new DrawingBoard(primaryStage,this);
 		bohrer = new Bohrer(drawingBoard);
-		bohrer.drawLine(100, 100, true);
-		bohrer.drawCircle(200, 200, 50, 50, false);
+		bohrer.drawLine(100, 0, true);
+		//bohrer.drawCircle(100, 100, 0, 50, false);
+		bohrer.drawLine(0, 100, true);
+		//bohrer.drawCircle(0, 0, 0, -50, false);
 	}
 	
 	public void fraesen (JSONObject befehlsJson) throws IOException {
@@ -32,6 +34,7 @@ public class CNC_Fraese {
 			String befehlsart = befehl.getString("Befehlsart");
 			BefehlSwitch(befehl,befehlsart);
 			writeLog(befehl,count,System.currentTimeMillis());
+			System.out.println("( "+ bohrer.position[0] + " / " + bohrer.position[1] + " )");
 		}
 		logOutput.close();
 	}
@@ -83,7 +86,9 @@ public class CNC_Fraese {
 					bohrer.setKühlmittel(true);
 					break;
 				case "14":
-					//bohrer.M14;
+					bohrer.setSpindelStatus(true);
+					bohrer.setDrehrichtung("links");
+					bohrer.setKühlmittel(true);
 					break;
 				case "":
 					System.out.println("Befehlsnummer existiert nicht für M");
@@ -99,12 +104,13 @@ public class CNC_Fraese {
 				bohrer.drawLine(befehl.getInt("XKoordinate"),befehl.getInt("YKoordinate"), true);
 				break;
 			case "02":
-				bohrer.drawCircle(befehl.getInt("XKoordinate"),befehl.getInt("YKoordinate"),befehl.getInt("I"),befehl.getInt("J"), true);//boolean muss noch aufgenommen werden
+				bohrer.drawCircle(befehl.getInt("XKoordinate"),befehl.getInt("YKoordinate"),befehl.getInt("I"),befehl.getInt("J"), false);//boolean muss noch aufgenommen werden
 				break;
 			case "03":
-				//bohrer.drawCircleLinks(befehl.getInt("XKoordinate"),befehl.getInt("YKoordinate"),befehl.getInt("I"),befehl.getInt("J"));					break;
+				bohrer.drawCircle(befehl.getInt("XKoordinate"),befehl.getInt("YKoordinate"),befehl.getInt("I"),befehl.getInt("J"), true);
+				break;
 			case "28":
-				//bohrer.G28(befehl.getInt("XKoordinate"),befehl.getInt("YKoordinate"));
+				bohrer.drawLine(0,0,false);
 				break;
 			case "":
 				System.out.println("Befehlsnummer existiert nicht für G");

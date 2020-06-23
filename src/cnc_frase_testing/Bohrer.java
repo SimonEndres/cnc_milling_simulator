@@ -4,7 +4,7 @@ package cnc_frase_testing;
 public class Bohrer {
 
 	final private String farbe;
-	private double[] position;
+	public double[] position;
 	private boolean spindelStatus;
 	private String drehrichtung;
 	private boolean kuehlmittel;
@@ -137,7 +137,7 @@ public class Bohrer {
 				arbeitsFlaeche.drawPoint(x, y, true);
 				this.position[0] = x;
 				this.position[1] = y;
-				System.out.println("( "+ x + " / " + y + " )");
+				//System.out.println("( "+ x + " / " + y + " )");
 			}
 		} else { //im Uhrzeigersinn
 			for (double alpha = begingAngle*180/Math.PI; alpha > (targetAngle*180/Math.PI - 360); alpha--) {
@@ -146,7 +146,7 @@ public class Bohrer {
 				arbeitsFlaeche.drawPoint(x, y, true);
 				this.position[0] = x;
 				this.position[1] = y;
-				System.out.println("( "+ x + " / " + y + " )");
+				//System.out.println("( "+ x + " / " + y + " )");
 			}
 		}
 	}
