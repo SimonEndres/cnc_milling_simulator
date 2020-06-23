@@ -14,6 +14,7 @@ import javafx.stage.Stage;
 public class CNC_Fraese {
 	private DrawingBoard drawingBoard;
 	private Bohrer bohrer;
+	private BufferedWriter logOutput;
 
 	CNC_Fraese(Stage primaryStage){
 		drawingBoard = new DrawingBoard(primaryStage,this);
@@ -22,7 +23,7 @@ public class CNC_Fraese {
 		bohrer.drawCircle(200, 200, 50, 50, false);
 	}
 	
-	public void fraesen (JSONObject befehlsJson) {
+	public void fraesen (JSONObject befehlsJson) throws IOException {
 		JSONArray befehlsArray = new JSONArray();
 		befehlsArray = (JSONArray) befehlsJson.getJSONArray("Befehle");
 		//Auslesen der Befehle aus der JSON
@@ -30,18 +31,22 @@ public class CNC_Fraese {
 			JSONObject befehl = befehlsArray.getJSONObject(count);
 			String befehlsart = befehl.getString("Befehlsart");
 			BefehlSwitch(befehl,befehlsart);
-//			try {
-//				File file = new File ("C:\\Program Files\\CNC_Fraese_Log.txt");
-//				if (!file.exists()) {
-//					file.createNewFile();
-//				}
-//				BufferedWriter logOutput = new BufferedWriter(new FileWriter(file));
-//				logOutput.write(count + ": " + befehlsart);
-//				logOutput.close();
-//			} catch (IOException e) {
-//				e.printStackTrace();
-//			}
+			writeLog(befehl,count,System.currentTimeMillis());
 		}
+		logOutput.close();
+	}
+	
+	private void writeLog (JSONObject befehl, int count, long startzeit) throws IOException {
+		if (count == 0) {
+			File file = new File ("data//CNC_Fraese_Log.txt");
+			if (!file.exists()) {
+				file.createNewFile();
+			}
+			logOutput = new BufferedWriter(new FileWriter(file));	
+		}
+		long endzeit = System.currentTimeMillis() - startzeit;
+		logOutput.write("LOG" + count + ": " + befehl.getString("Befehlsart") + befehl.getString("Nummer") + "  -  Laufzeit(in ms): " + endzeit + "\n");
+		System.out.println(endzeit);
 	}
 	
 	private void BefehlSwitch (JSONObject befehl, String befehlsart) {
@@ -92,7 +97,6 @@ public class CNC_Fraese {
 				break;
 			case "01":
 				bohrer.drawLine(befehl.getInt("XKoordinate"),befehl.getInt("YKoordinate"), true);
-				System.out.println("G01");
 				break;
 			case "02":
 				bohrer.drawCircle(befehl.getInt("XKoordinate"),befehl.getInt("YKoordinate"),befehl.getInt("I"),befehl.getInt("J"), true);//boolean muss noch aufgenommen werden
