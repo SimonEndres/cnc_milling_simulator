@@ -21,6 +21,7 @@ public class Controller {
 	private DrawingBoard drawingBoard;
 	private Bohrer bohrer;
 	private BufferedWriter logOutput;
+	private long countNum;
 
 	Controller(DrawingBoard drawingboard) {
 		drawingBoard = drawingboard;
@@ -32,28 +33,28 @@ public class Controller {
 	}
 
 	// Zuständig Befehlsabarbeitung
-	public void fraesen(JSONObject befehlsJson) throws IOException {
+	public void fraesen(JSONObject befehlsJson) {
 		JSONArray befehlsArray = new JSONArray();
 		befehlsArray = befehlsJson.getJSONArray("commands");
-//		//Auslesen der Befehle aus der JSON
-//		for(int count = 0; count < befehlsArray.length(); count++) {
-//			JSONObject befehl = befehlsArray.getJSONObject(count);
-//			String befehlsart = befehl.getString("Befehlsart");
-//			BefehlSwitch(befehl,befehlsart);
-//			writeLog(befehl,count,System.currentTimeMillis());
-//			System.out.println("( "+ bohrer.positionOLD[0] + " / " + bohrer.positionOLD[1] + " )");
-//		}
-//		logOutput.close();
 
 		// Prüfen, ob nummerriert oder nicht
 		if (befehlsArray.getJSONObject(0).getString("number") != null) {
 			//Wenn ja -> sortieren
 			befehlsArray = arraySort(befehlsArray);
 		};
+		
+		countNum = 0000;
 		befehlsArray.forEach(item -> {
+			countNum += 10;
 			JSONObject befehl = (JSONObject) item;
-			
+			BefehlSwitch(befehl);
+			//writeLog(befehl,System.currentTimeMillis());
 		});
+//		try {
+//			logOutput.close();
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
 	}
 
 	public JSONArray arraySort(JSONArray jsonArr) {
@@ -88,24 +89,29 @@ public class Controller {
 		return sortedJsonArray;
 	}
 
-	private void writeLog(JSONObject befehl, int count, long startzeit) throws IOException {
-		if (count == 0) {
-			File file = new File("data//CNC_Fraese_Log.txt");
-			if (!file.exists()) {
-				file.createNewFile();
+	private void writeLog(JSONObject befehl, long startzeit){
+		try {
+			if (countNum == 0) {
+				File file = new File("data//CNC_Fraese_Log.txt");
+				if (!file.exists()) {
+					file.createNewFile();
+				}
+				logOutput = new BufferedWriter(new FileWriter(file));
 			}
-			logOutput = new BufferedWriter(new FileWriter(file));
+			long endzeit = System.currentTimeMillis() - startzeit;
+			logOutput.write("LOG N" + countNum + ": " + befehl.getString("code") + "  -  Laufzeit(in ms): " + endzeit + "\n");
+		} catch (JSONException | IOException e) {
+			e.printStackTrace();
 		}
-		long endzeit = System.currentTimeMillis() - startzeit;
-		logOutput.write("LOG" + count + ": " + befehl.getString("Befehlsart") + befehl.getString("Nummer")
-				+ "  -  Laufzeit(in ms): " + endzeit + "\n");
-		System.out.println(endzeit);
 	}
 
-	private void BefehlSwitch(JSONObject befehl, String befehlsart) {
+	private void BefehlSwitch(JSONObject befehl) {
+		String[] hilf = befehl.getString("code").split("");
+		String befehlsart = hilf[0];
+		String befehlsNummer = hilf[1] + hilf[2];
 		if (befehlsart.equals("M")) {
 			// Befehlsart ist M -> Aufruf der Bohrerfunktion entsprechend der Nummer
-			switch (befehl.getString("Nummer")) {
+			switch (befehlsNummer) {
 			case "00":
 				// Programmhalt;
 				break;
@@ -146,23 +152,28 @@ public class Controller {
 			}
 		} else if (befehlsart.equals("G")) {
 			// Befehlsart ist G -> Aufruf der Bohrerfunktion entsprechend der Nummer
-			switch (befehl.getString("Nummer")) {
+			JSONObject parameters = new JSONObject();
+			parameters = (JSONObject) befehl.getJSONObject("parameters");
+			switch (befehlsNummer) {
 			case "00":
-				bohrer.drawLine(befehl.getInt("XKoordinate"), befehl.getInt("YKoordinate"), false);
+				bohrer.drawLine(parameters.getInt("x"), parameters.getInt("y"), false);
+				System.out.println("G00");
 				break;
 			case "01":
-				bohrer.drawLine(befehl.getInt("XKoordinate"), befehl.getInt("YKoordinate"), true);
+				bohrer.drawLine(parameters.getInt("x"), parameters.getInt("y"), true);
+				System.out.println("G01");
 				break;
 			case "02":
-				bohrer.drawCircle(befehl.getInt("XKoordinate"), befehl.getInt("YKoordinate"), befehl.getInt("I"),
-						befehl.getInt("J"), false);// boolean muss noch aufgenommen werden
+				bohrer.drawCircle(parameters.getInt("x"), parameters.getInt("y"), parameters.getInt("i"), parameters.getInt("j"), false);
+				System.out.println("G02");
 				break;
 			case "03":
-				bohrer.drawCircle(befehl.getInt("XKoordinate"), befehl.getInt("YKoordinate"), befehl.getInt("I"),
-						befehl.getInt("J"), true);
+				bohrer.drawCircle(parameters.getInt("x"), parameters.getInt("y"), parameters.getInt("i"), parameters.getInt("j"), true);
+				System.out.println("G03");
 				break;
 			case "28":
 				bohrer.drawLine(0, 0, false);
+				System.out.println("G28");
 				break;
 			case "":
 				System.out.println("Befehlsnummer existiert nicht für G");

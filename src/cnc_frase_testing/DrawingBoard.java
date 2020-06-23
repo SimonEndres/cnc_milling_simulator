@@ -88,11 +88,7 @@ final class DrawingBoard {
 			public void handle(ActionEvent event) {
 				File file = fileChooser.showOpenDialog(primaryStage);
 				if (file!=null) {
-					try {
-						cnc_fraese.fraesen(loadJson(file));
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
+					cnc_fraese.fraesen(loadJson(file));
 				}
 			}
 		});
