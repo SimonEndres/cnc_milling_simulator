@@ -15,38 +15,33 @@ import javafx.stage.Stage;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.scene.Scene;
-import javafx.scene.canvas.Canvas;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Group;
 import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
 
 final class UI {
-	
+
 	final private Stage primaryStage;
 	final private Scene mainScene;
 	final private BorderPane mainSceneLayout;
-	final private Group cutLine;
 	final private HBox bottomBox;
-	private JSONObject json; 
+	private JSONObject json;
 	private Desktop desktop = Desktop.getDesktop();
-	
+
 	private Controller cnc_fraese;
 
 	UI(Stage primaryStage) {
 		this.primaryStage = primaryStage;
 		this.mainSceneLayout = new BorderPane();
 		this.mainScene = new Scene(mainSceneLayout, 1000, 1000);
-		this.cutLine = new Group();
 		this.bottomBox = new HBox();
-		WorkSurface workSurface = new WorkSurface(840,630);
+		WorkSurface workSurface = new WorkSurface(840, 630);
 		this.cnc_fraese = new Controller(this);
 		final FileChooser fileChooser = new FileChooser();
 
@@ -60,15 +55,21 @@ final class UI {
 //		UI Bottom part
 		Button startBtn = new Button("Start/Pause");
 		HBox startBtnBox = new HBox(startBtn);
-		
-		startBtn.setOnAction(new EventHandler<ActionEvent>(){
-			 @Override
-	            public void handle(ActionEvent event) {
-				 	//SimulateMill mill = new SimulateMill(cnc_fraese.coordinates,workSurface);
-				 	SimulateMill myThread = new SimulateMill(cnc_fraese.coordinates, workSurface);
-	                myThread.start();
-	            }
-	    });
+
+		startBtn.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				// SimulateMill mill = new SimulateMill(cnc_fraese.coordinates,workSurface);
+
+				// UI updaten
+				Platform.runLater(new Runnable() {
+					public void run() {
+						SimulateMill myThread = new SimulateMill(cnc_fraese.coordinates, workSurface);
+						myThread.startDrawing();
+					}
+				});
+			}
+		});
 		startBtnBox.setAlignment(Pos.CENTER_LEFT);
 		HBox.setHgrow(startBtnBox, Priority.ALWAYS);
 		HBox.setMargin(startBtnBox, new Insets(0, 20, 20, 20));
@@ -82,33 +83,33 @@ final class UI {
 //		UI Top part
 //		JSON-file contains customizable settings for the UI
 		Button uploadBtn = new Button("Upload Settingsdatei");
-		
-		uploadBtn.setOnAction(new EventHandler<ActionEvent>(){
-			 @Override
-	            public void handle(ActionEvent event) {
-	                File file = fileChooser.showOpenDialog(primaryStage);
-	                if (file != null) {
-	                    openFile(file);
-	                    List<File> files = Arrays.asList(file);
-	                    System.out.println("Geklappt");
-	                }
-	            }
-	    });
+
+		uploadBtn.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				File file = fileChooser.showOpenDialog(primaryStage);
+				if (file != null) {
+					openFile(file);
+					List<File> files = Arrays.asList(file);
+					System.out.println("Geklappt");
+				}
+			}
+		});
 		fileChooser.setTitle("Upload Settingsdatei");
 		fileChooser.getExtensionFilters().add(new ExtensionFilter("Json-Files", "*.json"));
 		uploadBtn.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
 				File file = fileChooser.showOpenDialog(primaryStage);
-				if (file!=null) {
+				if (file != null) {
 					cnc_fraese.fraesen(loadJson(file));
 				}
 			}
 		});
 		this.mainSceneLayout.setTop(uploadBtn);
-		
+
 	}
-	
+
 	private JSONObject loadJson(File file) {
 		JSONObject json = null;
 		try {
@@ -117,9 +118,8 @@ final class UI {
 		} catch (Exception e) {
 			System.out.println(e);
 		}
-		return json; 
+		return json;
 	}
-
 
 	private void openFile(File file) {
 		try {

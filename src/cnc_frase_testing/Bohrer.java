@@ -1,8 +1,6 @@
 package cnc_frase_testing;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Vector;
 
 //Tim
 public class Bohrer {

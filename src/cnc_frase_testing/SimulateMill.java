@@ -1,46 +1,48 @@
 package cnc_frase_testing;
 
 import java.util.ArrayList;
-import java.util.concurrent.TimeUnit;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
-import javafx.application.Platform;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
+import javafx.animation.AnimationTimer;
 
-public class SimulateMill extends Thread{
-	
+public class SimulateMill {
+
 	protected ArrayList<Coordinates> coordinates;
 	private WorkSurface workSurface;
-	
+	static int counter = 0;
+
 	public SimulateMill(ArrayList<Coordinates> coordinates, WorkSurface workSurface) {
 		this.coordinates = coordinates;
 		this.workSurface = workSurface;
 		System.out.println("beep");
 	}
-	public void run() {
-		 
-        while (!this.isInterrupted()) {
-             
-            // UI updaten
-            Platform.runLater(new Runnable() {
-                @Override
-                public void run() {
-                    // entsprechende UI Komponente updaten
-                	workSurface.drawPoint(0, 0, true);
-                }
-            });
- 
-            // Thread schlafen
-            try {
-                // fuer 3 Sekunden
-                sleep(TimeUnit.SECONDS.toMillis(3));
-            } catch (InterruptedException ex) {
-                
-            }
-      }
-	//zum zeichnen eines Punktes auf der Oberfläche
+
+	public void startDrawing() {
+		
+		AnimationTimer timer = new AnimationTimer() {
+			
+			@Override
+			public void handle(long now) {
+				long lastUpdateTime = 0;
+				if (now - lastUpdateTime >= 200000) {
+					draw();
+				    lastUpdateTime = now;
+				}
+			}
+		};
+		
+		timer.start();
+//		timer.stop();
+		
+	}
+	
+	private void draw() {
+		
+		workSurface.drawPoint(coordinates.get(counter).getX(), coordinates.get(counter).getY(),
+				coordinates.get(counter).isMill());
+		counter++;
+		
+	}
+	// zum zeichnen eines Punktes auf der Oberfläche
 //		void drawPoint(int x, int y, boolean fraesen) {
 //			Circle bohrkopf = new Circle();
 //			bohrkopf.setCenterX((float) x);
@@ -52,6 +54,4 @@ public class SimulateMill extends Thread{
 //				cutLine.getChildren().add(bohrkopf);
 //		}
 
-
-	}
 }

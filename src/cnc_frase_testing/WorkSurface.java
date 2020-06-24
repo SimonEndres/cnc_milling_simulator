@@ -1,10 +1,7 @@
 package cnc_frase_testing;
 
-import javafx.scene.Group;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
 
 public class WorkSurface extends Canvas{
 	private GraphicsContext gc;
@@ -14,6 +11,7 @@ public class WorkSurface extends Canvas{
 		//gc.strokeText("Hello Canvas", 150, 100);
 	}
 	void drawPoint(int x, int y, boolean fraesen) {
+
 		if (fraesen)
 			gc.fillOval(x, y, 2, 2);
 	}
