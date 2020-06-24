@@ -15,6 +15,7 @@ import javafx.stage.Stage;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.scene.Scene;
+import javafx.scene.canvas.Canvas;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -42,13 +43,14 @@ final class UI {
 	UI(Stage primaryStage) {
 		this.primaryStage = primaryStage;
 		this.mainSceneLayout = new BorderPane();
-		this.mainScene = new Scene(mainSceneLayout, 600, 600);
+		this.mainScene = new Scene(mainSceneLayout, 1000, 1000);
 		this.cutLine = new Group();
 		this.bottomBox = new HBox();
+		WorkSurface workSurface = new WorkSurface(840,630);
 		this.cnc_fraese = new Controller(this);
 		final FileChooser fileChooser = new FileChooser();
 
-		this.mainSceneLayout.setCenter(cutLine);
+		this.mainSceneLayout.setCenter(workSurface);
 
 		this.primaryStage.setTitle("Drawing Operations Test");
 
@@ -56,7 +58,15 @@ final class UI {
 		primaryStage.show();
 
 //		UI Bottom part
-		HBox startBtnBox = new HBox(new Button("Start/Pause"));
+		Button startBtn = new Button("Start/Pause");
+		HBox startBtnBox = new HBox(startBtn);
+		
+		startBtn.setOnAction(new EventHandler<ActionEvent>(){
+			 @Override
+	            public void handle(ActionEvent event) {
+				 	SimulateMill mill = new SimulateMill(cnc_fraese.coordinates,workSurface);
+	            }
+	    });
 		startBtnBox.setAlignment(Pos.CENTER_LEFT);
 		HBox.setHgrow(startBtnBox, Priority.ALWAYS);
 		HBox.setMargin(startBtnBox, new Insets(0, 20, 20, 20));
@@ -107,17 +117,7 @@ final class UI {
 		}
 		return json; 
 	}
-// zum zeichnen eines Punktes auf der Oberfläche
-	void drawPoint(int x, int y, boolean fraesen) {
-		Circle bohrkopf = new Circle();
-		bohrkopf.setCenterX((float) x);
-		bohrkopf.setCenterY((float) y);
-		bohrkopf.setRadius(2.0f);
 
-		bohrkopf.setFill(Color.ORANGE);
-		if (fraesen)
-			cutLine.getChildren().add(bohrkopf);
-	}
 
 	private void openFile(File file) {
 		try {
