@@ -18,18 +18,17 @@ import javafx.application.Application;
 import javafx.stage.Stage;
 
 public class Controller {
-	private DrawingBoard drawingBoard;
+	private UI drawingBoard;
 	private Bohrer bohrer;
 	private BufferedWriter logOutput;
 	private long countNum;
-
-	Controller(DrawingBoard drawingboard) {
+	protected ArrayList<Coordinates> coordinates;
+	Controller(UI drawingboard) {
+		this.coordinates = new ArrayList<Coordinates>();
+		coordinates.add(new Coordinates(2, 4, true));
 		drawingBoard = drawingboard;
-		bohrer = new Bohrer(drawingBoard);
-		bohrer.drawLine(100, 0, true);
-		// bohrer.drawCircle(100, 100, 0, 50, false);
-		bohrer.drawLine(0, 100, true);
-		// bohrer.drawCircle(0, 0, 0, -50, false);
+		bohrer = new Bohrer(this.coordinates);
+		
 	}
 
 	// Zuständig Befehlsabarbeitung
