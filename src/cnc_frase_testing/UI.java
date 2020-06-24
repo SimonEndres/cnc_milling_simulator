@@ -64,7 +64,9 @@ final class UI {
 		startBtn.setOnAction(new EventHandler<ActionEvent>(){
 			 @Override
 	            public void handle(ActionEvent event) {
-				 	SimulateMill mill = new SimulateMill(cnc_fraese.coordinates,workSurface);
+				 	//SimulateMill mill = new SimulateMill(cnc_fraese.coordinates,workSurface);
+				 	SimulateMill myThread = new SimulateMill(cnc_fraese.coordinates, workSurface);
+	                myThread.start();
 	            }
 	    });
 		startBtnBox.setAlignment(Pos.CENTER_LEFT);
