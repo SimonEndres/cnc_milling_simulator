@@ -1,3 +1,4 @@
+
 package cnc_frase_testing;
 
 import java.awt.Desktop;
@@ -26,7 +27,7 @@ import javafx.scene.layout.Priority;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
-final class DrawingBoard {
+final class UI {
 	
 	final private Stage primaryStage;
 	final private Scene mainScene;
@@ -38,7 +39,7 @@ final class DrawingBoard {
 	
 	private Controller cnc_fraese;
 
-	DrawingBoard(Stage primaryStage) {
+	UI(Stage primaryStage) {
 		this.primaryStage = primaryStage;
 		this.mainSceneLayout = new BorderPane();
 		this.mainScene = new Scene(mainSceneLayout, 600, 600);
