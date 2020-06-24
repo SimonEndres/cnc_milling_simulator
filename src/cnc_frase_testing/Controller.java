@@ -14,94 +14,39 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import javafx.application.Application;
-import javafx.stage.Stage;
 
 public class Controller {
+	
 	private UI drawingBoard;
 	private Bohrer bohrer;
-	private BufferedWriter logOutput;
-	private long countNum;
 	protected ArrayList<Coordinates> coordinates;
+	
+	
 	Controller(UI drawingboard) {
 		this.coordinates = new ArrayList<Coordinates>();
 		coordinates.add(new Coordinates(2, 4, true));
 		drawingBoard = drawingboard;
 		bohrer = new Bohrer(this.coordinates);
-		
 	}
 
 	// Zuständig Befehlsabarbeitung
 	public void fraesen(JSONObject befehlsJson) {
-		JSONArray befehlsArray = new JSONArray();
-		befehlsArray = befehlsJson.getJSONArray("commands");
+		JSONArray commands = new JSONArray();
+		commands = befehlsJson.getJSONArray("commands");
 
 		// Prüfen, ob nummerriert oder nicht
-		if (befehlsArray.getJSONObject(0).getString("number") != null) {
+		if (commands.getJSONObject(0).getString("number") != null) {
 			//Wenn ja -> sortieren
-			befehlsArray = arraySort(befehlsArray);
+			commands = ServiceClass.arraySort(commands);
 		};
-		
-		countNum = 0000;
-		befehlsArray.forEach(item -> {
-			countNum += 10;
+
+		commands.forEach(item -> {
 			JSONObject befehl = (JSONObject) item;
+			long startzeit = System.currentTimeMillis();
 			BefehlSwitch(befehl);
-			//writeLog(befehl,System.currentTimeMillis());
+			ServiceClass.writeLog(befehl,startzeit);
 		});
-//		try {
-//			logOutput.close();
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		}
-	}
-
-	public JSONArray arraySort(JSONArray jsonArr) {
-		JSONArray sortedJsonArray = new JSONArray();
-
-		List<JSONObject> jsonValues = new ArrayList<JSONObject>();
-		for (int i = 0; i < jsonArr.length(); i++) {
-			jsonValues.add(jsonArr.getJSONObject(i));
-		}
-		Collections.sort(jsonValues, new Comparator<JSONObject>() {
-			private static final String Sort_Key = "number";
-
-			@Override
-			public int compare(JSONObject a, JSONObject b) {
-				String valA = new String();
-				String valB = new String();
-				
-				try {
-					valA = (String) a.get(Sort_Key);
-					valB = (String) b.get(Sort_Key);
-				} catch (JSONException e) {
-					e.printStackTrace();
-				}
-				
-				return valA.compareTo(valB);
-			}
-		});
-
-		for (int i = 0; i < jsonArr.length(); i++) {
-			sortedJsonArray.put(jsonValues.get(i));
-		}
-		return sortedJsonArray;
-	}
-
-	private void writeLog(JSONObject befehl, long startzeit){
-		try {
-			if (countNum == 0) {
-				File file = new File("data//CNC_Fraese_Log.txt");
-				if (!file.exists()) {
-					file.createNewFile();
-				}
-				logOutput = new BufferedWriter(new FileWriter(file));
-			}
-			long endzeit = System.currentTimeMillis() - startzeit;
-			logOutput.write("LOG N" + countNum + ": " + befehl.getString("code") + "  -  Laufzeit(in ms): " + endzeit + "\n");
-		} catch (JSONException | IOException e) {
-			e.printStackTrace();
-		}
+		ServiceClass.logToFile();
 	}
 
 	private void BefehlSwitch(JSONObject befehl) {
