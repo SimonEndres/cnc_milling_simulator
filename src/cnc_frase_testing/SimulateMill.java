@@ -23,7 +23,7 @@ public class SimulateMill {
 			@Override
 			public void handle(long now) {
 				long lastUpdateTime = 0;
-				if (now - lastUpdateTime >= 200000) {
+				if (now - lastUpdateTime >= 2000000) {
 					draw();
 				    lastUpdateTime = now;
 				}
@@ -37,9 +37,10 @@ public class SimulateMill {
 	
 	private void draw() {
 		
-		workSurface.drawPoint(coordinates.get(counter).getX(), coordinates.get(counter).getY(),
+		workSurface.drawPoint((coordinates.get(counter).getX() + 420), ( - coordinates.get(counter).getY() + 315),
 				coordinates.get(counter).isMill());
 		counter++;
+//		System.out.println("( "+ ((coordinates.get(counter).getX() + 420)) + " / " + (( - coordinates.get(counter).getY() + 315)) + " )");
 		
 	}
 	// zum zeichnen eines Punktes auf der Oberfläche

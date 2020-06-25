@@ -24,7 +24,6 @@ public class Controller {
 	
 	Controller(UI drawingboard) {
 		this.coordinates = new ArrayList<Coordinates>();
-		coordinates.add(new Coordinates(2, 4, true));
 		drawingBoard = drawingboard;
 		bohrer = new Bohrer(this.coordinates);
 	}

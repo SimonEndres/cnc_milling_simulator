@@ -6,7 +6,6 @@ import java.util.ArrayList;
 public class Bohrer {
 
 	final private String farbe;
-	public double[] positionOLD;
 	protected ArrayList<Coordinates> coordinates;
 	private boolean spindelStatus;
 	private String drehrichtung;
@@ -15,7 +14,6 @@ public class Bohrer {
 
 	public Bohrer(ArrayList<Coordinates> coordinates) {
 		this.farbe = "rot";
-		this.positionOLD = new double[] { 0.0, 0.0 };
 		this.coordinates = coordinates;
 		this.coordinates.add(new Coordinates(0, 0, false));
 		this.spindelStatus = false;
@@ -26,15 +24,6 @@ public class Bohrer {
 
 	public String getFarbe() {
 		return farbe;
-	}
-
-	public double[] getPosition() {
-		return positionOLD;
-	}
-
-	public void setPosition(int x, int y) {
-		this.positionOLD[0] = x;
-		this.positionOLD[1] = y;
 	}
 
 	public boolean isStatus() {
@@ -95,16 +84,16 @@ public class Bohrer {
 		double deltaY = y2 - coordinates.get(coordinates.size() - 1).getY();
 		double deltaX = x2 - coordinates.get(coordinates.size() - 1).getX();
 		double tmpPositionY = coordinates.get(coordinates.size() - 1).getY();
+		double distance = (Math.sqrt(deltaX*deltaX + deltaY*deltaY));
 		
 		if (deltaX != 0) {
 			double m = (deltaY) / (deltaX);
-			for (double x = coordinates.get(coordinates.size() - 1).getX(); x <= x2; x += 0.001) {
+			for (double x = coordinates.get(coordinates.size() - 1).getX(); x <= x2; x += distance/3000) {
 				double y = Math.round(m * x + tmpPositionY);
 				coordinates.add(new Coordinates((int)x, (int)y, mill));
 			}
 		} else {
-			for (double y = coordinates.get(coordinates.size() - 1).getY(); y <= y2; y += 0.001) {
-//				arbeitsFlaeche.drawPoint((int) positionOLD[0], (int) y, mill);
+			for (double y = coordinates.get(coordinates.size() - 1).getY(); y <= y2; y += distance/3000) {
 				coordinates.add(new Coordinates(coordinates.get(coordinates.size() - 1).getX(), (int) y, mill));
 			}
 		}
@@ -128,9 +117,7 @@ public class Bohrer {
 		if (circleDirection) { //gegen den Uhrzeigersinn
 			for (double alpha = begingAngle*180/Math.PI; alpha < targetAngle*180/Math.PI ; alpha++) {
 				int x = (int) (mX + radius * Math.cos(alpha * Math.PI / 180));
-				int y = (int) (mY - radius * Math.sin(alpha * Math.PI / 180));
-				
-//				arbeitsFlaeche.drawPoint(x, y, true);
+				int y = (int) (mY + radius * Math.sin(alpha * Math.PI / 180));	
 				
 				coordinates.add(new Coordinates(x, y, true));
 				//System.out.println("( "+ x + " / " + y + " )");
@@ -138,9 +125,7 @@ public class Bohrer {
 		} else { //im Uhrzeigersinn
 			for (double alpha = begingAngle*180/Math.PI; alpha > (targetAngle*180/Math.PI - 360); alpha--) {
 				int x = (int) (mX + radius * Math.cos(alpha * Math.PI / 180));
-				int y = (int) (mY - radius * Math.sin(alpha * Math.PI / 180));
-				
-//				arbeitsFlaeche.drawPoint(x, y, true);
+				int y = (int) (mY + radius * Math.sin(alpha * Math.PI / 180));
 				
 				coordinates.add(new Coordinates(x, y, true));
 				//System.out.println("( "+ x + " / " + y + " )");
@@ -152,19 +137,19 @@ public class Bohrer {
 	private double calcAngle(double mX, double mY, double posX, double posY) {
 		// rechts von der Y-Achse
 		if (mX < posX) {
-			if (posY < mY) { //Oberhalb der X-Achse
-				return (Math.atan((mY - posY) / posX - mX));
+			if (mY < posY) { //Oberhalb der X-Achse
+				return (Math.atan((posY - mY) / posX - mX));
 			} else if (mY < posY) { //Unterhalb der X-Achse
-				return (2 * Math.PI - Math.atan((posY - mY) / (posX - mX)));
+				return (2 * Math.PI - Math.atan((mY - posY) / (posX - mX)));
 			}
 		} else if (posX < mX) { //Links von der Y-Achse
-			if (posY < mY) { // Oberhalb der X-Achse
+			if (mY < posY) { // Oberhalb der X-Achse
 				return (Math.PI - Math.atan((mY - posY) / (mX - posX)));
 			} else if (mY < posY) {//Unterhalb der X-Achse
-				return (Math.PI + Math.atan((posY - mY) / (mX - posX)));
+				return (Math.PI + Math.atan((mY - posY) / (mX - posX)));
 			}
 		} else if (mX == posX) {// Auf der Y-Achse
-			if (posY < mY) { //Oberhalb der X-Achse
+			if (mY < posY) { //Oberhalb der X-Achse
 				return (0.5 * Math.PI);
 			} else { // Unterhalb der X-Achse
 				return (1.5 * Math.PI);
