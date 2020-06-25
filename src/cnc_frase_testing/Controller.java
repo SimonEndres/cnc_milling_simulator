@@ -1,19 +1,9 @@
 package cnc_frase_testing;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
-
 
 public class Controller {
 	
@@ -38,12 +28,14 @@ public class Controller {
 			//Wenn ja -> sortieren
 			commands = ServiceClass.arraySort(commands);
 		};
-
+		//für Logzeiten
+		ServiceClass.setStartzeit();
+		
+		//Abarbeitung der einzelnen Befehle + log
 		commands.forEach(item -> {
 			JSONObject befehl = (JSONObject) item;
-			long startzeit = System.currentTimeMillis();
 			BefehlSwitch(befehl);
-			ServiceClass.writeLog(befehl,startzeit);
+			ServiceClass.writeLog(befehl);
 		});
 		ServiceClass.logToFile();
 	}
@@ -90,7 +82,7 @@ public class Controller {
 				bohrer.setKühlmittel(true);
 				break;
 			case "":
-				System.out.println("Befehlsnummer existiert nicht für M");
+				ExceptionHandler.wrongCode(befehlsart,befehlsNummer);
 				break;
 			}
 		} else if (befehlsart.equals("G")) {
@@ -119,11 +111,11 @@ public class Controller {
 				System.out.println("G28");
 				break;
 			case "":
-				System.out.println("Befehlsnummer existiert nicht für G");
+				ExceptionHandler.wrongCode(befehlsart,befehlsNummer);
 				break;
 			}
 		} else {
-			System.out.println("Der eingegebene Befehl existiert nicht");
+			ExceptionHandler.wrongCommand(befehlsart);
 		}
 	}
 }
