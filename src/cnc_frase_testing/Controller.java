@@ -34,16 +34,19 @@ public class Controller {
 		//Abarbeitung der einzelnen Befehle + log
 		commands.forEach(item -> {
 			JSONObject befehl = (JSONObject) item;
-			BefehlSwitch(befehl);
-			ServiceClass.writeLog(befehl);
+			boolean success = BefehlSwitch(befehl);
+			if (success) {
+				ServiceClass.writeLog(befehl);
+			}
+			
 		});
 		ServiceClass.logToFile();
 	}
 
-	private void BefehlSwitch(JSONObject befehl) {
-		String[] hilf = befehl.getString("code").split("");
-		String befehlsart = hilf[0];
-		String befehlsNummer = hilf[1] + hilf[2];
+	private boolean BefehlSwitch(JSONObject befehl) {
+		String befehlsart = befehl.getString("code").replaceAll("[0-9]", "");
+		String befehlsNummer = befehl.getString("code").replaceAll("[A-Z]", "");
+		boolean success = true;
 		if (befehlsart.equals("M")) {
 			// Befehlsart ist M -> Aufruf der Bohrerfunktion entsprechend der Nummer
 			switch (befehlsNummer) {
@@ -66,7 +69,6 @@ public class Controller {
 				break;
 			case "08":
 				bohrer.setKühlmittel(true);
-				// Problem: 08, 09 als Int out of Range... deshalb String
 				break;
 			case "09":
 				bohrer.setKühlmittel(false);
@@ -83,6 +85,7 @@ public class Controller {
 				break;
 			case "":
 				ExceptionHandler.wrongCode(befehlsart,befehlsNummer);
+				success = false;
 				break;
 			}
 		} else if (befehlsart.equals("G")) {
@@ -92,30 +95,28 @@ public class Controller {
 			switch (befehlsNummer) {
 			case "00":
 				bohrer.drawLine(parameters.getInt("x"), parameters.getInt("y"), false);
-				System.out.println("G00");
 				break;
 			case "01":
 				bohrer.drawLine(parameters.getInt("x"), parameters.getInt("y"), true);
-				System.out.println("G01");
 				break;
 			case "02":
 				bohrer.drawCircle(parameters.getInt("x"), parameters.getInt("y"), parameters.getInt("i"), parameters.getInt("j"), false);
-				System.out.println("G02");
 				break;
 			case "03":
 				bohrer.drawCircle(parameters.getInt("x"), parameters.getInt("y"), parameters.getInt("i"), parameters.getInt("j"), true);
-				System.out.println("G03");
 				break;
 			case "28":
 				bohrer.drawLine(0, 0, false);
-				System.out.println("G28");
 				break;
 			case "":
 				ExceptionHandler.wrongCode(befehlsart,befehlsNummer);
+				success = false;
 				break;
 			}
 		} else {
 			ExceptionHandler.wrongCommand(befehlsart);
+			success = false;
 		}
+		return success;
 	}
 }
