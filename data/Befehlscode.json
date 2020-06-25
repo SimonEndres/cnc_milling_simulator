@@ -1,16 +1,61 @@
 {
-	"Befehle":[ 
-		{
-			"Befehlsart":"M",
-			"Nummer":03,
-			"XKoordinate":null,
-			"YKoordinate":null,
+	"commands":[ 
+		{	
+			"number":"N10",
+			"code":"M03",
+			"parameters": {
+				
+			}
 		},
 		{
-			"Befehlsart":"G",
-			"Nummer":01,
-			"XKoordinate":50,
-			"YKoordinate":30,
-		}
+			"number":"N20",
+			"code":"M08",
+			"parameters": {
+
+			}	
+		},
+		{
+			"number":"N30",
+			"code":"G01",
+			"parameters": { 
+				"x":0,
+				"y":0
+			}	
+		},
+		{
+			"number":"N40",
+			"code":"G02",
+			"parameters": {
+				"x":0,
+				"y":100,
+				"i":0,
+				"j":50
+			}	
+		},
+		{
+			"number":"N50",
+			"code":"G01",
+			"parameters": {
+				"x":100,
+				"y":100
+			}	
+		},
+		{
+			"number":"N60",
+			"code":"G02",
+			"parameters": {
+				"x":100,
+				"y":0,
+				"i":0,
+				"j":-50
+			}	
+		},
+		{	
+			"number":"N70",
+			"code":"G28",
+			"parameters": {
+				
+			}
+		},
 	]
 }
