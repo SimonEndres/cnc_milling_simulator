@@ -33,23 +33,29 @@ public class Controller {
 		
 		//Abarbeitung der einzelnen Befehle + log
 		commands.forEach(item -> {
-			JSONObject befehl = (JSONObject) item;
-			boolean success = BefehlSwitch(befehl);
+			JSONObject command = (JSONObject) item;
+			boolean success = BefehlSwitch(command);
 			if (success) {
-				ServiceClass.writeLog(befehl);
+				ServiceClass.writeLog(command);
 			}
 			
 		});
+		//Speicherung des Logs im File
 		ServiceClass.logToFile();
 	}
 
-	private boolean BefehlSwitch(JSONObject befehl) {
-		String befehlsart = befehl.getString("code").replaceAll("[0-9]", "");
-		String befehlsNummer = befehl.getString("code").replaceAll("[A-Z]", "");
+	private boolean BefehlSwitch(JSONObject command) {
 		boolean success = true;
-		if (befehlsart.equals("M")) {
-			// Befehlsart ist M -> Aufruf der Bohrerfunktion entsprechend der Nummer
-			switch (befehlsNummer) {
+		String commandType = command.getString("code").replaceAll("[0-9]", "");
+		String commandNumber = command.getString("code").replaceAll("[A-Z]", "");
+		
+		String [] hilf = commandNumber.split("");
+		if (hilf.length>2) {
+			ExceptionHandler.wrongCode(commandType,commandNumber);
+			success = false;
+		}
+		if (commandType.equals("M")) {
+			switch (commandNumber) {
 			case "00":
 				// Programmhalt;
 				break;
@@ -84,15 +90,14 @@ public class Controller {
 				bohrer.setKühlmittel(true);
 				break;
 			case "":
-				ExceptionHandler.wrongCode(befehlsart,befehlsNummer);
+				ExceptionHandler.wrongCode(commandType,commandNumber);
 				success = false;
 				break;
 			}
-		} else if (befehlsart.equals("G")) {
-			// Befehlsart ist G -> Aufruf der Bohrerfunktion entsprechend der Nummer
+		} else if (commandType.equals("G")) {
 			JSONObject parameters = new JSONObject();
-			parameters = (JSONObject) befehl.getJSONObject("parameters");
-			switch (befehlsNummer) {
+			parameters = (JSONObject) command.getJSONObject("parameters");
+			switch (commandNumber) {
 			case "00":
 				bohrer.drawLine(parameters.getInt("x"), parameters.getInt("y"), false);
 				break;
@@ -109,12 +114,12 @@ public class Controller {
 				bohrer.drawLine(0, 0, false);
 				break;
 			case "":
-				ExceptionHandler.wrongCode(befehlsart,befehlsNummer);
+				ExceptionHandler.wrongCode(commandType,commandNumber);
 				success = false;
 				break;
 			}
 		} else {
-			ExceptionHandler.wrongCommand(befehlsart);
+			ExceptionHandler.wrongCommand(commandType);
 			success = false;
 		}
 		return success;

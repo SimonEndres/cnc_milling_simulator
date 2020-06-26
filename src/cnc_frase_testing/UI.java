@@ -77,18 +77,6 @@ final class UI {
 //		UI Top part
 //		JSON-file contains customizable settings for the UI
 		Button uploadBtn = new Button("Upload Settingsdatei");
-
-		uploadBtn.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent event) {
-				File file = fileChooser.showOpenDialog(primaryStage);
-				if (file != null) {
-					ServiceClass.openFile(file);
-					List<File> files = Arrays.asList(file);
-					System.out.println("Geklappt");
-				}
-			}
-		});
 		fileChooser.setTitle("Upload Settingsdatei");
 		fileChooser.getExtensionFilters().add(new ExtensionFilter("Json-Files", "*.json"));
 		uploadBtn.setOnAction(new EventHandler<ActionEvent>() {

@@ -1,6 +1,5 @@
 package cnc_frase_testing;
 
-import java.awt.Desktop;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -21,29 +20,28 @@ import org.json.JSONObject;
 public class ServiceClass {
 	private static int counter = 0;
 	public static JSONArray logArray = new JSONArray();
-	private static Desktop desktop = Desktop.getDesktop();
-	private static long startzeit;
+	private static long startTime;
 	
 	public static void setStartzeit() {
-		startzeit = System.currentTimeMillis();
+		startTime = System.currentTimeMillis();
 	}
 	
 	public static void writeLog(JSONObject befehl) {
 		counter += 10;
-		long aktZeit = System.currentTimeMillis() - startzeit;
-		JSONObject logBefehl = new JSONObject();
-		logBefehl.put("number", "N" + counter);
-		String command = new String(befehl.getString("code") + "  |  Runtime(in ms): " + aktZeit);
-		logBefehl.put("command", command);
-		logArray.put(logBefehl);
+		long actZeit = System.currentTimeMillis() - startTime;
+		JSONObject logCommand = new JSONObject();
+		logCommand.put("number", "N" + counter);
+		String command = new String(befehl.getString("code") + "  |  Runtime(in ms): " + actZeit);
+		logCommand.put("command", command);
+		logArray.put(logCommand);
 	}
 	
 	public static void writeLog(String type,String source ,String information) {
-		long aktZeit = System.currentTimeMillis() - startzeit;
-		JSONObject logBefehl = new JSONObject();
-		String string = new String(source + ": " + information + "  |  Runtime(in ms): " + aktZeit);
-		logBefehl.put(type, string);
-		logArray.put(logBefehl);
+		long actZeit = System.currentTimeMillis() - startTime;
+		JSONObject logCommand = new JSONObject();
+		String string = new String(source + ": " + information + "  |  Runtime(in ms): " + actZeit);
+		logCommand.put(type, string);
+		logArray.put(logCommand);
 	}
 
 	public static void logToFile() {
@@ -97,13 +95,5 @@ public class ServiceClass {
 			System.out.println(e);
 		}
 		return json;
-	}
-	
-	public static void openFile(File file) {
-		try {
-			desktop.open(file);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 	}
 }
