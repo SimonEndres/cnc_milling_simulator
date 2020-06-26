@@ -117,7 +117,10 @@ public class Bohrer {
 		
 		if (circleDirection) { //gegen den Uhrzeigersinn
 			if(begingAngle < targetAngle) {
-				for (double alpha = begingAngle*180/Math.PI; alpha < targetAngle*180/Math.PI ; alpha++) {
+
+				double distance = radius * (targetAngle - begingAngle);
+				
+				for (double alpha = begingAngle*180/Math.PI; alpha < targetAngle*180/Math.PI ; alpha += 10/distance) {
 					int x = (int) (mX + radius * Math.cos(alpha * Math.PI / 180));
 					int y = (int) (mY + radius * Math.sin(alpha * Math.PI / 180));	
 					
@@ -125,7 +128,10 @@ public class Bohrer {
 					//System.out.println("( "+ x + " / " + y + " )");
 				}			
 			}else{
-				for (double alpha = begingAngle*180/Math.PI; alpha < (targetAngle*180/Math.PI + 360); alpha++) {
+				
+				double distance = radius * (begingAngle - (2*Math.PI + targetAngle));
+				
+				for (double alpha = begingAngle*180/Math.PI; alpha < (targetAngle*180/Math.PI + 360); alpha += 10/distance) {
 					int x = (int) (mX + radius * Math.cos(alpha * Math.PI / 180));
 					int y = (int) (mY + radius * Math.sin(alpha * Math.PI / 180));	
 					
@@ -135,7 +141,10 @@ public class Bohrer {
 			}
 		} else { //im Uhrzeigersinn
 			if(begingAngle < targetAngle) {
-				for (double alpha = begingAngle*180/Math.PI; alpha > (targetAngle*180/Math.PI - 360); alpha--) {
+				
+				double distance = radius * ((2*Math.PI + begingAngle) - targetAngle);
+				
+				for (double alpha = begingAngle*180/Math.PI; alpha > (targetAngle*180/Math.PI - 360); alpha -= 10/distance) {
 					int x = (int) (mX + radius * Math.cos(alpha * Math.PI / 180));
 					int y = (int) (mY + radius * Math.sin(alpha * Math.PI / 180));
 					
@@ -143,7 +152,10 @@ public class Bohrer {
 					//System.out.println("( "+ x + " / " + y + " )");
 				}			
 			}else {
-				for (double alpha = begingAngle*180/Math.PI; alpha > (targetAngle*180/Math.PI); alpha--) {
+				
+				double distance = radius * (begingAngle - targetAngle);
+				
+				for (double alpha = begingAngle*180/Math.PI; alpha > (targetAngle*180/Math.PI); alpha -= 10/distance) {
 					int x = (int) (mX + radius * Math.cos(alpha * Math.PI / 180));
 					int y = (int) (mY + radius * Math.sin(alpha * Math.PI / 180));
 					
