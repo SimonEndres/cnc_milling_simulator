@@ -16,6 +16,7 @@ import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
+import javafx.scene.control.TextArea;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
@@ -27,7 +28,9 @@ final class UI {
 	final private Scene mainScene;
 	final private BorderPane mainSceneLayout;
 	final private HBox bottomBox;
-
+	
+	private TextArea commandsToDo;
+	private TextArea commandsDone;
 	private Controller cnc_fraese;
 
 	UI(Stage primaryStage) {
@@ -38,9 +41,20 @@ final class UI {
 		WorkSurface workSurface = new WorkSurface(840, 630);
 		this.cnc_fraese = new Controller(this);
 		final FileChooser fileChooser = new FileChooser();
+		this.commandsToDo = new TextArea();
+		this.commandsDone = new TextArea();
+		
+		commandsToDo.setEditable(false);
 
+		
+		commandsDone.setEditable(false);
+
+
+		
+		this.mainSceneLayout.setLeft(commandsToDo);
 		this.mainSceneLayout.setCenter(workSurface);
-
+		this.mainSceneLayout.setRight(commandsDone);
+		
 		this.primaryStage.setTitle("Drawing Operations Test");
 
 		primaryStage.setScene(mainScene);
@@ -90,5 +104,9 @@ final class UI {
 		});
 		this.mainSceneLayout.setTop(uploadBtn);
 
+	}
+	
+	public void setCommandsToDo(String text) {
+		this.commandsToDo.appendText(text);
 	}
 }

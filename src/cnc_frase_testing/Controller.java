@@ -3,26 +3,31 @@ package cnc_frase_testing;
 import java.util.ArrayList;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 public class Controller {
 	
-	private UI drawingBoard;
+	private UI ui;
 	private Bohrer bohrer;
 	protected ArrayList<Coordinates> coordinates;
 	
 	
-	Controller(UI drawingboard) {
+	Controller(UI ui) {
 		this.coordinates = new ArrayList<Coordinates>();
-		drawingBoard = drawingboard;
+		this.ui = ui;
 		bohrer = new Bohrer(this.coordinates);
 	}
 
 	// Zuständig Befehlsabarbeitung
 	public void fraesen(JSONObject befehlsJson) {
 		JSONArray commands = new JSONArray();
-		commands = befehlsJson.getJSONArray("commands");
-
+		try {
+			commands = befehlsJson.getJSONArray("commands");
+		} catch (JSONException e) {
+			ExceptionHandler.corruptFile();
+			return;
+		}
 		// Prüfen, ob nummerriert oder nicht
 		if (commands.getJSONObject(0).getString("number") != null) {
 			//Wenn ja -> sortieren
@@ -36,6 +41,7 @@ public class Controller {
 			JSONObject command = (JSONObject) item;
 			boolean success = BefehlSwitch(command);
 			if (success) {
+				ui.setCommandsToDo("test\n");
 				ServiceClass.writeLog(command);
 			}
 			
