@@ -2,7 +2,7 @@
 package cnc_frase_testing;
 
 import java.io.File;
-
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -32,6 +32,9 @@ final class UI {
 	private TextArea commandsToDo;
 	private TextArea commandsDone;
 	private Controller cnc_fraese;
+	private UI that;
+	private ArrayList<String> uiLog;
+	private int logCount = 0;
 
 	UI(Stage primaryStage) {
 		this.primaryStage = primaryStage;
@@ -43,6 +46,8 @@ final class UI {
 		final FileChooser fileChooser = new FileChooser();
 		this.commandsToDo = new TextArea();
 		this.commandsDone = new TextArea();
+		this.uiLog = new ArrayList<String>();
+		
 		
 		commandsToDo.setEditable(false);
 
@@ -63,16 +68,17 @@ final class UI {
 //		UI Bottom part
 		Button startBtn = new Button("Start/Pause");
 		HBox startBtnBox = new HBox(startBtn);
-
+		that = this;
 		startBtn.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
+			
 			public void handle(ActionEvent event) {
 				// SimulateMill mill = new SimulateMill(cnc_fraese.coordinates,workSurface);
-
+				
 				// UI updaten
 				Platform.runLater(new Runnable() {
 					public void run() {
-						SimulateMill myThread = new SimulateMill(cnc_fraese.coordinates, workSurface);
+						SimulateMill myThread = new SimulateMill(cnc_fraese.coordinates, workSurface, that);
 						myThread.startDrawing();
 					}
 				});
@@ -107,6 +113,20 @@ final class UI {
 	}
 	
 	public void setCommandsToDo(String text) {
-		this.commandsToDo.appendText(text);
+		uiLog.add(text);
+		this.commandsToDo.appendText(text + " - " + "\n");
+	}
+	
+	public void updateCommandsToDo() {
+		this.commandsToDo.clear();
+		for (int i = logCount; i<uiLog.size(); i++) {
+			this.commandsToDo.appendText(uiLog.get(i) + "\n");
+		}
+	}
+	
+	public void setCommandsDone() {
+		long actZeit = System.currentTimeMillis() - ServiceClass.startTime;
+		this.commandsDone.appendText(uiLog.get(logCount) + actZeit + "\n");
+		logCount++;
 	}
 }

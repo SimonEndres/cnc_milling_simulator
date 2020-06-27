@@ -33,28 +33,22 @@ public class Controller {
 			//Wenn ja -> sortieren
 			commands = ServiceClass.arraySort(commands);
 		};
-		//für Logzeiten
-		ServiceClass.setStartzeit();
 		
 		//Abarbeitung der einzelnen Befehle + log
 		commands.forEach(item -> {
-			JSONObject command = (JSONObject) item;
-			boolean success = BefehlSwitch(command);
+			JSONObject commandJSON = (JSONObject) item;
+			boolean success = BefehlSwitch(commandJSON);
 			if (success) {
-				ui.setCommandsToDo("test\n");
-				ServiceClass.writeLog(command);
+				ServiceClass.writeWorkList(commandJSON);
+				ServiceClass.updateUiLog(commandJSON,ui);
 			}
-			
 		});
-		//Speicherung des Logs im File
-		ServiceClass.logToFile();
 	}
 
-	private boolean BefehlSwitch(JSONObject command) {
+	private boolean BefehlSwitch(JSONObject commandJSON) {
+		String commandType = commandJSON.getString("code").replaceAll("[0-9]", "");
+		String commandNumber = commandJSON.getString("code").replaceAll("[A-Z]", "");
 		boolean success = true;
-		String commandType = command.getString("code").replaceAll("[0-9]", "");
-		String commandNumber = command.getString("code").replaceAll("[A-Z]", "");
-		
 		String [] hilf = commandNumber.split("");
 		if (hilf.length>2) {
 			ExceptionHandler.wrongCode(commandType,commandNumber);
@@ -100,9 +94,10 @@ public class Controller {
 				success = false;
 				break;
 			}
+		bohrer.writeM();
 		} else if (commandType.equals("G")) {
 			JSONObject parameters = new JSONObject();
-			parameters = (JSONObject) command.getJSONObject("parameters");
+			parameters = (JSONObject) commandJSON.getJSONObject("parameters");
 			switch (commandNumber) {
 			case "00":
 				bohrer.drawLine(parameters.getInt("x"), parameters.getInt("y"), false);

@@ -4,10 +4,19 @@ public class Coordinates {
 
 	private int x, y;
 	private boolean mill;
+	private boolean end;
+	
 	public Coordinates(int x, int y, boolean mill) {
 		this.x = x;
 		this.y = y;
 		this.mill = mill;
+	}
+	
+	public Coordinates(int x, int y, boolean mill, boolean end) {
+		this.x = x;
+		this.y = y;
+		this.mill = mill;
+		this.end = end;
 	}
 	public int getX() {
 		return x;
@@ -27,6 +36,11 @@ public class Coordinates {
 	public void setMill(boolean mill) {
 		this.mill = mill;
 	}
-	
+	public boolean isEnd() {
+		return end;
+	}
+	public void setEnd(boolean end) {
+		this.end = end;
+	}
 	
 }

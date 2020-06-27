@@ -18,30 +18,58 @@ import org.json.JSONObject;
 
 
 public class ServiceClass {
-	private static int counter = 0;
+	private static int counterWorkList = 0;
+	public static JSONArray workList = new JSONArray();
 	public static JSONArray logArray = new JSONArray();
-	private static long startTime;
+	public static long startTime;
+	private static int logCounter = 0;
 	
 	public static void setStartzeit() {
 		startTime = System.currentTimeMillis();
 	}
 	
-	public static void writeLog(JSONObject befehl) {
-		counter += 10;
-		long actZeit = System.currentTimeMillis() - startTime;
+	public static void writeWorkList(JSONObject commandJSON) {
+		counterWorkList += 10;
+		String command;
+		String code = commandJSON.getString("code");
 		JSONObject logCommand = new JSONObject();
-		logCommand.put("number", "N" + counter);
-		String command = new String(befehl.getString("code") + "  |  Runtime(in ms): " + actZeit);
+		logCommand.put("number", "N" + counterWorkList);
+		if (code.equals("G01") || code.equals("G02")) {
+			System.out.println("G");
+			JSONObject parameters = new JSONObject();
+			parameters = (JSONObject) commandJSON.getJSONObject("parameters");
+			if (code.equals("G01")) {
+				command = new String(counterWorkList + ": " + code + " X:" + parameters.getInt("x") + " Y:" + parameters.getInt("y") +  "  |  Runtime(in ms): ");
+			} else {
+				command = new String(counterWorkList + ": " + code + " X:" + parameters.getInt("x") + " Y:" + parameters.getInt("y") + " I:" + parameters.getInt("i") + " J:" + parameters.getInt("j") + "  |  Runtime(in ms): ");
+			}
+		} else {
+			command = new String(counterWorkList + ": " + code + "  |  Runtime(in ms): ");
+		}
 		logCommand.put("command", command);
-		logArray.put(logCommand);
+		workList.put(logCommand);
 	}
 	
-	public static void writeLog(String type,String source ,String information) {
-		long actZeit = System.currentTimeMillis() - startTime;
+	//BSPW für ERRORs, Abbruch
+	public static void writeWorkList(String type,String source ,String information) {
 		JSONObject logCommand = new JSONObject();
-		String string = new String(source + ": " + information + "  |  Runtime(in ms): " + actZeit);
+		String string = new String(source + ": " + information);
 		logCommand.put(type, string);
-		logArray.put(logCommand);
+		workList.put(logCommand);
+	}
+	
+	public static String getWorkListCommand() {
+		return (String) workList.get(logCounter);
+	}
+	
+	public static void putLogArray() {
+		long actZeit = System.currentTimeMillis() - startTime;
+		JSONObject logElement = (JSONObject) workList.get(logCounter);
+		String command = logElement.getString("command") + actZeit;
+		JSONObject newLogElement = new JSONObject();
+		newLogElement.put("command",command);
+		logArray.put(newLogElement);
+		logCounter++;
 	}
 
 	public static void logToFile() {
@@ -52,6 +80,24 @@ public class ServiceClass {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public static void updateUiLog(JSONObject commandJSON,UI ui) {
+		String command;
+		String code = commandJSON.getString("code");
+		if (code.equals("G01") || code.equals("G02")) {
+			JSONObject parameters = new JSONObject();
+			parameters = (JSONObject) commandJSON.getJSONObject("parameters");
+			if (code.equals("G01")) {
+				command = new String(counterWorkList + ": " + code + " X:" + parameters.getInt("x") + " Y:" + parameters.getInt("y") +  "  |  Runtime(in ms): ");
+			} else {
+				command = new String(counterWorkList + ": " + code + " X:" + parameters.getInt("x") + " Y:" + parameters.getInt("y") + " I:" + parameters.getInt("i") + " J:" + parameters.getInt("j") + "  |  Runtime(in ms): ");
+			}
+		} else {
+			command = new String(counterWorkList + ": " + code + "  |  Runtime(in ms): ");
+		}
+		ui.setCommandsToDo(command);
+		
 	}
 
 	public static JSONArray arraySort(JSONArray jsonArr) {

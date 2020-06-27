@@ -76,6 +76,17 @@ public class Bohrer {
 			}
 		}
 	}
+	
+	public void writeM() {
+		if (coordinates.size() > 0) {
+			Coordinates hilf = coordinates.get(coordinates.size()-1);
+			coordinates.add(new Coordinates(hilf.getX(), hilf.getY(), true, true));
+		} else {
+			coordinates.add(new Coordinates(0, 0, true, true));
+		}
+		
+		
+	}
 
 //Simon, Jonas vorläufiges Ergebnis --> Effiziens muss angepasst werden+
 //Boolean fraesen true -> Linie wird gezeichnet; false -> bohrkopf bewegt sich lediglich 
@@ -97,6 +108,8 @@ public class Bohrer {
 				coordinates.add(new Coordinates(coordinates.get(coordinates.size() - 1).getX(), (int) y, mill));
 			}
 		}
+		Coordinates hilf = coordinates.get(coordinates.size()-1);
+		coordinates.add(new Coordinates(hilf.getX(), hilf.getY(), true, true));
 	}
 
 //	G-Codes:
@@ -165,6 +178,8 @@ public class Bohrer {
 			}
 				
 		}
+		Coordinates hilf = coordinates.get(coordinates.size()-1);
+		coordinates.add(new Coordinates(hilf.getX(), hilf.getY(), true, true));
 	}
 
 //	Simon - Randfälle müssen nochmal überarbeitet werden -> M gleich Position muss abgefangen werden
