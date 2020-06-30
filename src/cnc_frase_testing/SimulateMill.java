@@ -32,6 +32,9 @@ public class SimulateMill {
 				if (now - lastUpdateTime >= 2000000) {
 					if (counter < coordinates.size()) {
 						draw();
+					}else {
+						//Speicherung des Logs im File -  muss ans Ende der Simulate Mill
+						cp.logAll();
 					}
 				    lastUpdateTime = now;
 				}
@@ -41,8 +44,6 @@ public class SimulateMill {
 		timer.start();
 //		timer.stop();
 		
-		//Speicherung des Logs im File -  muss ans Ende der Simulate Mill
-		//ServiceClass.logToFile();
 	}
 	
 	private void draw() {
