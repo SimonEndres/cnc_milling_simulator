@@ -1,7 +1,5 @@
 package cnc_frase_testing;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.ArrayList;
 
 //Tim
@@ -78,39 +76,48 @@ public class Bohrer {
 			}
 		}
 	}
-	
+
 	public void writeM() {
 		if (coordinates.size() > 0) {
-			Coordinates hilf = coordinates.get(coordinates.size()-1);
+			Coordinates hilf = coordinates.get(coordinates.size() - 1);
 			coordinates.add(new Coordinates(hilf.getX(), hilf.getY(), true, true));
 		} else {
 			coordinates.add(new Coordinates(0, 0, true, true));
 		}
-		
-		
+
 	}
 
 //Simon, Jonas vorläufiges Ergebnis --> Effiziens muss angepasst werden+
 //Boolean fraesen true -> Linie wird gezeichnet; false -> bohrkopf bewegt sich lediglich 
 	public void drawLine(int x2, int y2, boolean mill) {
-		
+
 		double deltaY = y2 - coordinates.get(coordinates.size() - 1).getY();
 		double deltaX = x2 - coordinates.get(coordinates.size() - 1).getX();
 		double tmpPositionY = coordinates.get(coordinates.size() - 1).getY();
-		double distance = (Math.sqrt(deltaX*deltaX + deltaY*deltaY));
-		
+		double distance = (Math.sqrt(deltaX * deltaX + deltaY * deltaY));
+
 		if (deltaX != 0) {
 			double m = (deltaY) / (deltaX);
-			for (double x = coordinates.get(coordinates.size() - 1).getX(); x <= x2; x += this.round((10/distance), 3)) {
-				double y = Math.round(m * x + tmpPositionY);
-				coordinates.add(new Coordinates((int)x, (int)y, mill));
+			if (x2 > coordinates.get(coordinates.size() - 1).getX()) {
+				
+				for (double x = coordinates.get(coordinates.size() - 1).getX(); x <= x2; x += (10 / distance)) {
+					double y = Math.round(m * x + tmpPositionY);
+					coordinates.add(new Coordinates((int) x, (int) y, mill));
+					System.out.println("( " + x + " / " + y + " )");
+				}
+			}else if(x2 < coordinates.get(coordinates.size() - 1).getX()) {
+				for (double x = coordinates.get(coordinates.size() - 1).getX(); x >= x2; x -= (10 / distance)) {
+					double y = Math.round(m * x + tmpPositionY);
+					coordinates.add(new Coordinates((int) x, (int) y, mill));
+					System.out.println("( " + x + " / " + y + " )");
+				}				
 			}
 		} else {
-			for (double y = coordinates.get(coordinates.size() - 1).getY(); y <= y2; y += this.round((10/distance), 3)) {
+			for (double y = coordinates.get(coordinates.size() - 1).getY(); y <= y2; y += (10 / distance)) {
 				coordinates.add(new Coordinates(coordinates.get(coordinates.size() - 1).getX(), (int) y, mill));
 			}
 		}
-		Coordinates hilf = coordinates.get(coordinates.size()-1);
+		Coordinates hilf = coordinates.get(coordinates.size() - 1);
 		coordinates.add(new Coordinates(hilf.getX(), hilf.getY(), true, true));
 	}
 
@@ -121,66 +128,71 @@ public class Bohrer {
 
 		int mX = (int) coordinates.get(coordinates.size() - 1).getX() + i; // x coordinate of circle center
 		int mY = (int) coordinates.get(coordinates.size() - 1).getY() + j; // y coordinate of circle center
-		
+
 		double deltaY = mY - coordinates.get(coordinates.size() - 1).getY();
 		double deltaX = mX - coordinates.get(coordinates.size() - 1).getX();
 		int radius = (int) Math.sqrt(deltaY * deltaY + deltaX * deltaX);
-		
-		double begingAngle = calcAngle(mX, mY, coordinates.get(coordinates.size() - 1).getX(), coordinates.get(coordinates.size() - 1).getY());
+
+		double begingAngle = calcAngle(mX, mY, coordinates.get(coordinates.size() - 1).getX(),
+				coordinates.get(coordinates.size() - 1).getY());
 		double targetAngle = calcAngle(mX, mY, x2, y2);
 		System.out.println("Begin: " + begingAngle + " / end: " + targetAngle);
-		
-		if (circleDirection) { //gegen den Uhrzeigersinn
-			if(begingAngle < targetAngle) {
+
+		if (circleDirection) { // gegen den Uhrzeigersinn
+			if (begingAngle < targetAngle) {
 
 				double distance = radius * (targetAngle - begingAngle);
-				
-				for (double alpha = begingAngle*180/Math.PI; alpha < targetAngle*180/Math.PI ; alpha += this.round((10/distance), 3)) {
-					int x = (int) (mX + radius * Math.cos(alpha * Math.PI / 180));
-					int y = (int) (mY + radius * Math.sin(alpha * Math.PI / 180));	
-					
-					coordinates.add(new Coordinates(x, y, true));
-					//System.out.println("( "+ x + " / " + y + " )");
-				}			
-			}else{
-				
-				double distance = radius * (begingAngle - (2*Math.PI + targetAngle));
-				
-				for (double alpha = begingAngle*180/Math.PI; alpha < (targetAngle*180/Math.PI + 360); alpha += this.round((10/distance), 3)) {
-					int x = (int) (mX + radius * Math.cos(alpha * Math.PI / 180));
-					int y = (int) (mY + radius * Math.sin(alpha * Math.PI / 180));	
-					
-					coordinates.add(new Coordinates(x, y, true));
-					//System.out.println("( "+ x + " / " + y + " )");
-				}
-			}
-		} else { //im Uhrzeigersinn
-			if(begingAngle < targetAngle) {
-				
-				double distance = radius * ((2*Math.PI + begingAngle) - targetAngle);
-				
-				for (double alpha = begingAngle*180/Math.PI; alpha > (targetAngle*180/Math.PI - 360); alpha -= this.round((10/distance), 3)) {
+
+				for (double alpha = begingAngle * 180 / Math.PI; alpha < targetAngle * 180
+						/ Math.PI; alpha += (10 / distance)) {
 					int x = (int) (mX + radius * Math.cos(alpha * Math.PI / 180));
 					int y = (int) (mY + radius * Math.sin(alpha * Math.PI / 180));
-					
+
 					coordinates.add(new Coordinates(x, y, true));
-					//System.out.println("( "+ x + " / " + y + " )");
-				}			
-			}else {
-				
+					System.out.println("( " + x + " / " + y + " )");
+				}
+			} else {
+
+				double distance = radius * (begingAngle - (2 * Math.PI + targetAngle));
+
+				for (double alpha = begingAngle * 180 / Math.PI; alpha < (targetAngle * 180 / Math.PI
+						+ 360); alpha += (10 / distance)) {
+					int x = (int) (mX + radius * Math.cos(alpha * Math.PI / 180));
+					int y = (int) (mY + radius * Math.sin(alpha * Math.PI / 180));
+
+					coordinates.add(new Coordinates(x, y, true));
+					System.out.println("( " + x + " / " + y + " )");
+				}
+			}
+		} else { // im Uhrzeigersinn
+			if (begingAngle < targetAngle) {
+
+				double distance = radius * ((2 * Math.PI + begingAngle) - targetAngle);
+
+				for (double alpha = begingAngle * 180 / Math.PI; alpha > (targetAngle * 180 / Math.PI
+						- 360); alpha -= (10 / distance)) {
+					int x = (int) (mX + radius * Math.cos(alpha * Math.PI / 180));
+					int y = (int) (mY + radius * Math.sin(alpha * Math.PI / 180));
+
+					coordinates.add(new Coordinates(x, y, true));
+					System.out.println("( " + x + " / " + y + " )");
+				}
+			} else {
+
 				double distance = radius * (begingAngle - targetAngle);
-				
-				for (double alpha = begingAngle*180/Math.PI; alpha > (targetAngle*180/Math.PI); alpha -= this.round((10/distance), 3)) {
+
+				for (double alpha = begingAngle * 180 / Math.PI; alpha > (targetAngle * 180 / Math.PI); alpha -= (10
+						/ distance)) {
 					int x = (int) (mX + radius * Math.cos(alpha * Math.PI / 180));
 					int y = (int) (mY + radius * Math.sin(alpha * Math.PI / 180));
-					
+
 					coordinates.add(new Coordinates(x, y, true));
-					//System.out.println("( "+ x + " / " + y + " )");
+					System.out.println("( " + x + " / " + y + " )");
 				}
 			}
-				
+
 		}
-		Coordinates hilf = coordinates.get(coordinates.size()-1);
+		Coordinates hilf = coordinates.get(coordinates.size() - 1);
 		coordinates.add(new Coordinates(hilf.getX(), hilf.getY(), true, true));
 	}
 
@@ -188,37 +200,29 @@ public class Bohrer {
 	private double calcAngle(double mX, double mY, double posX, double posY) {
 		// rechts von der Y-Achse
 		if (mX < posX) {
-			if (mY < posY) { //Oberhalb der X-Achse
+			if (mY < posY) { // Oberhalb der X-Achse
 				return (Math.atan((posY - mY) / posX - mX));
-			} else if (posY < mY) { //Unterhalb der X-Achse
+			} else if (posY < mY) { // Unterhalb der X-Achse
 				return (2 * Math.PI - Math.atan((mY - posY) / (posX - mX)));
 			}
-		} else if (posX < mX) { //Links von der Y-Achse
+		} else if (posX < mX) { // Links von der Y-Achse
 			if (mY < posY) { // Oberhalb der X-Achse
 				return (Math.PI - Math.atan((mY - posY) / (mX - posX)));
-			} else if (mY < posY) {//Unterhalb der X-Achse
+			} else if (mY < posY) {// Unterhalb der X-Achse
 				return (Math.PI + Math.atan((mY - posY) / (mX - posX)));
 			}
 		} else if (mX == posX) {// Auf der Y-Achse
-			if (mY < posY) { //Oberhalb der X-Achse
+			if (mY < posY) { // Oberhalb der X-Achse
 				return (0.5 * Math.PI);
 			} else { // Unterhalb der X-Achse
 				return (1.5 * Math.PI);
 			}
 		} else if (mY == posY) { // Auf der X-Achse
-			if (posX < mX) { //Links von Y-Achse
+			if (posX < mX) { // Links von Y-Achse
 				return Math.PI;
 			}
 		}
 		return 0;
-	}
-	
-	private double round(double value, int places) {
-	    if (places < 0) throw new IllegalArgumentException();
-
-	    BigDecimal bd = BigDecimal.valueOf(value);
-	    bd = bd.setScale(places, RoundingMode.HALF_UP);
-	    return bd.doubleValue();
 	}
 
 }
