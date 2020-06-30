@@ -31,7 +31,7 @@ public class SimulateMill {
 				long lastUpdateTime = 0;
 				if (now - lastUpdateTime >= 2000000) {
 					if (counter < coordinates.size()) {
-						draw();						
+						draw();
 					}
 				    lastUpdateTime = now;
 				}

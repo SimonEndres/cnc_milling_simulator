@@ -99,7 +99,7 @@ public class Bohrer {
 		if (deltaX != 0) {
 			double m = (deltaY) / (deltaX);
 			if (x2 > coordinates.get(coordinates.size() - 1).getX()) {
-
+				
 				for (double x = coordinates.get(coordinates.size() - 1).getX(); x <= x2; x += (10 / distance)) {
 					double y = Math.round(m * x + tmpPositionY);
 					coordinates.add(new Coordinates((int) x, (int) y, mill));
