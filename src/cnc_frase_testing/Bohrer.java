@@ -89,38 +89,65 @@ public class Bohrer {
 
 //Simon, Jonas vorläufiges Ergebnis --> Effiziens muss angepasst werden+
 //Boolean fraesen true -> Linie wird gezeichnet; false -> bohrkopf bewegt sich lediglich 
+//	public void drawLine(int x2, int y2, boolean mill) {
+//
+//		double deltaY = y2 - coordinates.get(coordinates.size() - 1).getY();
+//		double deltaX = x2 - coordinates.get(coordinates.size() - 1).getX();
+//		double tmpPositionY = coordinates.get(coordinates.size() - 1).getY();
+//		double distance = (Math.sqrt(deltaX * deltaX + deltaY * deltaY));
+//
+//		if (deltaX != 0) {
+//			double m = (deltaY) / (deltaX);
+//			if (x2 > coordinates.get(coordinates.size() - 1).getX()) {
+//				
+//				for (double x = coordinates.get(coordinates.size() - 1).getX(); x <= x2; x += (10 / distance)) {
+//					double y = Math.round(m * x + tmpPositionY);
+//					coordinates.add(new Coordinates((int) x, (int) y, mill));
+//					System.out.println("( " + x + " / " + y + " )");
+//				}
+//			}else if(x2 < coordinates.get(coordinates.size() - 1).getX()) {
+//				for (double x = coordinates.get(coordinates.size() - 1).getX(); x >= x2; x -= (10 / distance)) {
+//					double y = Math.round(m * x + tmpPositionY);
+//					coordinates.add(new Coordinates((int) x, (int) y, mill));
+//					System.out.println("( " + x + " / " + y + " )");
+//				}				
+//			}
+//		} else {
+//			for (double y = coordinates.get(coordinates.size() - 1).getY(); y <= y2; y += (10 / distance)) {
+//				coordinates.add(new Coordinates(coordinates.get(coordinates.size() - 1).getX(), (int) y, mill));
+//			}
+//		}
+//		Coordinates hilf = coordinates.get(coordinates.size() - 1);
+//		coordinates.add(new Coordinates(hilf.getX(), hilf.getY(), true, true));
+//	}
+	
 	public void drawLine(int x2, int y2, boolean mill) {
-
-		double deltaY = y2 - coordinates.get(coordinates.size() - 1).getY();
-		double deltaX = x2 - coordinates.get(coordinates.size() - 1).getX();
-		double tmpPositionY = coordinates.get(coordinates.size() - 1).getY();
-		double distance = (Math.sqrt(deltaX * deltaX + deltaY * deltaY));
-
-		if (deltaX != 0) {
-			double m = (deltaY) / (deltaX);
-			if (x2 > coordinates.get(coordinates.size() - 1).getX()) {
-				
-				for (double x = coordinates.get(coordinates.size() - 1).getX(); x <= x2; x += (10 / distance)) {
-					double y = Math.round(m * x + tmpPositionY);
-					coordinates.add(new Coordinates((int) x, (int) y, mill));
-					System.out.println("( " + x + " / " + y + " )");
-				}
-			}else if(x2 < coordinates.get(coordinates.size() - 1).getX()) {
-				for (double x = coordinates.get(coordinates.size() - 1).getX(); x >= x2; x -= (10 / distance)) {
-					double y = Math.round(m * x + tmpPositionY);
-					coordinates.add(new Coordinates((int) x, (int) y, mill));
-					System.out.println("( " + x + " / " + y + " )");
-				}				
-			}
-		} else {
-			for (double y = coordinates.get(coordinates.size() - 1).getY(); y <= y2; y += (10 / distance)) {
-				coordinates.add(new Coordinates(coordinates.get(coordinates.size() - 1).getX(), (int) y, mill));
-			}
+	
+		Coordinates startPoint = coordinates.get(coordinates.size() - 1);
+		double deltaX = x2 - startPoint.getX();
+		double deltaY = y2 - startPoint.getY();
+		
+		int distance = (int)(Math.sqrt(deltaX * deltaX + deltaY * deltaY));
+		
+		if (distance == 0) {
+			//throw exception
 		}
+		
+		for (int i = 1; i <= distance;i++) {
+			double x = startPoint.getX() + (deltaX / distance * i);
+			double y = startPoint.getY() + (deltaY / distance * i);
+			
+			coordinates.add(new Coordinates((int) x, (int) y, mill));
+			System.out.println("( " + x + " / " + y + " )");
+		}
+		
+//		Wird für Befehlstatus im UI gebraucht
 		Coordinates hilf = coordinates.get(coordinates.size() - 1);
 		coordinates.add(new Coordinates(hilf.getX(), hilf.getY(), true, true));
+		
 	}
-
+	
+	
 //	G-Codes:
 //	Simon und Jonas
 //	Circle Direction true -> gegen den Uhrzeigersinn; false -> mit dem Uhrzeigersinn
@@ -145,8 +172,8 @@ public class Bohrer {
 
 				for (double alpha = begingAngle * 180 / Math.PI; alpha < targetAngle * 180
 						/ Math.PI; alpha += (10 / distance)) {
-					int x = (int) (mX + radius * Math.cos(alpha * Math.PI / 180));
-					int y = (int) (mY + radius * Math.sin(alpha * Math.PI / 180));
+					int x = (int) Math.round((mX + radius * Math.cos(alpha * Math.PI / 180)));
+					int y = (int) Math.round((mY + radius * Math.sin(alpha * Math.PI / 180)));
 
 					coordinates.add(new Coordinates(x, y, true));
 					System.out.println("( " + x + " / " + y + " )");
@@ -157,8 +184,8 @@ public class Bohrer {
 
 				for (double alpha = begingAngle * 180 / Math.PI; alpha < (targetAngle * 180 / Math.PI
 						+ 360); alpha += (10 / distance)) {
-					int x = (int) (mX + radius * Math.cos(alpha * Math.PI / 180));
-					int y = (int) (mY + radius * Math.sin(alpha * Math.PI / 180));
+					int x = (int) Math.round((mX + radius * Math.cos(alpha * Math.PI / 180)));
+					int y = (int) Math.round((mY + radius * Math.sin(alpha * Math.PI / 180)));
 
 					coordinates.add(new Coordinates(x, y, true));
 					System.out.println("( " + x + " / " + y + " )");
@@ -171,7 +198,7 @@ public class Bohrer {
 
 				for (double alpha = begingAngle * 180 / Math.PI; alpha > (targetAngle * 180 / Math.PI
 						- 360); alpha -= (10 / distance)) {
-					int x = (int) (mX + radius * Math.cos(alpha * Math.PI / 180));
+					int x = (int) Math.round((mX + radius * Math.cos(alpha * Math.PI / 180)));
 					int y = (int) (mY + radius * Math.sin(alpha * Math.PI / 180));
 
 					coordinates.add(new Coordinates(x, y, true));
@@ -183,8 +210,8 @@ public class Bohrer {
 
 				for (double alpha = begingAngle * 180 / Math.PI; alpha > (targetAngle * 180 / Math.PI); alpha -= (10
 						/ distance)) {
-					int x = (int) (mX + radius * Math.cos(alpha * Math.PI / 180));
-					int y = (int) (mY + radius * Math.sin(alpha * Math.PI / 180));
+					int x = (int) Math.round((mX + radius * Math.cos(alpha * Math.PI / 180)));
+					int y = (int) Math.round((mY + radius * Math.sin(alpha * Math.PI / 180)));
 
 					coordinates.add(new Coordinates(x, y, true));
 					System.out.println("( " + x + " / " + y + " )");
