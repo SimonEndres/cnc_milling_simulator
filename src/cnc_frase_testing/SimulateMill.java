@@ -9,18 +9,20 @@ public class SimulateMill {
 	protected ArrayList<Coordinates> coordinates;
 	private WorkSurface workSurface;
 	private UI ui;
+	private CommandProcessor cp;
 	static int counter = 0;
 
-	public SimulateMill(ArrayList<Coordinates> coordinates, WorkSurface workSurface, UI ui) {
+	public SimulateMill(ArrayList<Coordinates> coordinates, WorkSurface workSurface, CommandProcessor cp, UI ui) {
 		this.coordinates = coordinates;
 		this.workSurface = workSurface;
+		this.cp = cp;
 		this.ui = ui;
 		System.out.println("beep");
 	}
 
 	public void startDrawing() {
 		//für Logzeiten
-		ServiceClass.setStartzeit();
+		cp.setStartzeit();
 		
 		AnimationTimer timer = new AnimationTimer() {
 			
@@ -45,7 +47,7 @@ public class SimulateMill {
 		if (coordinates.get(counter).isEnd()) {
 			ui.setCommandsDone();
 			ui.updateCommandsToDo();
-			ServiceClass.putLogArray();
+			cp.putLogArray();
 		} else {
 			workSurface.drawPoint((coordinates.get(counter).getX() + 420), ( - coordinates.get(counter).getY() + 315),
 				coordinates.get(counter).isMill());

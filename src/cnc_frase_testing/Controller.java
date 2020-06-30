@@ -10,13 +10,16 @@ public class Controller {
 	
 	private UI ui;
 	private Bohrer bohrer;
+	private CommandProcessor cp;
 	protected ArrayList<Coordinates> coordinates;
 	
 	
-	Controller(UI ui) {
+	Controller(UI ui, CommandProcessor cp) {
 		this.coordinates = new ArrayList<Coordinates>();
 		this.ui = ui;
 		bohrer = new Bohrer(this.coordinates);
+		this.cp = cp;
+		
 	}
 
 	// Zuständig Befehlsabarbeitung
@@ -31,7 +34,7 @@ public class Controller {
 		// Prüfen, ob nummerriert oder nicht
 		if (commands.getJSONObject(0).getString("number") != null) {
 			//Wenn ja -> sortieren
-			commands = ServiceClass.arraySort(commands);
+			commands = cp.arraySort(commands);
 		};
 		
 		//Abarbeitung der einzelnen Befehle + log
@@ -39,8 +42,8 @@ public class Controller {
 			JSONObject commandJSON = (JSONObject) item;
 			boolean success = BefehlSwitch(commandJSON);
 			if (success) {
-				ServiceClass.writeWorkList(commandJSON);
-				ServiceClass.updateUiLog(commandJSON,ui);
+				cp.writeWorkList(commandJSON);
+				cp.updateUiLog(commandJSON,ui);
 			}
 		});
 	}

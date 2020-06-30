@@ -32,6 +32,7 @@ final class UI {
 	private TextArea commandsToDo;
 	private TextArea commandsDone;
 	private Controller cnc_fraese;
+	private CommandProcessor cp;
 	private UI that;
 	private ArrayList<String> uiLog;
 	private int logCount = 0;
@@ -42,7 +43,9 @@ final class UI {
 		this.mainScene = new Scene(mainSceneLayout, 1000, 1000);
 		this.bottomBox = new HBox();
 		WorkSurface workSurface = new WorkSurface(840, 630);
-		this.cnc_fraese = new Controller(this);
+		
+		this.cp = new CommandProcessor();
+		this.cnc_fraese = new Controller(this, cp);
 		final FileChooser fileChooser = new FileChooser();
 		this.commandsToDo = new TextArea();
 		this.commandsDone = new TextArea();
@@ -78,7 +81,7 @@ final class UI {
 				// UI updaten
 				Platform.runLater(new Runnable() {
 					public void run() {
-						SimulateMill myThread = new SimulateMill(cnc_fraese.coordinates, workSurface, that);
+						SimulateMill myThread = new SimulateMill(cnc_fraese.coordinates, workSurface, cp, that);
 						myThread.startDrawing();
 					}
 				});
@@ -104,7 +107,7 @@ final class UI {
 			public void handle(ActionEvent event) {
 				File file = fileChooser.showOpenDialog(primaryStage);
 				if (file != null) {
-					cnc_fraese.fraesen(ServiceClass.loadJson(file));
+					cnc_fraese.fraesen(cp.loadJson(file));
 				}
 			}
 		});
@@ -125,7 +128,7 @@ final class UI {
 	}
 	
 	public void setCommandsDone() {
-		long actZeit = System.currentTimeMillis() - ServiceClass.startTime;
+		long actZeit = System.currentTimeMillis() - cp.startTime;
 		this.commandsDone.appendText(uiLog.get(logCount) + actZeit + "\n");
 		logCount++;
 	}

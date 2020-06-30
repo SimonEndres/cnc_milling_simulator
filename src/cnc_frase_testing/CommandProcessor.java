@@ -17,52 +17,52 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 
-public class ServiceClass {
-	private static int counterWorkList = 0;
-	public static JSONArray workList = new JSONArray();
-	public static JSONArray logArray = new JSONArray();
-	public static long startTime;
-	private static int logCounter = 0;
+public class CommandProcessor {
+	private int counterWorkList = 0;
+	public JSONArray workList = new JSONArray();
+	public JSONArray logArray = new JSONArray();
+	public long startTime;
+	private int logCounter = 0;
 	
-	public static void setStartzeit() {
-		startTime = System.currentTimeMillis();
+	public void setStartzeit() {
+		this.startTime = System.currentTimeMillis();
 	}
 	
-	public static void writeWorkList(JSONObject commandJSON) {
-		counterWorkList += 10;
+	public void writeWorkList(JSONObject commandJSON) {
+		this.counterWorkList += 10;
 		String command;
 		String code = commandJSON.getString("code");
 		JSONObject logCommand = new JSONObject();
-		logCommand.put("number", "N" + counterWorkList);
+		logCommand.put("number", "N" + this.counterWorkList);
 		if (code.equals("G01") || code.equals("G02")) {
 			System.out.println("G");
 			JSONObject parameters = new JSONObject();
 			parameters = (JSONObject) commandJSON.getJSONObject("parameters");
 			if (code.equals("G01")) {
-				command = new String(counterWorkList + ": " + code + " X:" + parameters.getInt("x") + " Y:" + parameters.getInt("y") +  "  |  Runtime(in ms): ");
+				command = new String(this.counterWorkList + ": " + code + " X:" + parameters.getInt("x") + " Y:" + parameters.getInt("y") +  "  |  Runtime(in ms): ");
 			} else {
-				command = new String(counterWorkList + ": " + code + " X:" + parameters.getInt("x") + " Y:" + parameters.getInt("y") + " I:" + parameters.getInt("i") + " J:" + parameters.getInt("j") + "  |  Runtime(in ms): ");
+				command = new String(this.counterWorkList + ": " + code + " X:" + parameters.getInt("x") + " Y:" + parameters.getInt("y") + " I:" + parameters.getInt("i") + " J:" + parameters.getInt("j") + "  |  Runtime(in ms): ");
 			}
 		} else {
-			command = new String(counterWorkList + ": " + code + "  |  Runtime(in ms): ");
+			command = new String(this.counterWorkList + ": " + code + "  |  Runtime(in ms): ");
 		}
 		logCommand.put("command", command);
 		workList.put(logCommand);
 	}
 	
 	//BSPW für ERRORs, Abbruch
-	public static void writeWorkList(String type,String source ,String information) {
+	public void writeWorkList(String type,String source ,String information) {
 		JSONObject logCommand = new JSONObject();
 		String string = new String(source + ": " + information);
 		logCommand.put(type, string);
 		workList.put(logCommand);
 	}
 	
-	public static String getWorkListCommand() {
+	public String getWorkListCommand() {
 		return (String) workList.get(logCounter);
 	}
 	
-	public static void putLogArray() {
+	public void putLogArray() {
 		long actZeit = System.currentTimeMillis() - startTime;
 		JSONObject logElement = (JSONObject) workList.get(logCounter);
 		String command = logElement.getString("command") + actZeit;
@@ -72,7 +72,7 @@ public class ServiceClass {
 		logCounter++;
 	}
 
-	public static void logToFile() {
+	public void logToFile() {
 		try {
 			FileWriter file = new FileWriter("data//CNC_Fraese_Log.txt");
 			file.write(logArray.toString());
@@ -82,7 +82,7 @@ public class ServiceClass {
 		}
 	}
 	
-	public static void updateUiLog(JSONObject commandJSON,UI ui) {
+	public void updateUiLog(JSONObject commandJSON,UI ui) {
 		String command;
 		String code = commandJSON.getString("code");
 		if (code.equals("G01") || code.equals("G02")) {
@@ -100,7 +100,7 @@ public class ServiceClass {
 		
 	}
 
-	public static JSONArray arraySort(JSONArray jsonArr) {
+	public JSONArray arraySort(JSONArray jsonArr) {
 		JSONArray sortedJsonArray = new JSONArray();
 
 		List<JSONObject> jsonValues = new ArrayList<JSONObject>();
@@ -132,7 +132,7 @@ public class ServiceClass {
 		return sortedJsonArray;
 	}
 	
-	public static JSONObject loadJson(File file) {
+	public JSONObject loadJson(File file) {
 		JSONObject json = null;
 		try {
 			String jsonData = new String(Files.readAllBytes(Paths.get(file.toURI())), "UTF-8");
