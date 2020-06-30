@@ -15,7 +15,7 @@
 			}	
 		},
 		{
-			"number":"N80",
+			"number":"N70",
 			"code":"G01",
 			"parameters": { 
 				"x":0,
@@ -51,7 +51,7 @@
 			}	
 		},
 		{	
-			"number":"N70",
+			"number":"N80",
 			"code":"G28",
 			"parameters": {
 				
