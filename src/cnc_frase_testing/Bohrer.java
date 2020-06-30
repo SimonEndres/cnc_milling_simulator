@@ -101,12 +101,12 @@ public class Bohrer {
 		
 		if (deltaX != 0) {
 			double m = (deltaY) / (deltaX);
-			for (double x = coordinates.get(coordinates.size() - 1).getX(); x <= x2; x += this.round((10/distance), 5)) {
+			for (double x = coordinates.get(coordinates.size() - 1).getX(); x <= x2; x += this.round((10/distance), 3)) {
 				double y = Math.round(m * x + tmpPositionY);
 				coordinates.add(new Coordinates((int)x, (int)y, mill));
 			}
 		} else {
-			for (double y = coordinates.get(coordinates.size() - 1).getY(); y <= y2; y += this.round((10/distance), 5)) {
+			for (double y = coordinates.get(coordinates.size() - 1).getY(); y <= y2; y += this.round((10/distance), 3)) {
 				coordinates.add(new Coordinates(coordinates.get(coordinates.size() - 1).getX(), (int) y, mill));
 			}
 		}
@@ -135,7 +135,7 @@ public class Bohrer {
 
 				double distance = radius * (targetAngle - begingAngle);
 				
-				for (double alpha = begingAngle*180/Math.PI; alpha < targetAngle*180/Math.PI ; alpha += this.round((10/distance), 5)) {
+				for (double alpha = begingAngle*180/Math.PI; alpha < targetAngle*180/Math.PI ; alpha += this.round((10/distance), 3)) {
 					int x = (int) (mX + radius * Math.cos(alpha * Math.PI / 180));
 					int y = (int) (mY + radius * Math.sin(alpha * Math.PI / 180));	
 					
@@ -146,7 +146,7 @@ public class Bohrer {
 				
 				double distance = radius * (begingAngle - (2*Math.PI + targetAngle));
 				
-				for (double alpha = begingAngle*180/Math.PI; alpha < (targetAngle*180/Math.PI + 360); alpha += this.round((10/distance), 5)) {
+				for (double alpha = begingAngle*180/Math.PI; alpha < (targetAngle*180/Math.PI + 360); alpha += this.round((10/distance), 3)) {
 					int x = (int) (mX + radius * Math.cos(alpha * Math.PI / 180));
 					int y = (int) (mY + radius * Math.sin(alpha * Math.PI / 180));	
 					
@@ -159,7 +159,7 @@ public class Bohrer {
 				
 				double distance = radius * ((2*Math.PI + begingAngle) - targetAngle);
 				
-				for (double alpha = begingAngle*180/Math.PI; alpha > (targetAngle*180/Math.PI - 360); alpha -= this.round((10/distance), 5)) {
+				for (double alpha = begingAngle*180/Math.PI; alpha > (targetAngle*180/Math.PI - 360); alpha -= this.round((10/distance), 3)) {
 					int x = (int) (mX + radius * Math.cos(alpha * Math.PI / 180));
 					int y = (int) (mY + radius * Math.sin(alpha * Math.PI / 180));
 					
@@ -170,7 +170,7 @@ public class Bohrer {
 				
 				double distance = radius * (begingAngle - targetAngle);
 				
-				for (double alpha = begingAngle*180/Math.PI; alpha > (targetAngle*180/Math.PI); alpha -= this.round((10/distance), 5)) {
+				for (double alpha = begingAngle*180/Math.PI; alpha > (targetAngle*180/Math.PI); alpha -= this.round((10/distance), 3)) {
 					int x = (int) (mX + radius * Math.cos(alpha * Math.PI / 180));
 					int y = (int) (mY + radius * Math.sin(alpha * Math.PI / 180));
 					

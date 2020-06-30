@@ -23,6 +23,7 @@ public class CommandProcessor {
 	public JSONArray logArray = new JSONArray();
 	public long startTime;
 	private int logCounter = 0;
+	private Logger logger= Logger.getInstance();
 	
 	public void setStartzeit() {
 		this.startTime = System.currentTimeMillis();
@@ -72,14 +73,8 @@ public class CommandProcessor {
 		logCounter++;
 	}
 
-	public void logToFile() {
-		try {
-			FileWriter file = new FileWriter("data//CNC_Fraese_Log.txt");
-			file.write(logArray.toString());
-			file.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+	public void logAll() {
+		logger.logToFile(logArray);
 	}
 	
 	public void updateUiLog(JSONObject commandJSON,UI ui) {

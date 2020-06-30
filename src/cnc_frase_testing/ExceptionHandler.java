@@ -1,7 +1,18 @@
 package cnc_frase_testing;
 
-public class ExceptionHandler {
+public class ExceptionHandler extends Exception{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 5214344268561672737L;
+	
+	public ExceptionHandler()
+	{
+	}
+	public ExceptionHandler(String fehlermeldung){
+		super(fehlermeldung);
+	}
 	public static void corruptFile() {
 //		ServiceClass.writeWorkList("ERROR", "Corrupt JSONFile, ", "can't load commands");
 	}
