@@ -131,6 +131,7 @@ public class Bohrer {
 		
 		if (distance == 0) {
 			//throw exception
+			
 		}
 		
 		for (int i = 1; i <= distance;i++) {
