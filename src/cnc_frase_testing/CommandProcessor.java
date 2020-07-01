@@ -65,6 +65,7 @@ public class CommandProcessor {
 		return (String) workList.get(logCounter);
 	}
 	
+	//Wird benötigt, um aktuelle Zeiten zu schreiben
 	public void putLogArray() {
 		long actZeit = System.currentTimeMillis() - startTime;
 		JSONObject logElement = (JSONObject) workList.get(logCounter);
@@ -94,7 +95,6 @@ public class CommandProcessor {
 			command = new String(counterWorkList + ": " + code + "  |  Runtime(in ms): ");
 		}
 		ui.setCommandsToDo(command);
-		
 	}
 
 	public JSONArray arraySort(JSONArray jsonArr) {
