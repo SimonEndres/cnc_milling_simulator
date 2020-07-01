@@ -6,19 +6,20 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import UI.UI;
+import UI.UIController;
+import UI.UIController;
 
 public class CNC_Machine {
 	
-	private UI ui;
+	private UIController ui;
 	private Bohrer bohrer;
 	private CommandProcessor cp;
 	private ArrayList<Coordinates> coordinates;
 	
 	
-	public CNC_Machine(UI ui, CommandProcessor cp) {
+	public CNC_Machine(UIController uiController, CommandProcessor cp) {
 		this.coordinates = new ArrayList<Coordinates>();
-		this.ui = ui;
+		this.ui = uiController;
 		bohrer = new Bohrer(this.coordinates);
 		this.cp = cp;
 		

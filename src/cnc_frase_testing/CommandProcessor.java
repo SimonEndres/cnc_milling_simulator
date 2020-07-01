@@ -16,7 +16,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import UI.UI;
+import UI.UIController;
 
 
 public class CommandProcessor {
@@ -79,7 +79,7 @@ public class CommandProcessor {
 		logger.logToFile(logArray);
 	}
 	
-	public void updateUiLog(JSONObject commandJSON,UI ui) {
+	public void updateUiLog(JSONObject commandJSON,UIController ui) {
 		String command;
 		String code = commandJSON.getString("code");
 		if (code.equals("G01") || code.equals("G02")) {

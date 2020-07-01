@@ -12,11 +12,11 @@
 <?import javafx.scene.layout.Region?>
 
 
-<BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="UI.UIController">
+<BorderPane id="idBorderPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="UI.UIController">
    <top>
       <HBox prefHeight="30.0" prefWidth="688.0" BorderPane.alignment="TOP_LEFT">
          <children>
-            <Button mnemonicParsing="false" onAction="#onPressUploadSettings" text="Upload Commmands">
+            <Button fx:id="idUpload" mnemonicParsing="false" onAction="#onPressUploadSettings" text="Upload Commmands">
                <HBox.margin>
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </HBox.margin>
@@ -31,27 +31,27 @@
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </HBox.margin>
             </ComboBox>
-            <TextField editable="false" prefHeight="26.0" prefWidth="26.0" promptText="X">
+            <TextField fx:id="idInputX" editable="false" prefHeight="26.0" prefWidth="26.0" promptText="X">
                <HBox.margin>
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </HBox.margin>
             </TextField>
-            <TextField id="idInputY" editable="false" layoutX="436.0" layoutY="20.0" prefHeight="26.0" prefWidth="26.0" promptText="Y">
+            <TextField fx:id="idInputY" editable="false" layoutX="436.0" layoutY="20.0" prefHeight="26.0" prefWidth="26.0" promptText="Y">
                <HBox.margin>
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </HBox.margin>
             </TextField>
-            <TextField id="idInputI" editable="false" layoutX="473.0" layoutY="10.0" prefHeight="26.0" prefWidth="26.0" promptText="I">
+            <TextField fx:id="idInputI" editable="false" layoutX="473.0" layoutY="10.0" prefHeight="26.0" prefWidth="26.0" promptText="I">
                <HBox.margin>
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </HBox.margin>
             </TextField>
-            <TextField id="idInputJ" editable="false" layoutX="500.0" layoutY="10.0" prefHeight="26.0" prefWidth="26.0" promptText="J">
+            <TextField fx:id="idInputJ" editable="false" layoutX="500.0" layoutY="10.0" prefHeight="26.0" prefWidth="26.0" promptText="J">
                <HBox.margin>
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </HBox.margin>
             </TextField>
-            <Button disable="true" mnemonicParsing="false" onAction="#onPressSubmit" text="Submit">
+            <Button fx:id="idSubmit" disable="true" mnemonicParsing="false" onAction="#onPressSubmit" text="Submit">
                <HBox.margin>
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </HBox.margin>
@@ -60,7 +60,7 @@
       </HBox>
    </top>
    <left>
-      <TableView id="TableToDo" accessibleText="Please upload/entry commands" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+      <TableView fx:id="TableToDo" accessibleText="Please upload/entry commands" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
         <columns>
           <TableColumn prefWidth="75.0" text="Number" />
           <TableColumn prefWidth="75.0" text="Command" />
@@ -74,7 +74,7 @@
       </TableView>
    </left>
    <right>
-      <TableView id="TableDone" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+      <TableView fx:id="TableDone" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
         <columns>
           <TableColumn prefWidth="75.0" text="Number" />
           <TableColumn prefWidth="75.0" text="Command" />
@@ -90,12 +90,12 @@
    <bottom>
       <HBox prefHeight="30.0" prefWidth="688.0" BorderPane.alignment="BOTTOM_LEFT">
          <children>
-            <Button disable="true" mnemonicParsing="false" onAction="#onPressStart" text="Start">
+            <Button fx:id="idStartPause" disable="true" mnemonicParsing="false" onAction="#onPressStart" text="Start">
                <HBox.margin>
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </HBox.margin>
             </Button>
-            <Button disable="true" mnemonicParsing="false" onAction="#onPressTerminate" text="Terminate">
+            <Button fx:id="idTerminate" disable="true" mnemonicParsing="false" onAction="#onPressTerminate" text="Terminate">
                <HBox.margin>
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </HBox.margin>
