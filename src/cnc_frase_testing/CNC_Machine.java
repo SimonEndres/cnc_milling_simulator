@@ -6,15 +6,17 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class Controller {
+import UI.UI;
+
+public class CNC_Machine {
 	
 	private UI ui;
 	private Bohrer bohrer;
 	private CommandProcessor cp;
-	protected ArrayList<Coordinates> coordinates;
+	private ArrayList<Coordinates> coordinates;
 	
 	
-	Controller(UI ui, CommandProcessor cp) {
+	public CNC_Machine(UI ui, CommandProcessor cp) {
 		this.coordinates = new ArrayList<Coordinates>();
 		this.ui = ui;
 		bohrer = new Bohrer(this.coordinates);
@@ -128,4 +130,13 @@ public class Controller {
 		}
 		return success;
 	}
+
+	public ArrayList<Coordinates> getCoordinates() {
+		return coordinates;
+	}
+
+	public void setCoordinates(ArrayList<Coordinates> coordinates) {
+		this.coordinates = coordinates;
+	}
+	
 }

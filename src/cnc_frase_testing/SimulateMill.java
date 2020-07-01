@@ -2,6 +2,7 @@ package cnc_frase_testing;
 
 import java.util.ArrayList;
 
+import UI.UI;
 import javafx.animation.AnimationTimer;
 
 public class SimulateMill {

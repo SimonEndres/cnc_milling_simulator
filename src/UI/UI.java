@@ -1,11 +1,15 @@
 
-package cnc_frase_testing;
+package UI;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import cnc_frase_testing.CommandProcessor;
+import cnc_frase_testing.CNC_Machine;
+import cnc_frase_testing.SimulateMill;
+import cnc_frase_testing.WorkSurface;
 import javafx.stage.Stage;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
@@ -22,7 +26,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.Scene;
 
-final class UI {
+public final class UI {
 
 	final private Stage primaryStage;
 	final private Scene mainScene;
@@ -31,7 +35,7 @@ final class UI {
 	
 	private TextArea commandsToDo;
 	private TextArea commandsDone;
-	private Controller cnc_fraese;
+	private CNC_Machine cnc_fraese;
 	private CommandProcessor cp;
 	private UI that;
 	private ArrayList<String> uiLog;
@@ -45,7 +49,7 @@ final class UI {
 		WorkSurface workSurface = new WorkSurface(840, 630);
 		
 		this.cp = new CommandProcessor();
-		this.cnc_fraese = new Controller(this, cp);
+		this.cnc_fraese = new CNC_Machine(this, cp);
 		final FileChooser fileChooser = new FileChooser();
 		this.commandsToDo = new TextArea();
 		this.commandsDone = new TextArea();
@@ -81,7 +85,7 @@ final class UI {
 				// UI updaten
 				Platform.runLater(new Runnable() {
 					public void run() {
-						SimulateMill myThread = new SimulateMill(cnc_fraese.coordinates, workSurface, cp, that);
+						SimulateMill myThread = new SimulateMill(cnc_fraese.getCoordinates(), workSurface, cp, that);
 						myThread.startDrawing();
 					}
 				});
