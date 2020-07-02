@@ -6,7 +6,6 @@ import java.util.ArrayList;
 
 import cnc_frase_testing.CNC_Machine;
 import cnc_frase_testing.CommandProcessor;
-import cnc_frase_testing.SimulateMill;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -25,7 +24,7 @@ import javafx.stage.Stage;
 public class UIController {
 
 	private WorkSurface workSurface;
-//	private StackPane workSurfcaceCombo;
+	private DrillPointer drillPointer;
 	private CommandProcessor cp;
 	private CNC_Machine cnc_machine;
 	private ArrayList<String> uiLog;
@@ -62,9 +61,10 @@ public class UIController {
 				);
 	}
 	
-	public void initFXML(Stage stage, WorkSurface workSurface) {
+	public void initFXML(Stage stage, WorkSurface workSurface, DrillPointer drillPointer) {
 		this.stage = stage;
 		this.workSurface = workSurface;
+		this.drillPointer = drillPointer;
 		this.scene = stage.getScene();
 		comboBox.setItems(commandColl);
 	}
@@ -96,7 +96,7 @@ public class UIController {
 
 		Platform.runLater(new Runnable() {
 			public void run() {
-				SimulateMill myThread = new SimulateMill(cnc_machine.getCoordinates(), workSurface, cp, that);
+				SimulateMill myThread = new SimulateMill(cnc_machine.getCoordinates(), workSurface, drillPointer, cp, that);
 				myThread.startDrawing();
 			}
 		});

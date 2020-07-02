@@ -2,20 +2,52 @@
 	"commands":[ 
 		{
 			"number":"N10",
-			"code":"G01",
-			"parameters": { 
-				"x":0,
-				"y":0
-			}	
-		},
-		{
-			"number":"N30",
 			"code":"G03",
 			"parameters": {
 				"x":00,
 				"y":100,
 				"i":00,
 				"j":50
+			}	
+		},
+		{
+			"number":"N20",
+			"code":"G28",
+			"parameters": { 
+			}	
+		},
+		{
+			"number":"N30",
+			"code":"G02",
+			"parameters": {
+				"x":00,
+				"y":233,
+				"i":00,
+				"j":-60
+			}	
+		},
+		{
+			"number":"N40",
+			"code":"G01",
+			"parameters": {
+				"x":-150,
+				"y":150
+			}	
+		},
+		{
+			"number":"N50",
+			"code":"G02",
+			"parameters": {
+				"x":00,
+				"y":100,
+				"i":30,
+				"j":50
+			}	
+		},
+		{
+			"number":"N60",
+			"code":"G28",
+			"parameters": {
 			}	
 		},
 	]
