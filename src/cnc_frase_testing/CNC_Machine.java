@@ -6,22 +6,21 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import UI.UI;
+import UI.UIController;
 
 public class CNC_Machine {
-	
-	private UI ui;
-	private Drill bohrer;
+
+	private UIController ui;
+	private Drill drill;
 	private CommandProcessor cp;
 	private ArrayList<Coordinates> coordinates;
-	
-	
-	public CNC_Machine(UI ui, CommandProcessor cp) {
+
+	public CNC_Machine(UIController uiController, CommandProcessor cp) {
 		this.coordinates = new ArrayList<Coordinates>();
-		this.ui = ui;
-		bohrer = new Drill(this.coordinates);
+		this.ui = uiController;
+		drill = new Drill(this.coordinates);
 		this.cp = cp;
-		
+
 	}
 
 	// Zuständig Befehlsabarbeitung
@@ -35,17 +34,18 @@ public class CNC_Machine {
 		}
 		// Prüfen, ob nummerriert oder nicht
 		if (commands.getJSONObject(0).getString("number") != null) {
-			//Wenn ja -> sortieren
+			// Wenn ja -> sortieren
 			commands = cp.arraySort(commands);
-		};
-		
-		//Abarbeitung der einzelnen Befehle + log
+		}
+		;
+
+		// Abarbeitung der einzelnen Befehle + log
 		commands.forEach(item -> {
 			JSONObject commandJSON = (JSONObject) item;
 			boolean success = BefehlSwitch(commandJSON);
 			if (success) {
 				cp.writeWorkList(commandJSON);
-				cp.updateUiLog(commandJSON,ui);
+				cp.updateUiLog(commandJSON, ui);
 			}
 		});
 	}
@@ -54,9 +54,9 @@ public class CNC_Machine {
 		String commandType = commandJSON.getString("code").replaceAll("[0-9]", "");
 		String commandNumber = commandJSON.getString("code").replaceAll("[A-Z]", "");
 		boolean success = true;
-		String [] hilf = commandNumber.split("");
-		if (hilf.length>2) {
-			ExceptionHandler.wrongCode(commandType,commandNumber);
+		String[] hilf = commandNumber.split("");
+		if (hilf.length > 2) {
+			ExceptionHandler.wrongCode(commandType, commandNumber);
 			success = false;
 		}
 		if (commandType.equals("M")) {
@@ -68,59 +68,61 @@ public class CNC_Machine {
 				// ProgrammEnde;
 				break;
 			case "03":
-				bohrer.setSpindelStatus(true);
-				bohrer.setDrehrichtung("rechts");
+				drill.setSpindelStatus(true);
+				drill.setDrehrichtung("rechts");
 				break;
 			case "04":
-				bohrer.setSpindelStatus(true);
-				bohrer.setDrehrichtung("links");
+				drill.setSpindelStatus(true);
+				drill.setDrehrichtung("links");
 				break;
 			case "05":
-				bohrer.setSpindelStatus(false);
+				drill.setSpindelStatus(false);
 				break;
 			case "08":
-				bohrer.setKühlmittel(true);
+				drill.setKühlmittel(true);
 				break;
 			case "09":
-				bohrer.setKühlmittel(false);
+				drill.setKühlmittel(false);
 				break;
 			case "13":
-				bohrer.setSpindelStatus(true);
-				bohrer.setDrehrichtung("rechts");
-				bohrer.setKühlmittel(true);
+				drill.setSpindelStatus(true);
+				drill.setDrehrichtung("rechts");
+				drill.setKühlmittel(true);
 				break;
 			case "14":
-				bohrer.setSpindelStatus(true);
-				bohrer.setDrehrichtung("links");
-				bohrer.setKühlmittel(true);
+				drill.setSpindelStatus(true);
+				drill.setDrehrichtung("links");
+				drill.setKühlmittel(true);
 				break;
 			case "":
-				ExceptionHandler.wrongCode(commandType,commandNumber);
+				ExceptionHandler.wrongCode(commandType, commandNumber);
 				success = false;
 				break;
 			}
-		bohrer.writeM();
+			drill.writeM();
 		} else if (commandType.equals("G")) {
 			JSONObject parameters = new JSONObject();
 			parameters = (JSONObject) commandJSON.getJSONObject("parameters");
 			switch (commandNumber) {
 			case "00":
-				bohrer.drawLine(parameters.getInt("x"), parameters.getInt("y"), false);
+				drill.drawLine(parameters.getInt("x"), parameters.getInt("y"), false);
 				break;
 			case "01":
-				bohrer.drawLine(parameters.getInt("x"), parameters.getInt("y"), true);
+				drill.drawLine(parameters.getInt("x"), parameters.getInt("y"), true);
 				break;
 			case "02":
-				bohrer.drawCircle(parameters.getInt("x"), parameters.getInt("y"), parameters.getInt("i"), parameters.getInt("j"), false);
+				drill.drawCircle(parameters.getInt("x"), parameters.getInt("y"), parameters.getInt("i"),
+						parameters.getInt("j"), false);
 				break;
 			case "03":
-				bohrer.drawCircle(parameters.getInt("x"), parameters.getInt("y"), parameters.getInt("i"), parameters.getInt("j"), true);
+				drill.drawCircle(parameters.getInt("x"), parameters.getInt("y"), parameters.getInt("i"),
+						parameters.getInt("j"), true);
 				break;
 			case "28":
-				bohrer.drawLine(0, 0, false);
+				drill.drawLine(0, 0, false);
 				break;
 			case "":
-				ExceptionHandler.wrongCode(commandType,commandNumber);
+				ExceptionHandler.wrongCode(commandType, commandNumber);
 				success = false;
 				break;
 			}
@@ -138,5 +140,5 @@ public class CNC_Machine {
 	public void setCoordinates(ArrayList<Coordinates> coordinates) {
 		this.coordinates = coordinates;
 	}
-	
+
 }

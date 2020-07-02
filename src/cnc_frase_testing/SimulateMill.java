@@ -2,18 +2,18 @@ package cnc_frase_testing;
 
 import java.util.ArrayList;
 
-import UI.UI;
+import UI.UIController;
 import javafx.animation.AnimationTimer;
 
 public class SimulateMill {
 
 	protected ArrayList<Coordinates> coordinates;
 	private WorkSurface workSurface;
-	private UI ui;
+	private UIController ui;
 	private CommandProcessor cp;
 	static int counter = 0;
 
-	public SimulateMill(ArrayList<Coordinates> coordinates, WorkSurface workSurface, CommandProcessor cp, UI ui) {
+	public SimulateMill(ArrayList<Coordinates> coordinates, WorkSurface workSurface, CommandProcessor cp, UIController ui) {
 		this.coordinates = coordinates;
 		this.workSurface = workSurface;
 		this.cp = cp;
