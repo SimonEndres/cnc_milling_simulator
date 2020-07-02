@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import cnc_frase_testing.CNC_Machine;
 import cnc_frase_testing.CommandProcessor;
 import cnc_frase_testing.SimulateMill;
-import cnc_frase_testing.WorkSurface;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;

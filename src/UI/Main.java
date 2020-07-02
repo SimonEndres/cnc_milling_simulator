@@ -1,6 +1,5 @@
 package UI;
 
-import cnc_frase_testing.WorkSurface;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
