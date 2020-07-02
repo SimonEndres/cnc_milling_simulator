@@ -1,0 +1,22 @@
+{
+	"commands":[ 
+		{
+			"number":"N10",
+			"code":"G01",
+			"parameters": { 
+				"x":0,
+				"y":0
+			}	
+		},
+		{
+			"number":"N30",
+			"code":"G03",
+			"parameters": {
+				"x":00,
+				"y":100,
+				"i":00,
+				"j":50
+			}	
+		},
+	]
+}

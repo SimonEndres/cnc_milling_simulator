@@ -28,10 +28,10 @@ public class SimulateMill {
 		
 		AnimationTimer timer = new AnimationTimer() {
 			
+			long lastUpdateTime = 0;
 			@Override
 			public void handle(long now) {
-				long lastUpdateTime = 0;
-				if (now - lastUpdateTime >= 2000000) {
+				if (now - lastUpdateTime >= 500000) {
 					if (counter < coordinates.size()) {
 						draw();
 					}else {
