@@ -2,17 +2,31 @@ package cnc_frase_testing;
 
 import java.util.ArrayList;
 
-//Tim
-public class Bohrer {
+/**
+ * 
+ * Class for calculating all drill coordinates triggered by g-codes. Coordinates
+ * are stored on ArrayList coordinates.
+ *
+ * @author Simon, Tim und Jonas
+ */
+public class Drill {
 
-	final private String farbe;
+	/**
+	 * Arraylist containing x and y values and additional information regarding each
+	 * point, such as milling status, cooling status, etc.
+	 */
 	protected ArrayList<Coordinates> coordinates;
+	final private String farbe;
 	private boolean spindelStatus;
 	private String drehrichtung;
 	private boolean kuehlmittel;
 	private boolean speedMode;
 
-	public Bohrer(ArrayList<Coordinates> coordinates) {
+	/**
+	 * Constructor for drill class. 
+	 * @param coordinates
+	 */
+	public Drill(ArrayList<Coordinates> coordinates) {
 		this.farbe = "rot";
 		this.coordinates = coordinates;
 		this.coordinates.add(new Coordinates(0, 0, false));
@@ -77,6 +91,11 @@ public class Bohrer {
 		}
 	}
 
+	/**
+	 * Saves end of MCode for later use for CommandProcessing
+	 * 
+	 * @author Jonas, Tim
+	 */
 	public void writeM() {
 		if (coordinates.size() > 0) {
 			Coordinates hilf = coordinates.get(coordinates.size() - 1);
@@ -87,71 +106,55 @@ public class Bohrer {
 
 	}
 
-//Simon, Jonas vorläufiges Ergebnis --> Effiziens muss angepasst werden+
-//Boolean fraesen true -> Linie wird gezeichnet; false -> bohrkopf bewegt sich lediglich 
-//	public void drawLine(int x2, int y2, boolean mill) {
-//
-//		double deltaY = y2 - coordinates.get(coordinates.size() - 1).getY();
-//		double deltaX = x2 - coordinates.get(coordinates.size() - 1).getX();
-//		double tmpPositionY = coordinates.get(coordinates.size() - 1).getY();
-//		double distance = (Math.sqrt(deltaX * deltaX + deltaY * deltaY));
-//
-//		if (deltaX != 0) {
-//			double m = (deltaY) / (deltaX);
-//			if (x2 > coordinates.get(coordinates.size() - 1).getX()) {
-//				
-//				for (double x = coordinates.get(coordinates.size() - 1).getX(); x <= x2; x += (10 / distance)) {
-//					double y = Math.round(m * x + tmpPositionY);
-//					coordinates.add(new Coordinates((int) x, (int) y, mill));
-//					System.out.println("( " + x + " / " + y + " )");
-//				}
-//			}else if(x2 < coordinates.get(coordinates.size() - 1).getX()) {
-//				for (double x = coordinates.get(coordinates.size() - 1).getX(); x >= x2; x -= (10 / distance)) {
-//					double y = Math.round(m * x + tmpPositionY);
-//					coordinates.add(new Coordinates((int) x, (int) y, mill));
-//					System.out.println("( " + x + " / " + y + " )");
-//				}				
-//			}
-//		} else {
-//			for (double y = coordinates.get(coordinates.size() - 1).getY(); y <= y2; y += (10 / distance)) {
-//				coordinates.add(new Coordinates(coordinates.get(coordinates.size() - 1).getX(), (int) y, mill));
-//			}
-//		}
-//		Coordinates hilf = coordinates.get(coordinates.size() - 1);
-//		coordinates.add(new Coordinates(hilf.getX(), hilf.getY(), true, true));
-//	}
-	
+	/**
+	 * 
+	 * Method for calculating and store values of a line. Can be adjusted for milling to be reusable.
+	 * 
+	 * @author Simon und Jonas
+	 * @param x2   - target value for x coordinate
+	 * @param y2   - target value for y coordinate
+	 * @param mill - true -> milling on; false -> milling off
+	 * 
+	 */
 	public void drawLine(int x2, int y2, boolean mill) {
-	
+
 		Coordinates startPoint = coordinates.get(coordinates.size() - 1);
 		double deltaX = x2 - startPoint.getX();
 		double deltaY = y2 - startPoint.getY();
-		
-		int distance = (int)(Math.sqrt(deltaX * deltaX + deltaY * deltaY));
-		
+
+		int distance = (int) (Math.sqrt(deltaX * deltaX + deltaY * deltaY));
+
 		if (distance == 0) {
-			//throw exception
-			
+			// throw exception
+
 		}
-		
-		for (int i = 1; i <= distance;i++) {
+
+		for (int i = 1; i <= distance; i++) {
 			double x = startPoint.getX() + (deltaX / distance * i);
 			double y = startPoint.getY() + (deltaY / distance * i);
-			
+
 			coordinates.add(new Coordinates((int) x, (int) y, mill));
 			System.out.println("( " + x + " / " + y + " )");
 		}
-		
+
 //		Wird für Befehlstatus im UI gebraucht
 		Coordinates hilf = coordinates.get(coordinates.size() - 1);
 		coordinates.add(new Coordinates(hilf.getX(), hilf.getY(), true, true));
-		
+
 	}
-	
-	
-//	G-Codes:
-//	Simon und Jonas
-//	Circle Direction true -> gegen den Uhrzeigersinn; false -> mit dem Uhrzeigersinn
+
+	/**
+	 * 
+	 * Method for calculating and store values of a circle or part of a circle.
+	 * 
+	 * @author Simon und Jonas
+	 * @param x2              - target value for x coordinate
+	 * @param y2              - target value for y coordinate
+	 * @param i               - relative offset of x value for circlecenter
+	 * @param j               - relative offset of y value for circlecenter
+	 * @param circleDirection (true -> clockwise direction; false -> counter
+	 *                        clockwise direction
+	 */
 	public void drawCircle(int x2, int y2, int i, int j, boolean circleDirection) {
 
 		int mX = (int) coordinates.get(coordinates.size() - 1).getX() + i; // x coordinate of circle center
@@ -224,7 +227,16 @@ public class Bohrer {
 		coordinates.add(new Coordinates(hilf.getX(), hilf.getY(), true, true));
 	}
 
-//	Simon - Randfälle müssen nochmal überarbeitet werden -> M gleich Position muss abgefangen werden
+	/**
+	 * @author Simon
+	 * 
+	 * @param mX   - x coordinate of circlecenter
+	 * @param mY   - y coordinate of circlecenter
+	 * @param posX - x coordinate of angle that is calculated
+	 * @param posY - y coordinate of angle that is calculated
+	 * @return returns value of angle between straight line parallel to x coordinate
+	 *         on circlecenter point
+	 */
 	private double calcAngle(double mX, double mY, double posX, double posY) {
 		// rechts von der Y-Achse
 		if (mX < posX) {

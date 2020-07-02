@@ -11,7 +11,7 @@ import UI.UI;
 public class CNC_Machine {
 	
 	private UI ui;
-	private Bohrer bohrer;
+	private Drill bohrer;
 	private CommandProcessor cp;
 	private ArrayList<Coordinates> coordinates;
 	
@@ -19,7 +19,7 @@ public class CNC_Machine {
 	public CNC_Machine(UI ui, CommandProcessor cp) {
 		this.coordinates = new ArrayList<Coordinates>();
 		this.ui = ui;
-		bohrer = new Bohrer(this.coordinates);
+		bohrer = new Drill(this.coordinates);
 		this.cp = cp;
 		
 	}

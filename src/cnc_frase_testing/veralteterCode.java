@@ -67,3 +67,39 @@
 //	}
 //
 //}
+
+
+
+//Simon, Jonas vorläufiges Ergebnis --> Effiziens muss angepasst werden+
+//Boolean fraesen true -> Linie wird gezeichnet; false -> bohrkopf bewegt sich lediglich 
+//	public void drawLine(int x2, int y2, boolean mill) {
+//
+//		double deltaY = y2 - coordinates.get(coordinates.size() - 1).getY();
+//		double deltaX = x2 - coordinates.get(coordinates.size() - 1).getX();
+//		double tmpPositionY = coordinates.get(coordinates.size() - 1).getY();
+//		double distance = (Math.sqrt(deltaX * deltaX + deltaY * deltaY));
+//
+//		if (deltaX != 0) {
+//			double m = (deltaY) / (deltaX);
+//			if (x2 > coordinates.get(coordinates.size() - 1).getX()) {
+//				
+//				for (double x = coordinates.get(coordinates.size() - 1).getX(); x <= x2; x += (10 / distance)) {
+//					double y = Math.round(m * x + tmpPositionY);
+//					coordinates.add(new Coordinates((int) x, (int) y, mill));
+//					System.out.println("( " + x + " / " + y + " )");
+//				}
+//			}else if(x2 < coordinates.get(coordinates.size() - 1).getX()) {
+//				for (double x = coordinates.get(coordinates.size() - 1).getX(); x >= x2; x -= (10 / distance)) {
+//					double y = Math.round(m * x + tmpPositionY);
+//					coordinates.add(new Coordinates((int) x, (int) y, mill));
+//					System.out.println("( " + x + " / " + y + " )");
+//				}				
+//			}
+//		} else {
+//			for (double y = coordinates.get(coordinates.size() - 1).getY(); y <= y2; y += (10 / distance)) {
+//				coordinates.add(new Coordinates(coordinates.get(coordinates.size() - 1).getX(), (int) y, mill));
+//			}
+//		}
+//		Coordinates hilf = coordinates.get(coordinates.size() - 1);
+//		coordinates.add(new Coordinates(hilf.getX(), hilf.getY(), true, true));
+//	}
