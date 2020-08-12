@@ -182,7 +182,7 @@ public class Drill {
 					int x = (int) Math.round((mX + radius * Math.cos(alpha)));
 					int y = (int) Math.round((mY + radius * Math.sin(alpha)));
 
-					alpha = (-n * 2 * Math.PI / circumference - targetAngle);
+					alpha = (-n * 2 * Math.PI / circumference + targetAngle);
 
 					coordinates.add(new Coordinates(x, y, true));
 					System.out.println("( " + x + " / " + y + " )");
@@ -273,7 +273,7 @@ public class Drill {
 		// rechts von der Y-Achse
 		if (mX < posX) {
 			if (mY < posY) { // Oberhalb der X-Achse
-				return (Math.atan((posY - mY) / posX - mX));
+				return (Math.atan((posY - mY) / (posX - mX)));
 			} else if (posY < mY) { // Unterhalb der X-Achse
 				return (2 * Math.PI - Math.atan((mY - posY) / (posX - mX)));
 			}
