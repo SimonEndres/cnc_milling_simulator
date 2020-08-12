@@ -163,7 +163,7 @@ public class Drill {
 
 		double deltaY = mY - coordinates.get(coordinates.size() - 1).getY();
 		double deltaX = mX - coordinates.get(coordinates.size() - 1).getX();
-		int radius = (int) Math.sqrt(deltaY * deltaY + deltaX * deltaX);
+		double radius = Math.sqrt(deltaY * deltaY + deltaX * deltaX);
 		double circumference = 2 * Math.PI * radius;
 
 		double begingAngle = calcAngle(mX, mY, coordinates.get(coordinates.size() - 1).getX(),
@@ -182,7 +182,7 @@ public class Drill {
 					int x = (int) Math.round((mX + radius * Math.cos(alpha)));
 					int y = (int) Math.round((mY + radius * Math.sin(alpha)));
 
-					alpha = (-n * 2 * Math.PI / circumference - Math.PI / 2);
+					alpha = (-n * 2 * Math.PI / circumference - targetAngle);
 
 					coordinates.add(new Coordinates(x, y, true));
 					System.out.println("( " + x + " / " + y + " )");
@@ -203,7 +203,7 @@ public class Drill {
 					int x = (int) Math.round((mX + radius * Math.cos(alpha)));
 					int y = (int) Math.round((mY + radius * Math.sin(alpha)));
 
-					alpha = (-n * 2 * Math.PI / circumference + Math.PI / 2);
+					alpha = (-n * 2 * Math.PI / circumference + targetAngle);
 
 					coordinates.add(new Coordinates(x, y, true));
 					System.out.println("( " + x + " / " + y + " )");
@@ -214,35 +214,42 @@ public class Drill {
 		} else { // im Uhrzeigersinn
 			if (begingAngle < targetAngle) {
 
-				double distance = radius * ((2 * Math.PI + begingAngle) - targetAngle);
+				double distance = radius * ( 2*Math.PI - (targetAngle - begingAngle));
 				double alpha = begingAngle;
 
-				for (double n = distance; n >= 1; n--) {
+				for (double n = distance; n >= 0; n--) {
 
 					int x = (int) Math.round((mX + radius * Math.cos(alpha)));
 					int y = (int) Math.round((mY + radius * Math.sin(alpha)));
 
-					alpha = (n * 2 * Math.PI / circumference - Math.PI / 2);
-
+					alpha = (((n-1) * 2 * Math.PI / circumference) + targetAngle);
+					
 					coordinates.add(new Coordinates(x, y, true));
-					System.out.println("( " + x + " / " + y + " )");
+					System.out.println("( " + x + " / " + y + " )   Alpha: " + alpha);
 
+				
+				
 				}
 
 			} else {
-
-				double distance = radius * (begingAngle - targetAngle);
+				double distance;
+				// Circumference 360 degree
+				if ( begingAngle == targetAngle) {
+					distance = circumference;
+				} else { 
+					distance = radius * (begingAngle - targetAngle);
+				}
 				double alpha = begingAngle;
-
-				for (double n = distance; n >= 1; n--) {
+				
+				for (double n = distance; n >= 0; n--) {
 
 					int x = (int) Math.round((mX + radius * Math.cos(alpha)));
 					int y = (int) Math.round((mY + radius * Math.sin(alpha)));
 
-					alpha = (n * 2 * Math.PI / circumference + Math.PI / 2);
+					alpha = ((n-1) * 2 * Math.PI / circumference + targetAngle);
 
 					coordinates.add(new Coordinates(x, y, true));
-					System.out.println("( " + x + " / " + y + " )");
+					System.out.println("( " + x + " / " + y + " )  n:" + n);
 
 				}
 			}
@@ -273,7 +280,7 @@ public class Drill {
 		} else if (posX < mX) { // Links von der Y-Achse
 			if (mY < posY) { // Oberhalb der X-Achse
 				return (Math.PI - Math.atan((mY - posY) / (mX - posX)));
-			} else if (mY < posY) {// Unterhalb der X-Achse
+			} else if (posY < mY) {// Unterhalb der X-Achse
 				return (Math.PI + Math.atan((mY - posY) / (mX - posX)));
 			}else if (mY == posY) { // Auf der X-Achse
 				return Math.PI;
