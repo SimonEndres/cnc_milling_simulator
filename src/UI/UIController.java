@@ -32,7 +32,6 @@ public class UIController {
 	private CNC_Machine cnc_machine;
 	private ArrayList<String> uiLog;
 	private int logCount = 0;
-	
 	private Stage stage;
 	private Scene scene;
 	private int numVar;
