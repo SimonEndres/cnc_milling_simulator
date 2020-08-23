@@ -13,7 +13,7 @@ public class SimulateMill {
 	private DrillPointer drillPointer;
 	private UIController ui;
 	private CommandProcessor cp;
-	static int counter = 0;
+	private int counter = 0;
 	private boolean running;
 	AnimationTimer timer = null;
 
