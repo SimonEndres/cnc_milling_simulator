@@ -27,7 +27,7 @@ import UI.UIController;
 public class CommandProcessor {
 	
 	/**
-	 * JSONArray contains all commands with parameters, used for saving calculated commands and later execution
+	 * JSONArray contains all commands with parameters, used for saving calculated commands
 	 */
 	public JSONArray workList = new JSONArray();
 	/**
@@ -39,7 +39,11 @@ public class CommandProcessor {
 	private int logCounter = 0;
 	private Logger logger = Logger.getInstance();
 	
-	public void setStartzeit() {
+	/**
+	 * Sets start time for runtime calculation
+	 * @author Jonas,Tim
+	 */
+	public void setStartTime() {
 		this.startTime = System.currentTimeMillis();
 	}
 	/**

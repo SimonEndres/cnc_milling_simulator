@@ -30,7 +30,7 @@ public class SimulateMill {
 
 	public void startDrawing() {
 		// für Logzeiten
-		cp.setStartzeit();
+		cp.setStartTime();
 
 		timer = new AnimationTimer() {
 
