@@ -28,6 +28,7 @@ public class Main extends Application {
 		primaryStage.setTitle("CNC_Simulator");
 		UIController controller = (UIController) loader.getController();
 		controller.initFXML(primaryStage, workSurface, drillPointer);
+		primaryStage.centerOnScreen();
 		primaryStage.show();
 		
 	}
