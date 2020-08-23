@@ -147,6 +147,7 @@ public class UIController {
 	void onPressTerminate(ActionEvent event) {
 		myThread.terminate();
 		myThread = null;
+		buttSP.setText("Start");
 		buttSP.setDisable(true);
 		buttTerminate.setDisable(true);
 		commandsToDo.clear();
