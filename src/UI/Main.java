@@ -31,8 +31,6 @@ public class Main extends Application {
 		controller.initFXML(primaryStage, workSurface, drillPointer);
 		primaryStage.centerOnScreen();
 		primaryStage.show();
-		
+		primaryStage.setResizable(false);
 	}
-
-
 }
