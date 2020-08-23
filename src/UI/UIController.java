@@ -144,7 +144,7 @@ public class UIController {
 	}
 
 	@FXML
-	void onPressTerminate(ActionEvent event) {
+	public void onPressTerminate(ActionEvent event) {
 		myThread.terminate();
 		myThread = null;
 		buttSP.setText("Start");

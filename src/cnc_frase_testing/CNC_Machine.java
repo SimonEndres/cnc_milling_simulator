@@ -30,7 +30,7 @@ public class CNC_Machine {
 		try {
 			commands = befehlsJson.getJSONArray("commands");
 		} catch (JSONException e) {
-			ExceptionHandler.logError(cp, "Corrupt JSONFile, can't load commands", "wait for new Entry");
+			ExceptionHandler.logErrorTerminate(ui, cp, "Corrupt JSONFile, can't load commands", "wait for new Entry");
 			return;
 		}
 		// Prüfen, ob nummerriert oder nicht
@@ -131,7 +131,7 @@ public class CNC_Machine {
 			throw new WrongCommandException("Command doesn't exist");
 		}
 		} catch (WrongCommandException e) {
-			ExceptionHandler.logError(cp, e.getMessage(), "Skip command");
+			ExceptionHandler.logErrorTerminate(ui, cp, e.getMessage(), "Terminate");
 		}
 		return success;
 	}
