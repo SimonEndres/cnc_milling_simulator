@@ -11,10 +11,6 @@ import java.util.ArrayList;
  */
 public class Drill {
 
-	/**
-	 * Arraylist containing x and y values and additional information regarding each
-	 * point, such as milling status, cooling status, etc.
-	 */
 	protected ArrayList<Coordinates> coordinates;
 	final private String farbe;
 	private boolean spindelStatus;

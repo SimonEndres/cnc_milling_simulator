@@ -1,8 +1,6 @@
 package cnc_frase_testing;
 
 import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -18,20 +16,40 @@ import org.json.JSONObject;
 
 import UI.UIController;
 
-
+/**
+ * The class is used to provide several functions:
+ * Sort commandJson, store commands in workList and uiLog and also makes them available for the logger
+ * to write them into the logFile
+ * 
+ * @author Tim, Jonas
+ *
+ */
 public class CommandProcessor {
-	private int counterWorkList = 0;
+	
+	/**
+	 * JSONArray contains all commands with parameters, used for saving calculated commands and later execution
+	 */
 	public JSONArray workList = new JSONArray();
+	/**
+	 * JSONArray contains all commands with parameters and runtime, that were executed successfully and will later be logged by the logger
+	 */
 	public JSONArray logArray = new JSONArray();
+	private int counterWorkList = 0;
 	public long startTime;
 	private int logCounter = 0;
-	private Logger logger= Logger.getInstance();
+	private Logger logger = Logger.getInstance();
 	
 	public void setStartzeit() {
 		this.startTime = System.currentTimeMillis();
 	}
-	
-	public void writeWorkList(JSONObject commandJSON) {
+	/**
+	 * Adds calculated commands with parameters to workList and uiLog
+	 * 
+	 * @author Jonas, Tim
+	 * @param commandJSON	Contains entered commands for milling.
+	 * @param ui			Object of UIController for adding commands to uiLog.
+	 */
+	public void writeListAndLog(JSONObject commandJSON, UIController ui) {
 		this.counterWorkList += 10;
 		String command;
 		String code = commandJSON.getString("code");
@@ -49,11 +67,19 @@ public class CommandProcessor {
 		} else {
 			command = new String(this.counterWorkList + ": " + code + "  |  Runtime(in ms): ");
 		}
+		ui.setCommandsToDo(command);
 		logCommand.put("command", command);
 		workList.put(logCommand);
 	}
 	
-	//BSPW für ERRORs, Abbruch
+	/**
+	 * Adds a Message to logArray with runtime in ms, which is later logged by the logger
+	 * 
+	 * @author Jonas, Tim
+	 * @param type		Message type (for example Error)
+	 * @param reason	Reason for the message
+	 * @param handling	Handling of the message
+	 */
 	public void logMessage(String type,String reason ,String handling) {
 		JSONObject logCommand = new JSONObject();
 		String string = new String(reason + ": " + handling+ "  |  Runtime(in ms): ");
@@ -65,7 +91,11 @@ public class CommandProcessor {
 		logArray.put(newLogElement);
 	}
 	
-	//Wird benötigt, um aktuelle Zeiten zu schreiben
+	/**
+	 * Adds all successfully executed commands of workList with current runtime to logArray
+	 * 
+	 * @author Jonas, Tim
+	 */
 	public void logCommandsDone() {
 		long actZeit = System.currentTimeMillis() - startTime;
 		JSONObject logElement = (JSONObject) workList.get(logCounter);
@@ -76,33 +106,28 @@ public class CommandProcessor {
 		logCounter++;
 	}
 
+	/**
+	 * Triggers logger to write all commands of logArray into the logFile
+	 * 
+	 * @author Jonas, Tim
+	 */
 	public void logAll() {
 		logger.logToFile(logArray);
 	}
-	
-	public void updateUiLog(JSONObject commandJSON,UIController ui) {
-		String command;
-		String code = commandJSON.getString("code");
-		if (code.equals("G01") || code.equals("G02")) {
-			JSONObject parameters = new JSONObject();
-			parameters = (JSONObject) commandJSON.getJSONObject("parameters");
-			if (code.equals("G01")) {
-				command = new String(counterWorkList + ": " + code + " X:" + parameters.getInt("x") + " Y:" + parameters.getInt("y") +  "  |  Runtime(in ms): ");
-			} else {
-				command = new String(counterWorkList + ": " + code + " X:" + parameters.getInt("x") + " Y:" + parameters.getInt("y") + " I:" + parameters.getInt("i") + " J:" + parameters.getInt("j") + "  |  Runtime(in ms): ");
-			}
-		} else {
-			command = new String(counterWorkList + ": " + code + "  |  Runtime(in ms): ");
-		}
-		ui.setCommandsToDo(command);
-	}
 
-	public JSONArray arraySort(JSONArray jsonArr) {
+	/**
+	 * Method to sort the commands of commandJson by number
+	 * 
+	 * @author Tim
+	 * @param unsJsonArray			unsorted Json Array
+	 * @return sortedJsonArray	- Returns a sortet Json Array
+	 */
+	public JSONArray arraySort(JSONArray unsJsonArray) {
 		JSONArray sortedJsonArray = new JSONArray();
 
 		List<JSONObject> jsonValues = new ArrayList<JSONObject>();
-		for (int i = 0; i < jsonArr.length(); i++) {
-			jsonValues.add(jsonArr.getJSONObject(i));
+		for (int i = 0; i < unsJsonArray.length(); i++) {
+			jsonValues.add(unsJsonArray.getJSONObject(i));
 		}
 		Collections.sort(jsonValues, new Comparator<JSONObject>() {
 			private static final String Sort_Key = "number";
@@ -122,21 +147,27 @@ public class CommandProcessor {
 				return valA.compareTo(valB);
 			}
 		});
-
-		for (int i = 0; i < jsonArr.length(); i++) {
+		for (int i = 0; i < unsJsonArray.length(); i++) {
 			sortedJsonArray.put(jsonValues.get(i));
 		}
 		return sortedJsonArray;
 	}
 	
+	/**
+	 * Load commands for execution from file into JsonObject
+	 * 
+	 * @author Tim
+	 * @param file			File containing commands to execute
+	 * @return commandJson	- Contains entered commands for milling.
+	 */
 	public JSONObject loadJson(File file) {
-		JSONObject json = null;
+		JSONObject commandJson = null;
 		try {
 			String jsonData = new String(Files.readAllBytes(Paths.get(file.toURI())), "UTF-8");
-			json = new JSONObject(jsonData);
+			commandJson = new JSONObject(jsonData);
 		} catch (Exception e) {
 			System.out.println(e);
 		}
-		return json;
+		return commandJson;
 	}
 }

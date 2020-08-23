@@ -8,14 +8,34 @@ import org.json.JSONObject;
 
 import Exceptions.WrongCommandException;
 import UI.UIController;
-
+/**
+ * 
+ * The class serves as CPU to coordinate all tasks of the CNC milling machine. 
+ * It reads, sorts and processes the commands (checking, calculate, logging).
+ * @author Tim
+ *
+ */
 public class CNC_Machine {
-
+	
+	/**
+	 * Arraylist containing x and y values and additional information regarding each
+	 * point, such as milling status, cooling status, etc.
+	 * It serves to store the calculated data for later execution.
+	 */
+	private ArrayList<Coordinates> coordinates;
+	
 	private UIController ui;
 	private Drill drill;
 	private CommandProcessor cp;
-	private ArrayList<Coordinates> coordinates;
+	
 
+	/**
+	 * Constructor of class CNC_Machine
+	 * 
+	 * @author Tim
+	 * @param uiController	Object of UIController
+	 * @param cp			Object of CommandProcessor
+	 */
 	public CNC_Machine(UIController uiController, CommandProcessor cp) {
 		this.coordinates = new ArrayList<Coordinates>();
 		this.ui = uiController;
@@ -24,33 +44,45 @@ public class CNC_Machine {
 
 	}
 
-	// Zuständig Befehlsabarbeitung
-	public void fraesen(JSONObject befehlsJson) {
+	/**
+	 * Function to coordinate all.
+	 * Reads commands, checks for numbering and sorts them.
+	 * Then processes individual commands and writes them to the worklist and UiLog.
+	 * 
+	 * @author Tim
+	 * @param commandJson	Contains entered commands for milling.
+	 */
+	public void machineControl(JSONObject commandJson) {
 		JSONArray commands = new JSONArray();
 		try {
-			commands = befehlsJson.getJSONArray("commands");
+			commands = commandJson.getJSONArray("commands");
 		} catch (JSONException e) {
-			ExceptionHandler.logErrorTerminate(ui, cp, "Corrupt JSONFile, can't load commands", "wait for new Entry");
+			ExceptionHandler.logError(cp, "Corrupt JSONFile, can't load commands", "wait for new Entry");
 			return;
 		}
-		// Prüfen, ob nummerriert oder nicht
+		//check for numbering
 		if (commands.getJSONObject(0).getString("number") != null) {
-			// Wenn ja -> sortieren
+			//sort array
 			commands = cp.arraySort(commands);
 		}
-		;
 
-		// Abarbeitung der einzelnen Befehle + log
+		//Processesing individual commands, writing them to the worklist and UiLog
 		commands.forEach(item -> {
 			JSONObject commandJSON = (JSONObject) item;
 			boolean success = BefehlSwitch(commandJSON);
 			if (success) {
-				cp.writeWorkList(commandJSON);
-				cp.updateUiLog(commandJSON, ui);
+				cp.writeListAndLog(commandJSON,ui);
 			}
 		});
 	}
-
+	
+	/**
+	 * Switch for the different commands and corresponding processing
+	 * 
+	 * @author Tim
+	 * @param commandJSON	Contains entered commands for execution.
+	 * @return success		- true -> calculation successful, logging
+	 */
 	private boolean BefehlSwitch(JSONObject commandJSON) {
 		String commandType = commandJSON.getString("code").replaceAll("[0-9]", "");
 		String commandNumber = commandJSON.getString("code").replaceAll("[A-Z]", "");
@@ -100,6 +132,7 @@ public class CNC_Machine {
 				success = false;
 				throw new WrongCommandException("Command doesn't exist");
 			}
+			//Write M command to the command array (necessary for correct logging)
 			drill.writeM();
 		} else if (commandType.equals("G")) {
 			JSONObject parameters = new JSONObject();
@@ -136,12 +169,14 @@ public class CNC_Machine {
 		return success;
 	}
 
+	/**
+	 * Getter for Arraylist coordinates 
+	 * 
+	 * @author Tim
+	 * @return coordinates	- ArrayList of calculated coordinates
+	 */
 	public ArrayList<Coordinates> getCoordinates() {
 		return coordinates;
-	}
-
-	public void setCoordinates(ArrayList<Coordinates> coordinates) {
-		this.coordinates = coordinates;
 	}
 
 }

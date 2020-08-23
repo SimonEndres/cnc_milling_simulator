@@ -79,7 +79,7 @@ public class UIController {
 	void onPressUploadSettings(ActionEvent event) {
 		File file = fileChooser.showOpenDialog(stage);
 		if (file != null) {
-			cnc_machine.fraesen(cp.loadJson(file));
+			cnc_machine.machineControl(cp.loadJson(file));
 			buttSP.setDisable(false);
 		}
 	}
