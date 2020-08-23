@@ -113,7 +113,7 @@ public class UIController {
 				}
 			}
 		}
-		//onInputChanged('i', "init");
+		onInputChanged('t', "init");
 	}
 	
 	@FXML
@@ -146,12 +146,16 @@ public class UIController {
 				//Input X and Y needed for submit
 				if (!tfX.getText().equals("") && !tfY.getText().equals("")) {
 					buttSubmit.setDisable(false);
+				} else {
+					buttSubmit.setDisable(true);
 				}
 			}
 			if (numVar == 4) {
 				//Input X,Y,I,J needed for submit
 				if (!tfX.getText().equals("") && !tfY.getText().equals("") && !tfI.getText().equals("") && !tfJ.getText().equals("")) {
 					buttSubmit.setDisable(false);
+				} else {
+					buttSubmit.setDisable(true);
 				}
 			}
 		} else {
@@ -169,17 +173,17 @@ public class UIController {
 			break;
 		case 'Y':
 			value = tfY.getText();
-			value = value.replaceAll("[^0-9]", "");
+			value = value.replaceAll("\\b-?[^0-9]", "");
 			tfY.setText(value);
 			break;
 		case 'I':
 			value = tfI.getText();
-			value = value.replaceAll("[^0-9]", "");
+			value = value.replaceAll("\\b-?[^0-9]", "");
 			tfI.setText(value);
 			break;
 		case 'J':
 			value = tfJ.getText();
-			value = value.replaceAll("[^0-9]", "");
+			value = value.replaceAll("\\b-?[^0-9]", "");
 			tfJ.setText(value);
 			break;
 		default:
