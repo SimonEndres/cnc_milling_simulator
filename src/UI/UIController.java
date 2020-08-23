@@ -18,6 +18,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Labeled;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.StackPane;
@@ -46,6 +47,9 @@ public class UIController {
 	@FXML private TextField tfI;
 	@FXML private TextField tfJ;
 	@FXML private Button buttSubmit;
+	
+	//test
+	SimulateMill myThread = null;
 	
 	public UIController() {
 		this.cp = new CommandProcessor();
@@ -114,17 +118,32 @@ public class UIController {
 	@FXML
 	void onPressStart(ActionEvent event) {
 		UIController that = this;
-
-		Platform.runLater(new Runnable() {
-			public void run() {
-				SimulateMill myThread = new SimulateMill(cnc_machine.getCoordinates(), workSurface, drillPointer, cp, that);
-				myThread.startDrawing();
+		if(myThread==null) {
+			Platform.runLater(new Runnable() {
+				public void run() {
+					myThread = new SimulateMill(cnc_machine.getCoordinates(), workSurface, drillPointer, cp, that);
+					myThread.startDrawing();
+				}
+			});
+			((Labeled) scene.lookup("#StartPause")).setText("Stop");
+		}
+		else
+			if(myThread.isRunning()) {
+				myThread.pause();
+				myThread.setRunning(false);
+				((Labeled) scene.lookup("#StartPause")).setText("Start");
 			}
-		});
+			else {
+				myThread.unpause();
+				myThread.setRunning(true);
+				((Labeled) scene.lookup("#StartPause")).setText("Stop");
+			}
 	}
 
 	@FXML
 	void onPressTerminate(ActionEvent event) {
+		scene.lookup("#StartPause").setDisable(false);
+		myThread.pause();
 		
 	}
 

@@ -14,6 +14,8 @@ public class SimulateMill {
 	private UIController ui;
 	private CommandProcessor cp;
 	static int counter = 0;
+	private boolean running;
+	AnimationTimer timer = null;
 
 	public SimulateMill(ArrayList<Coordinates> coordinates, WorkSurface workSurface, DrillPointer drillPointer,
 			CommandProcessor cp, UIController ui) {
@@ -22,6 +24,7 @@ public class SimulateMill {
 		this.drillPointer = drillPointer;
 		this.cp = cp;
 		this.ui = ui;
+		this.running = true;
 		System.out.println("beep");
 	}
 
@@ -29,7 +32,7 @@ public class SimulateMill {
 		// für Logzeiten
 		cp.setStartzeit();
 
-		AnimationTimer timer = new AnimationTimer() {
+		timer = new AnimationTimer() {
 
 			long lastUpdateTime = 0;
 
@@ -68,6 +71,14 @@ public class SimulateMill {
 //		System.out.println("( "+ ((coordinates.get(counter).getX() + 420)) + " / " + (( - coordinates.get(counter).getY() + 315)) + " )");
 
 	}
+	
+	public void pause() {
+		timer.stop();
+	}
+	
+	public void unpause() {
+		timer.start();
+	}
 	// zum zeichnen eines Punktes auf der Oberfläche
 //		void drawPoint(int x, int y, boolean fraesen) {
 //			Circle bohrkopf = new Circle();
@@ -80,4 +91,12 @@ public class SimulateMill {
 //				cutLine.getChildren().add(bohrkopf);
 //		}
 
+	public boolean isRunning() {
+		return running;
+	}
+
+	public void setRunning(boolean running) {
+		this.running = running;
+	}
+	
 }
