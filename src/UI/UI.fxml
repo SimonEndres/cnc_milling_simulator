@@ -30,27 +30,27 @@
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </HBox.margin>
             </ComboBox>
-            <TextField fx:id="X" disable="true" editable="false" prefHeight="26.0" prefWidth="26.0" promptText="X">
+            <TextField fx:id="tfX" disable="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="26.0" prefWidth="50.0" promptText="X">
                <HBox.margin>
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </HBox.margin>
             </TextField>
-            <TextField fx:id="Y" disable="true" editable="false" layoutX="436.0" layoutY="20.0" prefHeight="26.0" prefWidth="26.0" promptText="Y">
+            <TextField fx:id="tfY" disable="true" layoutX="436.0" layoutY="20.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="26.0" prefWidth="50.0" promptText="Y">
                <HBox.margin>
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </HBox.margin>
             </TextField>
-            <TextField fx:id="I" disable="true" editable="false" layoutX="473.0" layoutY="10.0" prefHeight="26.0" prefWidth="26.0" promptText="I">
+            <TextField fx:id="tfI" disable="true" layoutX="473.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="26.0" prefWidth="50.0" promptText="I">
                <HBox.margin>
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </HBox.margin>
             </TextField>
-            <TextField fx:id="J" disable="true" editable="false" layoutX="500.0" layoutY="10.0" prefHeight="26.0" prefWidth="26.0" promptText="J">
+            <TextField fx:id="tfJ" disable="true" layoutX="500.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="26.0" prefWidth="50.0" promptText="J">
                <HBox.margin>
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </HBox.margin>
             </TextField>
-            <Button fx:id="Submit" disable="true" mnemonicParsing="false" onAction="#onPressSubmit" text="Submit">
+            <Button fx:id="buttSubmit" disable="true" mnemonicParsing="false" onAction="#onPressSubmit" text="Submit">
                <HBox.margin>
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </HBox.margin>
