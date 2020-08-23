@@ -52,20 +52,7 @@ public class UIController {
 		this.cnc_machine = new CNC_Machine(this, cp);
 		this.uiLog = new ArrayList<String>();
 		commandColl = FXCollections.observableArrayList(
-				"M00",
-				"M02",
-				"M03",
-				"M04",
-				"M05",
-				"M08",
-				"M09",
-				"M13",
-				"M14",
-				"G00",
-				"G01",
-				"G02",
-				"G03",
-				"G28"
+				"M00","M02","M03","M04","M05","M08","M09","M13","M14","G00","G01","G02","G03","G28"
 				);
 	}
 	
@@ -89,7 +76,6 @@ public class UIController {
 			cnc_machine.fraesen(cp.loadJson(file));
 			scene.lookup("#StartPause").setDisable(false);
 		}
-		
 	}
 
 	@FXML
@@ -112,8 +98,12 @@ public class UIController {
 					tfJ.setDisable(false);
 				}
 			}
+		} else {
+			//Case M code enable submit
+			buttSubmit.setDisable(false);
 		}
-		onInputChanged('t', "init");
+		//To proof if submit should be disabled/enabled after changing Code
+		onInputChanged('p', "proof");
 	}
 	
 	@FXML
