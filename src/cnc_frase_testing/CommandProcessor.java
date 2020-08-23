@@ -54,19 +54,19 @@ public class CommandProcessor {
 	}
 	
 	//BSPW für ERRORs, Abbruch
-	public void writeWorkList(String type,String source ,String information) {
+	public void logMessage(String type,String reason ,String message) {
 		JSONObject logCommand = new JSONObject();
-		String string = new String(source + ": " + information);
+		String string = new String(reason + ": " + message+ "  |  Runtime(in ms): ");
 		logCommand.put(type, string);
-		workList.put(logCommand);
-	}
-	
-	public String getWorkListCommand() {
-		return (String) workList.get(logCounter);
+		long actZeit = System.currentTimeMillis() - startTime;
+		String logMsg = logCommand.getString(type) + actZeit;
+		JSONObject newLogElement = new JSONObject();
+		newLogElement.put(type,logMsg);
+		logArray.put(newLogElement);
 	}
 	
 	//Wird benötigt, um aktuelle Zeiten zu schreiben
-	public void putLogArray() {
+	public void logCommandsDone() {
 		long actZeit = System.currentTimeMillis() - startTime;
 		JSONObject logElement = (JSONObject) workList.get(logCounter);
 		String command = logElement.getString("command") + actZeit;

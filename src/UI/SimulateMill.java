@@ -59,7 +59,7 @@ public class SimulateMill {
 		if (coordinates.get(counter).isEnd()) {
 			ui.setCommandsDone();
 			ui.updateCommandsToDo();
-			cp.putLogArray();
+			cp.logCommandsDone();
 		} else {
 			if (coordinates.get(counter).isMill()) {
 				workSurface.drawPoint((coordinates.get(counter).getX() + 420), (-coordinates.get(counter).getY() + 315));
@@ -85,7 +85,9 @@ public class SimulateMill {
 		coordinates = null;
 		workSurface.clearAll();
 		drillPointer.clearAll();
-		drillPointer = null;		
+		drillPointer = null;
+		cp.logMessage("Terminate","Process terminated by User","reset");
+		cp.logAll();
 	}
 	// zum zeichnen eines Punktes auf der Oberfläche
 //		void drawPoint(int x, int y, boolean fraesen) {
