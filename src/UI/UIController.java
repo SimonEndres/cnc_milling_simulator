@@ -59,7 +59,7 @@ public class UIController {
 		this.uiLog = new ArrayList<String>();
 		commandColl = FXCollections.observableArrayList(
 				"M00","M02","M03","M04","M05","M08","M09","M13","M14","G00","G01","G02","G03","G28"
-				);
+		);
 	}
 	
 	public void initFXML(Stage stage, WorkSurface workSurface, DrillPointer drillPointer) {
@@ -145,9 +145,13 @@ public class UIController {
 
 	@FXML
 	void onPressTerminate(ActionEvent event) {
-		//myThread.terminate();
+		myThread.terminate();
 		myThread = null;
 		buttSP.setDisable(true);
+		buttTerminate.setDisable(true);
+		commandsToDo.clear();
+		commandsDone.clear();
+		uiLog.clear();
 	}
 
 	private void onInputChanged(char field, String newText) {
