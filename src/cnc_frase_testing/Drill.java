@@ -177,12 +177,12 @@ public class Drill {
 				double distance = radius * (targetAngle - begingAngle);
 				double alpha = begingAngle;
 
-				for (double n = distance; n >= 1; n--) {
+				for (double n = distance; n >= 0; n--) {
 
 					int x = (int) Math.round((mX + radius * Math.cos(alpha)));
 					int y = (int) Math.round((mY + radius * Math.sin(alpha)));
 
-					alpha = (-n * 2 * Math.PI / circumference + targetAngle);
+					alpha = (-(n-1) * 2 * Math.PI / circumference + targetAngle);
 
 					coordinates.add(new Coordinates(x, y, true));
 					System.out.println("( " + x + " / " + y + " )");
@@ -198,12 +198,12 @@ public class Drill {
 				double distance = radius * (2*Math.PI - (begingAngle - targetAngle));
 				double alpha = begingAngle;
 
-				for (double n = distance; n >= 1; n--) {
+				for (double n = distance; n >= 0; n--) {
 
 					int x = (int) Math.round((mX + radius * Math.cos(alpha)));
 					int y = (int) Math.round((mY + radius * Math.sin(alpha)));
 
-					alpha = (-n * 2 * Math.PI / circumference + targetAngle);
+					alpha = (-(n-1) * 2 * Math.PI / circumference + targetAngle);
 
 					coordinates.add(new Coordinates(x, y, true));
 					System.out.println("( " + x + " / " + y + " )");
