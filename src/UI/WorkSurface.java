@@ -18,5 +18,8 @@ public class WorkSurface extends Canvas {
 		gc.fillOval(x, y, 4, 4);
 		
 	}
+	public void clearAll() {
+		gc.clearRect(0, 0, this.getWidth(), this.getHeight());
+	}
 
 }
