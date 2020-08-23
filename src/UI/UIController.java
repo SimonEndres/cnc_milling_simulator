@@ -142,8 +142,7 @@ public class UIController {
 
 	@FXML
 	void onPressTerminate(ActionEvent event) {
-		scene.lookup("#StartPause").setDisable(false);
-		myThread.pause();
+		myThread.terminate();
 		
 	}
 

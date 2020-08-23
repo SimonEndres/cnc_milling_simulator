@@ -79,6 +79,9 @@ public class SimulateMill {
 	public void unpause() {
 		timer.start();
 	}
+	
+	public void terminate() {
+	}
 	// zum zeichnen eines Punktes auf der Oberfläche
 //		void drawPoint(int x, int y, boolean fraesen) {
 //			Circle bohrkopf = new Circle();
