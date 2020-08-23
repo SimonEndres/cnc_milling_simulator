@@ -84,6 +84,7 @@ public class SimulateMill {
 		timer.stop();
 		coordinates = null;
 		workSurface.clearAll();
+		drillPointer.clearAll();
 		drillPointer = null;		
 	}
 	// zum zeichnen eines Punktes auf der Oberfläche

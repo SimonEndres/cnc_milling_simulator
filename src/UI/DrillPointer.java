@@ -22,5 +22,8 @@ public class DrillPointer extends Canvas {
 		gc.setFill(Color.RED);
 		
 	}
+	public void clearAll() {
+		gc.clearRect(0, 0, this.getWidth(), this.getHeight());
+	}
 	
 }
