@@ -47,6 +47,8 @@ public class UIController {
 	@FXML private TextField tfI;
 	@FXML private TextField tfJ;
 	@FXML private Button buttSubmit;
+	@FXML private Button buttSP;
+	@FXML private Button buttTerminate;
 	
 	//test
 	SimulateMill myThread = null;
@@ -78,7 +80,7 @@ public class UIController {
 		File file = fileChooser.showOpenDialog(stage);
 		if (file != null) {
 			cnc_machine.fraesen(cp.loadJson(file));
-			scene.lookup("#StartPause").setDisable(false);
+			buttSP.setDisable(false);
 		}
 	}
 
@@ -119,32 +121,33 @@ public class UIController {
 	void onPressStart(ActionEvent event) {
 		UIController that = this;
 		if(myThread==null) {
+			buttTerminate.setDisable(false);
 			Platform.runLater(new Runnable() {
 				public void run() {
 					myThread = new SimulateMill(cnc_machine.getCoordinates(), workSurface, drillPointer, cp, that);
 					myThread.startDrawing();
 				}
 			});
-			((Labeled) scene.lookup("#StartPause")).setText("Stop");
+			buttSP.setText("Stop");
 		}
 		else
 			if(myThread.isRunning()) {
 				myThread.pause();
 				myThread.setRunning(false);
-				((Labeled) scene.lookup("#StartPause")).setText("Start");
+				buttSP.setText("Start");
 			}
 			else {
 				myThread.unpause();
 				myThread.setRunning(true);
-				((Labeled) scene.lookup("#StartPause")).setText("Stop");
+				buttSP.setText("Stop");
 			}
 	}
 
 	@FXML
 	void onPressTerminate(ActionEvent event) {
-		scene.lookup("#StartPause").setDisable(false);
-		myThread.pause();
-		
+		//myThread.terminate();
+		myThread = null;
+		buttSP.setDisable(true);
 	}
 
 	private void onInputChanged(char field, String newText) {
