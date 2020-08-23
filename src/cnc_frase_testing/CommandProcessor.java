@@ -54,9 +54,9 @@ public class CommandProcessor {
 	}
 	
 	//BSPW für ERRORs, Abbruch
-	public void logMessage(String type,String reason ,String message) {
+	public void logMessage(String type,String reason ,String handling) {
 		JSONObject logCommand = new JSONObject();
-		String string = new String(reason + ": " + message+ "  |  Runtime(in ms): ");
+		String string = new String(reason + ": " + handling+ "  |  Runtime(in ms): ");
 		logCommand.put(type, string);
 		long actZeit = System.currentTimeMillis() - startTime;
 		String logMsg = logCommand.getString(type) + actZeit;

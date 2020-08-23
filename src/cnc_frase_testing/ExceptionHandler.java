@@ -1,27 +1,8 @@
 package cnc_frase_testing;
 
-public class ExceptionHandler extends Exception{
-	
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 5214344268561672737L;
-	
-	public ExceptionHandler()
-	{
-	}
-	public ExceptionHandler(String fehlermeldung){
-		super(fehlermeldung);
-	}
-	public static void corruptFile() {
-//		ServiceClass.writeWorkList("ERROR", "Corrupt JSONFile, ", "can't load commands");
-	}
-	
-	public static void wrongCode(String commandType, String commandNumber) {
-//		ServiceClass.writeWorkList("ERROR", commandType+commandNumber, "doesn't exists");
-	}
-	
-	public static void wrongCommand(String commandType) {
-//		ServiceClass.writeWorkList("ERROR", commandType, "doesn't exists");
+ public class ExceptionHandler{
+
+	public static void logError(CommandProcessor cp, String reason, String handling) {
+		cp.logMessage("ERROR", reason, handling);
 	}
 }

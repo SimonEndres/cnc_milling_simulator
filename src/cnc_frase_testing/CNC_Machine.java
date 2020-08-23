@@ -6,6 +6,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import Exceptions.WrongCommandException;
 import UI.UIController;
 
 public class CNC_Machine {
@@ -29,7 +30,7 @@ public class CNC_Machine {
 		try {
 			commands = befehlsJson.getJSONArray("commands");
 		} catch (JSONException e) {
-			ExceptionHandler.corruptFile();
+			ExceptionHandler.logError(cp, "Corrupt JSONFile, can't load commands", "wait for new Entry");
 			return;
 		}
 		// Prüfen, ob nummerriert oder nicht
@@ -55,9 +56,10 @@ public class CNC_Machine {
 		String commandNumber = commandJSON.getString("code").replaceAll("[A-Z]", "");
 		boolean success = true;
 		String[] hilf = commandNumber.split("");
+		try {
 		if (hilf.length > 2) {
-			ExceptionHandler.wrongCode(commandType, commandNumber);
 			success = false;
+			throw new WrongCommandException("Command doesn't exist");
 		}
 		if (commandType.equals("M")) {
 			switch (commandNumber) {
@@ -95,9 +97,8 @@ public class CNC_Machine {
 				drill.setKühlmittel(true);
 				break;
 			case "":
-				ExceptionHandler.wrongCode(commandType, commandNumber);
 				success = false;
-				break;
+				throw new WrongCommandException("Command doesn't exist");
 			}
 			drill.writeM();
 		} else if (commandType.equals("G")) {
@@ -122,13 +123,15 @@ public class CNC_Machine {
 				drill.drawLine(0, 0, false);
 				break;
 			case "":
-				ExceptionHandler.wrongCode(commandType, commandNumber);
 				success = false;
-				break;
+				throw new WrongCommandException("Command doesn't exist");
 			}
 		} else {
-			ExceptionHandler.wrongCommand(commandType);
 			success = false;
+			throw new WrongCommandException("Command doesn't exist");
+		}
+		} catch (WrongCommandException e) {
+			ExceptionHandler.logError(cp, e.getMessage(), "Skip command");
 		}
 		return success;
 	}
