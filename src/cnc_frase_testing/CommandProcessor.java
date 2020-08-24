@@ -184,7 +184,7 @@ public class CommandProcessor {
 		return commandJson;
 	}
 	
-	public void resetCp() {
+	public void resetCpCounter() {
 		counterWorkList = 0;
 		logCounter = 0;
 	}
