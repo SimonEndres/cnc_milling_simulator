@@ -1,6 +1,5 @@
 package UI;
 
-
 import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
@@ -9,23 +8,19 @@ import java.util.ArrayList;
 import cnc_frase_testing.CNC_Machine;
 import cnc_frase_testing.CommandProcessor;
 import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.Labeled;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.StackPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
@@ -38,49 +33,65 @@ public class UIController {
 	private ArrayList<String> uiLog;
 	private int logCount = 0;
 	private Stage stage;
-	private Scene scene;
 	private int numVar;
 	private int speed;
 
 	private ObservableList<String> commandColl;
 	final FileChooser fileChooser = new FileChooser();
-	
-	@FXML private ComboBox<String> comboBox;
-	@FXML private TextArea commandsToDo;
-	@FXML private TextArea commandsDone;
-	@FXML private TextField tfX;
-	@FXML private TextField tfY;
-	@FXML private TextField tfI;
-	@FXML private TextField tfJ;
-	@FXML private Button buttSubmit;
-	@FXML private Button buttSP;
-	@FXML private Button buttTerminate;
-	@FXML private Slider drillSpeed;
-	
-	//test
+
+	@FXML
+	private ComboBox<String> comboBox;
+	@FXML
+	private TextArea commandsToDo;
+	@FXML
+	private TextArea commandsDone;
+	@FXML
+	private TextField tfX;
+	@FXML
+	private TextField tfY;
+	@FXML
+	private TextField tfI;
+	@FXML
+	private TextField tfJ;
+	@FXML
+	private Button buttSubmit;
+	@FXML
+	private Button buttSP;
+	@FXML
+	private Button buttTerminate;
+	@FXML
+	private Slider drillSpeed;
+
+	// test
 	SimulateMill myThread = null;
-	
+
 	public UIController() {
 		this.cp = new CommandProcessor();
 		this.cnc_machine = new CNC_Machine(this, cp);
 		this.uiLog = new ArrayList<String>();
-		commandColl = FXCollections.observableArrayList(
-				"M00","M02","M03","M04","M05","M08","M09","M13","M14","G00","G01","G02","G03","G28"
-		);
+		commandColl = FXCollections.observableArrayList("M00", "M02", "M03", "M04", "M05", "M08", "M09", "M13", "M14",
+				"G00", "G01", "G02", "G03", "G28");
 	}
-	
+
 	public void initFXML(Stage stage, WorkSurface workSurface, DrillPointer drillPointer) {
 		this.stage = stage;
 		this.workSurface = workSurface;
 		this.drillPointer = drillPointer;
-		this.scene = stage.getScene();
 		comboBox.setItems(commandColl);
-		tfX.textProperty().addListener((obs, oldText, newText) -> onInputChanged('X',newText));
-		tfY.textProperty().addListener((obs, oldText, newText) -> onInputChanged('Y',newText));
-		tfI.textProperty().addListener((obs, oldText, newText) -> onInputChanged('I',newText));
-		tfJ.textProperty().addListener((obs, oldText, newText) -> onInputChanged('J',newText));
+		tfX.textProperty().addListener((obs, oldText, newText) -> onInputChanged('X', newText));
+		tfY.textProperty().addListener((obs, oldText, newText) -> onInputChanged('Y', newText));
+		tfI.textProperty().addListener((obs, oldText, newText) -> onInputChanged('I', newText));
+		tfJ.textProperty().addListener((obs, oldText, newText) -> onInputChanged('J', newText));
+		drillSpeed.valueProperty().addListener(new ChangeListener<Number>() {
+			@Override
+	        public void changed(ObservableValue<? extends Number> observableValue, Number previous, Number now) {
+	            if (!drillSpeed.isValueChanging() || now.doubleValue() == 4 || now.doubleValue() == 8) {
+	                // This only fires when we're done or when the slider is dragged to its max/min.
+	            	changeDrillspeed();
+	            }
+			}
+		});
 	}
-	
 
 	@FXML
 	void onPressUploadSettings(ActionEvent event) {
@@ -90,7 +101,12 @@ public class UIController {
 			buttSP.setDisable(false);
 		}
 	}
-
+	
+	@FXML
+	void doTest(ActionEvent event) {
+		System.out.println(drillSpeed.getValue());
+	}
+	
 	@FXML
 	void onChoosedCode(ActionEvent event) {
 		numVar = 0;
@@ -102,37 +118,37 @@ public class UIController {
 		String commandNumber = comboBox.getValue().replaceAll("[A-Z]", "");
 		if (commandType.equals("G")) {
 			if (!commandNumber.equals("28")) {
-				numVar = 2; //X and Y needed
+				numVar = 2; // X and Y needed
 				tfX.setDisable(false);
 				tfY.setDisable(false);
 				if (commandNumber.equals("02") || commandNumber.equals("03")) {
-					numVar = 4; //X,Y,I,J needed
+					numVar = 4; // X,Y,I,J needed
 					tfI.setDisable(false);
 					tfJ.setDisable(false);
 				}
 			}
 		} else {
-			//Case M code enable submit
+			// Case M code enable submit
 			buttSubmit.setDisable(false);
 		}
-		//To proof if submit should be disabled/enabled after changing Code
+		// To proof if submit should be disabled/enabled after changing Code
 		onInputChanged('p', "proof");
 	}
-	
+
 	@FXML
 	void onPressSubmit(ActionEvent event) {
-		
+
 	}
-	
-	@FXML
-	void onChangeDrillspeed(ActionEvent event) {
+
+	void changeDrillspeed() {
 		this.speed = (int) drillSpeed.getValue();
+		System.out.println(speed);
 	}
-	
+
 	@FXML
 	void onPressStart(ActionEvent event) {
 		UIController that = this;
-		if(myThread==null) {
+		if (myThread == null) {
 			buttTerminate.setDisable(false);
 			Platform.runLater(new Runnable() {
 				public void run() {
@@ -141,18 +157,15 @@ public class UIController {
 				}
 			});
 			buttSP.setText("Stop");
+		} else if (myThread.isRunning()) {
+			myThread.pause();
+			myThread.setRunning(false);
+			buttSP.setText("Start");
+		} else {
+			myThread.unpause();
+			myThread.setRunning(true);
+			buttSP.setText("Stop");
 		}
-		else
-			if(myThread.isRunning()) {
-				myThread.pause();
-				myThread.setRunning(false);
-				buttSP.setText("Start");
-			}
-			else {
-				myThread.unpause();
-				myThread.setRunning(true);
-				buttSP.setText("Stop");
-			}
 	}
 
 	@FXML
@@ -168,7 +181,7 @@ public class UIController {
 		logCount = 0;
 		showMessage("Process terminated successfully");
 	}
-	
+
 	@FXML
 	void onPressLog(ActionEvent event) {
 		File log = new File("data//CNC_Fraese_Log.json");
@@ -183,10 +196,10 @@ public class UIController {
 
 	private void onInputChanged(char field, String newText) {
 		if (!newText.equals("")) {
-			//Format input value
-			numberFormatter(field,newText);
+			// Format input value
+			numberFormatter(field, newText);
 			if (numVar == 2) {
-				//Input X and Y needed for submit
+				// Input X and Y needed for submit
 				if (!tfX.getText().equals("") && !tfY.getText().equals("")) {
 					buttSubmit.setDisable(false);
 				} else {
@@ -194,8 +207,9 @@ public class UIController {
 				}
 			}
 			if (numVar == 4) {
-				//Input X,Y,I,J needed for submit
-				if (!tfX.getText().equals("") && !tfY.getText().equals("") && !tfI.getText().equals("") && !tfJ.getText().equals("")) {
+				// Input X,Y,I,J needed for submit
+				if (!tfX.getText().equals("") && !tfY.getText().equals("") && !tfI.getText().equals("")
+						&& !tfJ.getText().equals("")) {
 					buttSubmit.setDisable(false);
 				} else {
 					buttSubmit.setDisable(true);
@@ -205,8 +219,8 @@ public class UIController {
 			buttSubmit.setDisable(true);
 		}
 	}
-	
-	private void numberFormatter(char field,String newText) {
+
+	private void numberFormatter(char field, String newText) {
 		String value;
 		switch (field) {
 		case 'X':
@@ -233,7 +247,7 @@ public class UIController {
 			break;
 		}
 	}
-	
+
 	public void setCommandsToDo(String text) {
 		uiLog.add(text);
 		this.commandsToDo.appendText(text + " - " + "\n");
@@ -241,8 +255,8 @@ public class UIController {
 
 	public void updateCommandsToDo() {
 		this.commandsToDo.clear();
-		for (int i = logCount; i<uiLog.size(); i++) {
-		this.commandsToDo.appendText(uiLog.get(i) + "\n");
+		for (int i = logCount; i < uiLog.size(); i++) {
+			this.commandsToDo.appendText(uiLog.get(i) + "\n");
 		}
 	}
 
@@ -257,15 +271,15 @@ public class UIController {
 		al.setContentText(message);
 		al.show();
 	}
-	
+
 	public void showError(String message) {
 		Alert al = new Alert(AlertType.ERROR);
 		al.setContentText(message);
 		al.show();
 	}
-	
+
 	public int getSpeed() {
 		return speed;
 	}
-	
+
 }
