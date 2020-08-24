@@ -1,6 +1,7 @@
 package UI;
 
 
+import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -121,7 +122,14 @@ public class UIController {
 
 	@FXML
 	void onPressLog(ActionEvent event) {
-		System.out.println("open Log");
+		File log = new File("data//CNC_Fraese_Log.json");
+		Desktop desktop = Desktop.getDesktop();
+		try {
+			desktop.open(log);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	@FXML
