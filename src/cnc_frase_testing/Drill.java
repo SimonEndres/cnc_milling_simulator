@@ -2,6 +2,8 @@ package cnc_frase_testing;
 
 import java.util.ArrayList;
 
+import Exceptions.OutOfWorksurfaceException;
+
 /**
  * 
  * Class for calculating all drill coordinates triggered by g-codes. Coordinates
@@ -15,7 +17,7 @@ public class Drill {
 	final private String farbe;
 	private boolean spindelStatus;
 	private String drehrichtung;
-	private boolean kuehlmittel;
+	private boolean cooling;
 	private boolean speedMode;
 
 	/**
@@ -23,12 +25,13 @@ public class Drill {
 	 * 
 	 * @param coordinates
 	 */
+
 	public Drill(ArrayList<Coordinates> coordinates) {
 		this.farbe = "rot";
 		this.coordinates = coordinates;
-		this.coordinates.add(new Coordinates(0, 0, false));
+		this.coordinates.add(new Coordinates(0, 0, false, false));
 		this.spindelStatus = false;
-		this.kuehlmittel = false;
+		this.cooling = false;
 		this.speedMode = false;
 		setDrehrichtung("rechts");
 	}
@@ -59,11 +62,11 @@ public class Drill {
 	}
 
 	public boolean isKuehlmittel() {
-		return kuehlmittel;
+		return cooling;
 	}
 
 	public void setKühlmittel(boolean kuehlmittel) {
-		this.kuehlmittel = kuehlmittel;
+		this.cooling = kuehlmittel;
 		if (kuehlmittel) {
 			this.speedMode = true;
 		} else {
@@ -96,9 +99,9 @@ public class Drill {
 	public void writeM() {
 		if (coordinates.size() > 0) {
 			Coordinates hilf = coordinates.get(coordinates.size() - 1);
-			coordinates.add(new Coordinates(hilf.getX(), hilf.getY(), true, true));
+			coordinates.add(new Coordinates(hilf.getX(), hilf.getY(), true, this.cooling, true));
 		} else {
-			coordinates.add(new Coordinates(0, 0, true, true));
+			coordinates.add(new Coordinates(0, 0, true, this.cooling, true));
 		}
 
 	}
@@ -112,32 +115,33 @@ public class Drill {
 	 * @param x2   - target value for x coordinate
 	 * @param y2   - target value for y coordinate
 	 * @param mill - true -> milling on; false -> milling off
+	 * @throws OutOfWorksurfaceException
 	 * 
 	 */
-	public void drawLine(int x2, int y2, boolean mill) {
+	public void drawLine(int x2, int y2, boolean mill) throws OutOfWorksurfaceException {
 
+		if (x2 > 420 || x2 < -420 || y2 > 315 || y2 < -315) {
+			throw new OutOfWorksurfaceException("Target coordinate out of worksurface");
+		}
 		Coordinates startPoint = coordinates.get(coordinates.size() - 1);
 		double deltaX = x2 - startPoint.getX();
 		double deltaY = y2 - startPoint.getY();
 
 		int distance = (int) (Math.sqrt(deltaX * deltaX + deltaY * deltaY));
 
-		if (distance == 0) {
-			// throw exception
+		if (distance != 0) {
+			for (int i = 1; i <= distance; i++) {
+				double x = startPoint.getX() + (deltaX / distance * i);
+				double y = startPoint.getY() + (deltaY / distance * i);
 
-		}
-
-		for (int i = 1; i <= distance; i++) {
-			double x = startPoint.getX() + (deltaX / distance * i);
-			double y = startPoint.getY() + (deltaY / distance * i);
-
-			coordinates.add(new Coordinates((int) x, (int) y, mill));
-			System.out.println("( " + x + " / " + y + " )");
+				coordinates.add(new Coordinates((int) x, (int) y, mill, this.cooling));
+				System.out.println("( " + x + " / " + y + " )");
+			}
 		}
 
 //		Wird für Befehlstatus im UI gebraucht
 		Coordinates hilf = coordinates.get(coordinates.size() - 1);
-		coordinates.add(new Coordinates(hilf.getX(), hilf.getY(), true, true));
+		coordinates.add(new Coordinates(hilf.getX(), hilf.getY(), true, this.cooling, true));
 
 	}
 
@@ -150,9 +154,11 @@ public class Drill {
 	 * @param y2              - target value for y coordinate
 	 * @param i               - relative offset of x value for circlecenter
 	 * @param j               - relative offset of y value for circlecenter
-	 * @param circleDirection (true -> counter clockwise direction; false -> clockwise direction
+	 * @param circleDirection (true -> counter clockwise direction; false ->
+	 *                        clockwise direction
+	 * @throws OutOfWorksurfaceException
 	 */
-	public void drawCircle(int x2, int y2, int i, int j, boolean circleDirection) {
+	public void drawCircle(int x2, int y2, int i, int j, boolean circleDirection) throws OutOfWorksurfaceException {
 
 		int mX = (int) coordinates.get(coordinates.size() - 1).getX() + i; // x coordinate of circle center
 		int mY = (int) coordinates.get(coordinates.size() - 1).getY() + j; // y coordinate of circle center
@@ -160,99 +166,117 @@ public class Drill {
 		double deltaY = mY - coordinates.get(coordinates.size() - 1).getY();
 		double deltaX = mX - coordinates.get(coordinates.size() - 1).getX();
 		double radius = Math.sqrt(deltaY * deltaY + deltaX * deltaX);
-		double circumference = 2 * Math.PI * radius;
 
-		double begingAngle = calcAngle(mX, mY, coordinates.get(coordinates.size() - 1).getX(),
-				coordinates.get(coordinates.size() - 1).getY());
-		double targetAngle = calcAngle(mX, mY, x2, y2);
-		System.out.println("Begin: " + begingAngle + " / end: " + targetAngle);
+		if (radius != 0) {
+			double circumference = 2 * Math.PI * radius;
 
-		if (circleDirection) { // gegen den Uhrzeigersinn
-			if (begingAngle < targetAngle) {
+			double begingAngle = calcAngle(mX, mY, coordinates.get(coordinates.size() - 1).getX(),
+					coordinates.get(coordinates.size() - 1).getY());
+			double targetAngle = calcAngle(mX, mY, x2, y2);
+			System.out.println("Begin: " + begingAngle + " / end: " + targetAngle);
 
-				double distance = radius * (targetAngle - begingAngle);
-				double alpha = begingAngle;
+			if (circleDirection) { // gegen den Uhrzeigersinn
+				if (begingAngle < targetAngle) {
 
-				for (double n = distance; n >= 0; n--) {
+					double distance = radius * (targetAngle - begingAngle);
+					double alpha = begingAngle;
 
-					int x = (int) Math.round((mX + radius * Math.cos(alpha)));
-					int y = (int) Math.round((mY + radius * Math.sin(alpha)));
+					for (double n = distance; n >= 0; n--) {
 
-					alpha = (-(n-1) * 2 * Math.PI / circumference + targetAngle);
+						int x = (int) Math.round((mX + radius * Math.cos(alpha)));
+						int y = (int) Math.round((mY + radius * Math.sin(alpha)));
 
-					coordinates.add(new Coordinates(x, y, true));
-					System.out.println("( " + x + " / " + y + " )");
+						if (x > 420 || x < -420 || y > 315 || y < -315) {
+							throw new OutOfWorksurfaceException("Calculated coordinate out of worksurface");
+						}
+
+						alpha = (-(n - 1) * 2 * Math.PI / circumference + targetAngle);
+
+						coordinates.add(new Coordinates(x, y, true, this.cooling));
+						System.out.println("( " + x + " / " + y + " )");
+
+					}
+
+				} else {
+
+					if (targetAngle == 0) {
+						targetAngle = 2 * Math.PI;
+					}
+
+					double distance = radius * (2 * Math.PI - (begingAngle - targetAngle));
+					double alpha = begingAngle;
+
+					for (double n = distance; n >= 0; n--) {
+
+						int x = (int) Math.round((mX + radius * Math.cos(alpha)));
+						int y = (int) Math.round((mY + radius * Math.sin(alpha)));
+
+						if (x > 420 || x < -420 || y > 315 || y < -315) {
+							throw new OutOfWorksurfaceException("Calculated coordinate out of worksurface");
+						}
+
+						alpha = (-(n - 1) * 2 * Math.PI / circumference + targetAngle);
+
+						coordinates.add(new Coordinates(x, y, true, this.cooling));
+						System.out.println("( " + x + " / " + y + " )");
+
+					}
 
 				}
+			} else { // im Uhrzeigersinn
+				if (begingAngle < targetAngle) {
 
-			} else {
+					double distance = radius * (2 * Math.PI - (targetAngle - begingAngle));
+					double alpha = begingAngle;
 
-				if (targetAngle == 0) {
-					targetAngle = 2 * Math.PI;
-				}
+					for (double n = distance; n >= 0; n--) {
 
-				double distance = radius * (2*Math.PI - (begingAngle - targetAngle));
-				double alpha = begingAngle;
+						int x = (int) Math.round((mX + radius * Math.cos(alpha)));
+						int y = (int) Math.round((mY + radius * Math.sin(alpha)));
 
-				for (double n = distance; n >= 0; n--) {
+						if (x > 420 || x < -420 || y > 315 || y < -315) {
+							throw new OutOfWorksurfaceException("Calculated coordinate out of worksurface");
+						}
 
-					int x = (int) Math.round((mX + radius * Math.cos(alpha)));
-					int y = (int) Math.round((mY + radius * Math.sin(alpha)));
+						alpha = (((n - 1) * 2 * Math.PI / circumference) + targetAngle);
 
-					alpha = (-(n-1) * 2 * Math.PI / circumference + targetAngle);
+						coordinates.add(new Coordinates(x, y, true, this.cooling));
+						System.out.println("( " + x + " / " + y + " )   Alpha: " + alpha);
 
-					coordinates.add(new Coordinates(x, y, true));
-					System.out.println("( " + x + " / " + y + " )");
+					}
 
+				} else {
+					double distance;
+					// Circumference 360 degree
+					if (begingAngle == targetAngle) {
+						distance = circumference;
+					} else {
+						distance = radius * (begingAngle - targetAngle);
+					}
+					double alpha = begingAngle;
+
+					for (double n = distance; n >= 0; n--) {
+
+						int x = (int) Math.round((mX + radius * Math.cos(alpha)));
+						int y = (int) Math.round((mY + radius * Math.sin(alpha)));
+
+						if (x > 420 || x < -420 || y > 315 || y < -315) {
+							throw new OutOfWorksurfaceException("Calculated coordinate out of worksurface");
+						}
+
+						alpha = ((n - 1) * 2 * Math.PI / circumference + targetAngle);
+
+						coordinates.add(new Coordinates(x, y, true, this.cooling));
+						System.out.println("( " + x + " / " + y + " )  n:" + n);
+
+					}
 				}
 
 			}
-		} else { // im Uhrzeigersinn
-			if (begingAngle < targetAngle) {
-
-				double distance = radius * ( 2*Math.PI - (targetAngle - begingAngle));
-				double alpha = begingAngle;
-
-				for (double n = distance; n >= 0; n--) {
-
-					int x = (int) Math.round((mX + radius * Math.cos(alpha)));
-					int y = (int) Math.round((mY + radius * Math.sin(alpha)));
-
-					alpha = (((n-1) * 2 * Math.PI / circumference) + targetAngle);
-					
-					coordinates.add(new Coordinates(x, y, true));
-					System.out.println("( " + x + " / " + y + " )   Alpha: " + alpha);
-
-				
-				
-				}
-
-			} else {
-				double distance;
-				// Circumference 360 degree
-				if ( begingAngle == targetAngle) {
-					distance = circumference;
-				} else { 
-					distance = radius * (begingAngle - targetAngle);
-				}
-				double alpha = begingAngle;
-				
-				for (double n = distance; n >= 0; n--) {
-
-					int x = (int) Math.round((mX + radius * Math.cos(alpha)));
-					int y = (int) Math.round((mY + radius * Math.sin(alpha)));
-
-					alpha = ((n-1) * 2 * Math.PI / circumference + targetAngle);
-
-					coordinates.add(new Coordinates(x, y, true));
-					System.out.println("( " + x + " / " + y + " )  n:" + n);
-
-				}
-			}
-
 		}
+
 		Coordinates hilf = coordinates.get(coordinates.size() - 1);
-		coordinates.add(new Coordinates(hilf.getX(), hilf.getY(), true, true));
+		coordinates.add(new Coordinates(hilf.getX(), hilf.getY(), true, this.cooling, true));
 	}
 
 	/**
@@ -278,7 +302,7 @@ public class Drill {
 				return (Math.PI - Math.atan((mY - posY) / (mX - posX)));
 			} else if (posY < mY) {// Unterhalb der X-Achse
 				return (Math.PI + Math.atan((mY - posY) / (mX - posX)));
-			}else if (mY == posY) { // Auf der X-Achse
+			} else if (mY == posY) { // Auf der X-Achse
 				return Math.PI;
 			}
 		} else if (mX == posX) {// Auf der Y-Achse

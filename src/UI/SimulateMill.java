@@ -14,6 +14,7 @@ public class SimulateMill {
 	private UIController ui;
 	private CommandProcessor cp;
 	private int counter = 0;
+	private int speed = 10000000;
 	private boolean running;
 	AnimationTimer timer = null;
 
@@ -38,7 +39,7 @@ public class SimulateMill {
 
 			@Override
 			public void handle(long now) {
-				if (now - lastUpdateTime >= 500000) {
+				if (now - lastUpdateTime >= speed) {
 					if (counter < coordinates.size()) {
 						draw();
 					} else {
@@ -61,6 +62,11 @@ public class SimulateMill {
 			ui.updateCommandsToDo();
 			cp.logCommandsDone();
 		} else {
+			if (coordinates.get(counter).isCooling()) {
+				speed = 500000;
+			}else {
+				speed = 10000000;
+			}
 			if (coordinates.get(counter).isMill()) {
 				workSurface.drawPoint((coordinates.get(counter).getX() + 420), (-coordinates.get(counter).getY() + 315));
 			}
@@ -83,6 +89,7 @@ public class SimulateMill {
 	public void terminate() {
 		timer.stop();
 		coordinates = null;
+		counter = 0;
 		workSurface.clearAll();
 		drillPointer.clearAll();
 		drillPointer = null;

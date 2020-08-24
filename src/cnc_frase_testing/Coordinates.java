@@ -10,18 +10,22 @@ public class Coordinates {
 
 	private int x, y;
 	private boolean mill;
+	private boolean cooling;
+
 	private boolean end;
 
-	public Coordinates(int x, int y, boolean mill) {
+	public Coordinates(int x, int y, boolean mill, boolean cooling) {
 		this.x = x;
 		this.y = y;
 		this.mill = mill;
+		this.cooling = cooling;
 	}
 
-	public Coordinates(int x, int y, boolean mill, boolean end) {
+	public Coordinates(int x, int y, boolean mill, boolean cooling, boolean end) {
 		this.x = x;
 		this.y = y;
 		this.mill = mill;
+		this.cooling = cooling;
 		this.end = end;
 	}
 
@@ -55,6 +59,14 @@ public class Coordinates {
 
 	public void setEnd(boolean end) {
 		this.end = end;
+	}
+
+	public boolean isCooling() {
+		return cooling;
+	}
+	
+	public void setCooling(boolean cooling) {
+		this.cooling = cooling;
 	}
 
 }

@@ -6,6 +6,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import Exceptions.OutOfWorksurfaceException;
 import Exceptions.WrongCommandException;
 import UI.UIController;
 /**
@@ -137,6 +138,7 @@ public class CNC_Machine {
 		} else if (commandType.equals("G")) {
 			JSONObject parameters = new JSONObject();
 			parameters = (JSONObject) commandJSON.getJSONObject("parameters");
+			try {
 			switch (commandNumber) {
 			case "00":
 				drill.drawLine(parameters.getInt("x"), parameters.getInt("y"), false);
@@ -158,6 +160,9 @@ public class CNC_Machine {
 			case "":
 				success = false;
 				throw new WrongCommandException("Command doesn't exist");
+			}
+			}catch (OutOfWorksurfaceException e) {
+				System.out.println(e.getMessage());
 			}
 		} else {
 			success = false;
