@@ -20,6 +20,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Labeled;
+import javafx.scene.control.Slider;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.StackPane;
@@ -52,6 +53,7 @@ public class UIController {
 	@FXML private Button buttSubmit;
 	@FXML private Button buttSP;
 	@FXML private Button buttTerminate;
+	@FXML private Slider drillSpeed;
 	
 	//test
 	SimulateMill myThread = null;
@@ -119,17 +121,10 @@ public class UIController {
 	void onPressSubmit(ActionEvent event) {
 		
 	}
-
+	
 	@FXML
-	void onPressLog(ActionEvent event) {
-		File log = new File("data//CNC_Fraese_Log.json");
-		Desktop desktop = Desktop.getDesktop();
-		try {
-			desktop.open(log);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+	void onChangeDrillspeed(ActionEvent event) {
+		this.speed = (int) drillSpeed.getValue();
 	}
 	
 	@FXML
@@ -169,6 +164,18 @@ public class UIController {
 		commandsDone.clear();
 		uiLog.clear();
 		logCount = 0;
+	}
+	
+	@FXML
+	void onPressLog(ActionEvent event) {
+		File log = new File("data//CNC_Fraese_Log.json");
+		Desktop desktop = Desktop.getDesktop();
+		try {
+			desktop.open(log);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	private void onInputChanged(char field, String newText) {
