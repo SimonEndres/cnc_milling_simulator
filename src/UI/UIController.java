@@ -120,6 +120,11 @@ public class UIController {
 	}
 
 	@FXML
+	void onPressLog(ActionEvent event) {
+		System.out.println("open Log");
+	}
+	
+	@FXML
 	void onPressStart(ActionEvent event) {
 		UIController that = this;
 		if(myThread==null) {
