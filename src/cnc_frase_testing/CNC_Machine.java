@@ -167,11 +167,11 @@ public class CNC_Machine {
 				throw new WrongCommandException("Command doesn't exist");
 			}
 		} catch (WrongCommandException e) {
-			ExceptionHandler.logErrorTerminate(ui, cp, e.getMessage(), "Terminate");
+			ExceptionHandler.handleErrorByTerminating(ui, cp, e.getMessage(), "Terminate");
 		} catch (JSONException e) {
-			ExceptionHandler.logErrorTerminate(ui, cp, e.getMessage(), "Terminate");
+			ExceptionHandler.handleErrorByTerminating(ui, cp, e.getMessage(), "Terminate");
 		} catch (OutOfWorksurfaceException e) {
-			ExceptionHandler.logErrorTerminate(ui, cp, e.getMessage(), "Terminate");
+			ExceptionHandler.handleErrorByTerminating(ui, cp, e.getMessage(), "Terminate");
 		}
 		return success;
 	}

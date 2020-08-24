@@ -17,6 +17,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Labeled;
@@ -169,6 +171,7 @@ public class UIController {
 		commandsDone.clear();
 		uiLog.clear();
 		logCount = 0;
+		showMessage("Process terminated successfully");
 	}
 
 	private void onInputChanged(char field, String newText) {
@@ -240,6 +243,18 @@ public class UIController {
 		long actZeit = System.currentTimeMillis() - cp.startTime;
 		this.commandsDone.appendText(uiLog.get(logCount) + actZeit + "\n");
 		logCount++;
+	}
+
+	public void showMessage(String message) {
+		Alert al = new Alert(AlertType.INFORMATION);
+		al.setContentText(message);
+		al.show();
+	}
+	
+	public void showError(String message) {
+		Alert al = new Alert(AlertType.ERROR);
+		al.setContentText(message);
+		al.show();
 	}
 	
 	public int getSpeed() {
