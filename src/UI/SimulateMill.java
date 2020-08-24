@@ -14,6 +14,7 @@ public class SimulateMill {
 	private UIController ui;
 	private CommandProcessor cp;
 	private int counter = 0;
+	private int speedTmp;
 	private int speed = 10000000;
 	private boolean running;
 	AnimationTimer timer = null;
@@ -25,6 +26,7 @@ public class SimulateMill {
 		this.drillPointer = drillPointer;
 		this.cp = cp;
 		this.ui = ui;
+		this.speedTmp = ui.getSpeed();
 		this.running = true;
 		System.out.println("beep");
 	}
@@ -52,7 +54,6 @@ public class SimulateMill {
 		};
 
 		timer.start();
-//		timer.stop();
 
 	}
 
@@ -69,23 +70,46 @@ public class SimulateMill {
 			}
 			if (coordinates.get(counter).isMill()) {
 				workSurface.drawPoint((coordinates.get(counter).getX() + 420), (-coordinates.get(counter).getY() + 315));
+				drillPointer.drawPoint((coordinates.get(counter).getX() + 420), (-coordinates.get(counter).getY() + 315));
+			}else {	
+				if(speedTmp != ui.getSpeed() ) {
+					speedTmp = ui.getSpeed();
+					switch (speedTmp) {
+					case 4:
+						speed = 500000;
+						break;
+					case 5:
+						speed = 600000;
+						break;
+					case 6:
+						speed = 700000;
+						break;
+					case 7:
+						speed = 800000;
+						break;	
+					case 8:
+						speed = 900000;
+						break;						
+					}
+					
+				}
+				drillPointer.drawPoint((coordinates.get(counter).getX() + 420), (-coordinates.get(counter).getY() + 315));
 			}
-			drillPointer.drawPoint((coordinates.get(counter).getX() + 420), (-coordinates.get(counter).getY() + 315));
 		}
 
 		counter++;
 //		System.out.println("( "+ ((coordinates.get(counter).getX() + 420)) + " / " + (( - coordinates.get(counter).getY() + 315)) + " )");
 
 	}
-	
+
 	public void pause() {
 		timer.stop();
 	}
-	
+
 	public void unpause() {
 		timer.start();
 	}
-	
+
 	public void terminate() {
 		timer.stop();
 		coordinates.clear();
@@ -94,7 +118,7 @@ public class SimulateMill {
 		workSurface.clearAll();
 		drillPointer.clearAll();
 		drillPointer = null;
-		cp.logMessage("Terminate","Process terminated by User","reset");
+		cp.logMessage("Terminate", "Process terminated by User", "reset");
 		cp.logAll();
 		cp.resetCpCounter();
 	}
@@ -117,5 +141,5 @@ public class SimulateMill {
 	public void setRunning(boolean running) {
 		this.running = running;
 	}
-	
+
 }

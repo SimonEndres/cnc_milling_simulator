@@ -36,6 +36,8 @@ public class UIController {
 	private Stage stage;
 	private Scene scene;
 	private int numVar;
+	private int speed;
+
 	private ObservableList<String> commandColl;
 	final FileChooser fileChooser = new FileChooser();
 	
@@ -227,5 +229,8 @@ public class UIController {
 		logCount++;
 	}
 	
+	public int getSpeed() {
+		return speed;
+	}
 	
 }
