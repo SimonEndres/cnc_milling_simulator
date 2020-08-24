@@ -153,6 +153,7 @@ public class UIController {
 		commandsToDo.clear();
 		commandsDone.clear();
 		uiLog.clear();
+		logCount = 0;
 	}
 
 	private void onInputChanged(char field, String newText) {

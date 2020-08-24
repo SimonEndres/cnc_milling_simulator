@@ -29,16 +29,25 @@ public class CommandProcessor {
 	/**
 	 * JSONArray contains all commands with parameters, used for saving calculated commands
 	 */
-	public JSONArray workList = new JSONArray();
+	public JSONArray workList;
 	/**
 	 * JSONArray contains all commands with parameters and runtime, that were executed successfully and will later be logged by the logger
 	 */
-	public JSONArray logArray = new JSONArray();
+	public JSONArray logArray;
 	private int counterWorkList = 0;
 	public long startTime;
 	private int logCounter = 0;
 	private Logger logger = Logger.getInstance();
 	
+	/**
+	 * Constructor to initialize Arrays
+	 * 
+	 * @author Tim
+	 */
+	public CommandProcessor () {
+		this.workList = new JSONArray();
+		this.logArray = new JSONArray();
+	}
 	/**
 	 * Sets start time for runtime calculation
 	 * @author Jonas,Tim
@@ -173,5 +182,10 @@ public class CommandProcessor {
 			System.out.println(e);
 		}
 		return commandJson;
+	}
+	
+	public void resetCp() {
+		counterWorkList = 0;
+		logCounter = 0;
 	}
 }

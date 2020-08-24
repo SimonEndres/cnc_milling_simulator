@@ -95,6 +95,8 @@ public class SimulateMill {
 		drillPointer = null;
 		cp.logMessage("Terminate","Process terminated by User","reset");
 		cp.logAll();
+		cp.resetCp();
+		
 	}
 	// zum zeichnen eines Punktes auf der Oberfläche
 //		void drawPoint(int x, int y, boolean fraesen) {
