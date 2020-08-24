@@ -7,7 +7,7 @@ import org.json.JSONArray;
 
 /**
  * 
- * Class responsible for writing log data to the file system
+ * Class responsible for storing log data in the file system
  * 
  * @author Tim
  *
