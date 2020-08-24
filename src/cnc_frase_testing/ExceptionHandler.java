@@ -4,8 +4,9 @@ import UI.UIController;
 
 public class ExceptionHandler{
 
-	public static void logErrorTerminate(UIController ui,CommandProcessor cp, String reason, String handling) {
+	public static void handleErrorByTerminating(UIController ui,CommandProcessor cp, String reason, String handling) {
 		logError(cp, reason, handling);
+		ui.showError(reason + handling);
 		ui.onPressTerminate(null);
 	}
 	public static void logError(CommandProcessor cp, String reason, String handling) {
