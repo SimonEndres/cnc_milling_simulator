@@ -88,7 +88,8 @@ public class SimulateMill {
 	
 	public void terminate() {
 		timer.stop();
-		coordinates = null;
+		coordinates.clear();
+		coordinates.add(new Coordinates(0, 0, false, false));
 		counter = 0;
 		workSurface.clearAll();
 		drillPointer.clearAll();
