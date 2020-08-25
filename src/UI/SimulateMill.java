@@ -11,7 +11,7 @@ public class SimulateMill {
 	protected ArrayList<Coordinates> coordinates;
 	private WorkSurface workSurface;
 	private DrillPointer drillPointer;
-	private CoolingSimulater coolingSimulater;
+	private CoolingSimulator coolingSimulater;
 	private UIController ui;
 	private CommandProcessor cp;
 	private int counter = 0;
@@ -20,7 +20,7 @@ public class SimulateMill {
 	private boolean running;
 	AnimationTimer timer = null;
 
-	public SimulateMill(ArrayList<Coordinates> coordinates, WorkSurface workSurface, DrillPointer drillPointer, CoolingSimulater coolingSimulater, 
+	public SimulateMill(ArrayList<Coordinates> coordinates, WorkSurface workSurface, DrillPointer drillPointer, CoolingSimulator coolingSimulater, 
 			CommandProcessor cp, UIController ui) {
 		this.coordinates = coordinates;
 		this.workSurface = workSurface;
