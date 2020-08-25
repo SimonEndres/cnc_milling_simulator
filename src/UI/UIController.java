@@ -148,8 +148,7 @@ public class UIController {
 		JSONObject parameters = new JSONObject();
 		newCommand.put("number", "");
 		newCommand.put("code", comboBox.getValue());
-		if (numVar == 2) {
-			
+		if (numVar >= 2) {
 			parameters.put("x", Integer.parseInt(tfX.getText()));
 			parameters.put("y", Integer.parseInt(tfY.getText()));
 			if (numVar == 4) {
@@ -232,8 +231,7 @@ public class UIController {
 			}
 			if (numVar == 4) {
 				// Input X,Y,I,J needed for submit
-				if (!tfX.getText().equals("") && !tfY.getText().equals("") && !tfI.getText().equals("")
-						&& !tfJ.getText().equals("")) {
+				if (!tfX.getText().equals("") && !tfY.getText().equals("") && !tfI.getText().equals("") && !tfJ.getText().equals("")) {
 					buttSubmit.setDisable(false);
 				} else {
 					buttSubmit.setDisable(true);
