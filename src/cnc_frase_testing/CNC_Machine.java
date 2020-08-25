@@ -105,31 +105,40 @@ public class CNC_Machine {
 					ui.millEnd();
 					break;
 				case "03":
-					drill.setSpindelStatus(true);
-					drill.setDrehrichtung("rechts");
+					drill.setSpindleStatus(true);
+					drill.setRotationDirection("right");
+					ui.setRotDir("right");
 					break;
 				case "04":
-					drill.setSpindelStatus(true);
-					drill.setDrehrichtung("links");
+					drill.setSpindleStatus(true);
+					drill.setRotationDirection("left");
+					ui.setRotDir("left");
 					break;
 				case "05":
-					drill.setSpindelStatus(false);
+					drill.setSpindleStatus(false);
+					ui.onPressStartStop(null);
 					break;
 				case "08":
-					drill.setKühlmittel(true);
+					drill.setCooling(true);
+					ui.setCoolStat(true);
 					break;
 				case "09":
-					drill.setKühlmittel(false);
+					drill.setCooling(false);
+					ui.setCoolStat(false);
 					break;
 				case "13":
-					drill.setSpindelStatus(true);
-					drill.setDrehrichtung("rechts");
-					drill.setKühlmittel(true);
+					drill.setSpindleStatus(true);
+					drill.setRotationDirection("right");
+					drill.setCooling(true);
+					ui.setRotDir("right");
+					ui.setCoolStat(true);
 					break;
 				case "14":
-					drill.setSpindelStatus(true);
-					drill.setDrehrichtung("links");
-					drill.setKühlmittel(true);
+					drill.setSpindleStatus(true);
+					drill.setRotationDirection("left");
+					drill.setCooling(true);
+					ui.setRotDir("left");
+					ui.setCoolStat(true);
 					break;
 				case "":
 					success = false;

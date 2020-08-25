@@ -19,11 +19,14 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.paint.Color;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.shape.Circle;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
@@ -51,6 +54,12 @@ public class UIController {
 	private TextArea commandsToDo;
 	@FXML
 	private TextArea commandsDone;
+	@FXML
+	private Label spinStat;
+	@FXML
+	private Label rotDir;
+	@FXML
+	private Circle coolStat;
 	@FXML
 	private TextField tfX;
 	@FXML
@@ -192,20 +201,24 @@ public class UIController {
 				}
 			});
 			buttSP.setText("Stop");
+			setSpinStat("true");
 		} else if (myThread.isRunning()) {
 			myThread.pause();
 			myThread.setRunning(false);
 			buttSP.setText("Start");
+			setSpinStat("false");
 		} else {
 			myThread.unpause();
 			myThread.setRunning(true);
 			buttSP.setText("Stop");
+			setSpinStat("true");
 		}
 	}
 
 	@FXML
 	public void onPressTerminate(ActionEvent event) {
 		myThread.pause();
+		setSpinStat("false");
 		buttSP.setText("Start");
 		buttSP.setDisable(true);
 		buttTerminate.setDisable(true);
@@ -222,6 +235,7 @@ public class UIController {
 	public void onPressReset(ActionEvent event) {
 		myThread.reset();
 		myThread = null;
+		setSpinStat("false");
 		buttSP.setText("Start");
 		buttSP.setDisable(true);
 		buttTerminate.setDisable(true);
@@ -246,6 +260,9 @@ public class UIController {
 	}
 	
 	public void millEnd() {
+		myThread.pause();
+		myThread.setRunning(false);
+		setSpinStat("false");
 		buttRes.setDisable(false);
 		buttSP.setText("Start");
 		buttSP.setDisable(true);
@@ -337,6 +354,22 @@ public class UIController {
 
 	public int getSpeed() {
 		return speed;
+	}
+	
+	public void setSpinStat(String status) {
+		spinStat.setText(status);
+	}
+
+	public void setRotDir(String direction) {
+		rotDir.setText(direction);
+	}
+
+	public void setCoolStat(boolean status) {
+		if (status) {
+			coolStat.setFill(Color.SKYBLUE);
+		} else {
+			coolStat.setFill(Color.RED);
+		}
 	}
 
 }
