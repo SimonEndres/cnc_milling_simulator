@@ -67,7 +67,6 @@ public class CommandProcessor {
 		String command;
 		String code = commandJSON.getString("code");
 		JSONObject logCommand = new JSONObject();
-		logCommand.put("number", "N" + this.counterWorkList);
 		if (code.equals("G01") || code.equals("G02")) {
 			System.out.println("G");
 			JSONObject parameters = new JSONObject();

@@ -5,6 +5,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import org.json.JSONObject;
+
 import cnc_frase_testing.CNC_Machine;
 import cnc_frase_testing.CommandProcessor;
 import javafx.application.Platform;
@@ -139,7 +141,7 @@ public class UIController {
 
 	@FXML
 	void onPressSubmit(ActionEvent event) {
-
+		JSONObject newCommand = new JSONObject();
 	}
 
 	void changeDrillspeed() {
