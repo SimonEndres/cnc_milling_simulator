@@ -6,6 +6,14 @@ import cnc_frase_testing.CommandProcessor;
 import cnc_frase_testing.Coordinates;
 import javafx.animation.AnimationTimer;
 
+/**
+ * 
+ * Class for simulating the drilling of previously calculated coordinates
+ * coordinates have already been calculated in Drill
+ * 
+ * @author Tim, Jonas, Simon
+ *
+ */
 public class SimulateMill {
 
 	protected ArrayList<Coordinates> coordinates;
@@ -18,7 +26,16 @@ public class SimulateMill {
 	private int speed = 150000000;
 	private boolean running;
 	AnimationTimer timer = null;
-
+	
+	/**
+	 * Constructor for SimulateMill Class
+	 * 
+	 * @param coordinates
+	 * @param workSurface
+	 * @param drillPointer
+	 * @param cp
+	 * @param ui
+	 */
 	public SimulateMill(ArrayList<Coordinates> coordinates, WorkSurface workSurface, DrillPointer drillPointer,
 			CommandProcessor cp, UIController ui) {
 		this.coordinates = coordinates;
@@ -30,7 +47,13 @@ public class SimulateMill {
 		this.running = true;
 		System.out.println("beep");
 	}
-
+	
+	/**
+	 * Method to start drawing using a animation Timer
+	 * which is responsible for drawing the next coordinate after a given amount of time
+	 * 
+	 * @author Tim, Jonas, Simon
+	 */
 	public void startDrawing() {
 		// für Logzeiten
 		cp.setStartTime();
@@ -56,7 +79,13 @@ public class SimulateMill {
 		timer.start();
 
 	}
-
+	
+	/**
+	 * Method to draw the coordinates. Also determines end off single commands to add them
+	 * to done commands, update commands toDo and log commands which are done.
+	 * 
+	 * @author Tim, Jonas, Simon
+	 */
 	private void draw() {
 		if (coordinates.get(counter).isEnd()) {
 			ui.setCommandsDone();
@@ -107,14 +136,26 @@ public class SimulateMill {
 
 	}
 
+	/**
+	 * Method to stop drawing by stopping the animation Timer
+	 * @author Tim, Jonas, Simon
+	 */
 	public void pause() {
 		timer.stop();
 	}
-
+	
+	/**
+	 * Method to start drawing by starting the animation Timer
+	 * @author Tim, Jonas, Simon
+	 */
 	public void unpause() {
 		timer.start();
 	}
 
+	/**
+	 * Method to reset worksurface and commands to start over. Also logs all commands and termination.
+	 * @author Tim, Jonas, Simon
+	 */
 	public void terminate() {
 		timer.stop();
 		coordinates.clear();
@@ -138,11 +179,19 @@ public class SimulateMill {
 //			if (fraesen)
 //				cutLine.getChildren().add(bohrkopf);
 //		}
-
+	
+	/**
+	 * Method to determine whether drawing is running.
+	 * @author Tim, Jonas, Simon
+	 */
 	public boolean isRunning() {
 		return running;
 	}
-
+	
+	/**
+	 * Method to set running attribute.
+	 * @author Tim, Jonas, Simon
+	 */
 	public void setRunning(boolean running) {
 		this.running = running;
 	}

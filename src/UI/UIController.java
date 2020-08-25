@@ -24,6 +24,13 @@ import javafx.scene.control.TextField;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
+/**
+ * Class for controlling the user Interface of the cnc machine simulator
+ * Ui design is done using fxml
+ * 
+ * @author Tim
+ *
+ */
 public class UIController {
 
 	private WorkSurface workSurface;
@@ -62,9 +69,13 @@ public class UIController {
 	@FXML
 	private Slider drillSpeed;
 
-	// test
 	SimulateMill myThread = null;
-
+	
+	/**
+	 * Constructor for UIControllerClass
+	 * 
+	 * @author Tim
+	 */
 	public UIController() {
 		this.cp = new CommandProcessor();
 		this.cnc_machine = new CNC_Machine(this, cp);
@@ -73,6 +84,16 @@ public class UIController {
 				"G00", "G01", "G02", "G03", "G28");
 	}
 
+	/**
+	 * Initializing FXML setting items for combo box adding event Listeners to textfields, and
+	 * and adding changelistener to Drillspeed Slider
+	 * 
+	 * @param stage
+	 * @param workSurface
+	 * @param drillPointer
+	 * 
+	 * @author Tim
+	 */
 	public void initFXML(Stage stage, WorkSurface workSurface, DrillPointer drillPointer) {
 		this.stage = stage;
 		this.workSurface = workSurface;
@@ -93,6 +114,10 @@ public class UIController {
 		});
 	}
 
+	/**
+	 * Event method for clicking Button to Upload Commands
+	 * @param event
+	 */
 	@FXML
 	void onPressUploadSettings(ActionEvent event) {
 		File file = fileChooser.showOpenDialog(stage);
@@ -107,6 +132,11 @@ public class UIController {
 		System.out.println(drillSpeed.getValue());
 	}
 	
+	/**
+	 * Event method for choosing g-code in dropdown
+	 * @param event
+	 * @author Tim
+	 */
 	@FXML
 	void onChoosedCode(ActionEvent event) {
 		numVar = 0;
@@ -139,12 +169,27 @@ public class UIController {
 	void onPressSubmit(ActionEvent event) {
 
 	}
-
+	
+	/**
+	 * Event method for changing drillspeed
+	 * @param event
+	 * @author Tim
+	 */
 	void changeDrillspeed() {
 		this.speed = (int) drillSpeed.getValue();
 		System.out.println(speed);
 	}
 
+	/**
+	 * Event method for pressing start/stop button
+	 * if there is no thread for simulating the milling a thread is started and drawing is started
+	 * if thread is running and counter is running so the machine is drawing the machine is stopped.
+	 * else if the counter is not running this method starts it.
+	 * 
+	 * This functionality makes the button a toggle for drawing
+	 * @param event
+	 * @author Jonas und Tim
+	 */
 	@FXML
 	void onPressStart(ActionEvent event) {
 		UIController that = this;
@@ -168,6 +213,12 @@ public class UIController {
 		}
 	}
 
+	/**
+	 * Resetting UI when terminated
+	 * 
+	 * @author Tim
+	 * @param event
+	 */
 	@FXML
 	public void onPressTerminate(ActionEvent event) {
 		myThread.terminate();
@@ -182,6 +233,11 @@ public class UIController {
 		showMessage("Process terminated successfully");
 	}
 
+	/**
+	 * Method to open Logfile
+	 * @param event
+	 * @author Tim
+	 */
 	@FXML
 	void onPressLog(ActionEvent event) {
 		File log = new File("data//CNC_Fraese_Log.json");
@@ -194,6 +250,13 @@ public class UIController {
 		}
 	}
 
+	/**
+	 * Method for changed input. Determines validity of input and enables submit button
+	 * @param field
+	 * @param newText
+	 * 
+	 * @author Tim
+	 */
 	private void onInputChanged(char field, String newText) {
 		if (!newText.equals("")) {
 			// Format input value
@@ -220,6 +283,12 @@ public class UIController {
 		}
 	}
 
+	/**
+	 * Method to format inputs only allowing integer values
+	 * @param field
+	 * @param newText
+	 * @author Tim
+	 */
 	private void numberFormatter(char field, String newText) {
 		String value;
 		switch (field) {
@@ -248,36 +317,65 @@ public class UIController {
 		}
 	}
 
+	/**
+	 * Method to set commands which are toDo
+	 * @param text
+	 * @author Tim
+	 */
 	public void setCommandsToDo(String text) {
 		uiLog.add(text);
 		this.commandsToDo.appendText(text + " - " + "\n");
 	}
-
+	
+	/**
+	 * Method to update ToDocommands on Ui
+	 * @param text
+	 * @author Tim
+	 */
 	public void updateCommandsToDo() {
 		this.commandsToDo.clear();
 		for (int i = logCount; i < uiLog.size(); i++) {
 			this.commandsToDo.appendText(uiLog.get(i) + "\n");
 		}
 	}
-
+	/**
+	 * Method to set Commands done also displaying time taken
+	 * @param text
+	 * @author Tim
+	 */
 	public void setCommandsDone() {
 		long actZeit = System.currentTimeMillis() - cp.startTime;
 		this.commandsDone.appendText(uiLog.get(logCount) + actZeit + "\n");
 		logCount++;
 	}
 
+	/**
+	 * Method to show message on popups
+	 * @param text
+	 * @author Tim
+	 */
 	public void showMessage(String message) {
 		Alert al = new Alert(AlertType.INFORMATION);
 		al.setContentText(message);
 		al.show();
 	}
 
+	/**
+	 * Method to show error message on popups
+	 * @param text
+	 * @author Tim
+	 */
 	public void showError(String message) {
 		Alert al = new Alert(AlertType.ERROR);
 		al.setContentText(message);
 		al.show();
 	}
 
+	/**
+	 * Method to get the speed
+	 * @param text
+	 * @author Tim
+	 */
 	public int getSpeed() {
 		return speed;
 	}
