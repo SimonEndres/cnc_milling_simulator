@@ -71,7 +71,7 @@ public class SimulateMill {
 					workSurface.drawPoint((coordinates.get(counter).getX() + 420),
 							(-coordinates.get(counter).getY() + 315));
 					drillPointer.drawPoint((coordinates.get(counter).getX() + 420),
-							(-coordinates.get(counter).getY() + 315));
+							(-coordinates.get(counter).getY() + 315), true);
 					coolingSimulater.drawPoint((coordinates.get(counter).getX() + 420),
 							(-coordinates.get(counter).getY() + 315));
 				} else {
@@ -79,7 +79,7 @@ public class SimulateMill {
 					workSurface.drawPoint((coordinates.get(counter).getX() + 420),
 							(-coordinates.get(counter).getY() + 315));
 					drillPointer.drawPoint((coordinates.get(counter).getX() + 420),
-							(-coordinates.get(counter).getY() + 315));
+							(-coordinates.get(counter).getY() + 315), true);
 
 				}
 			} else {
@@ -105,7 +105,7 @@ public class SimulateMill {
 
 				}
 				drillPointer.drawPoint((coordinates.get(counter).getX() + 420),
-						(-coordinates.get(counter).getY() + 315));
+						(-coordinates.get(counter).getY() + 315), false);
 				if (coordinates.get(counter).isCooling()) {
 					coolingSimulater.drawPoint((coordinates.get(counter).getX() + 420),
 							(-coordinates.get(counter).getY() + 315));
