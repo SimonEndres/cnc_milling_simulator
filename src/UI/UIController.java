@@ -44,6 +44,8 @@ public class UIController {
 	final FileChooser fileChooser = new FileChooser();
 
 	@FXML
+	private Button buttUplCom;
+	@FXML
 	private ComboBox<String> comboBox;
 	@FXML
 	private TextArea commandsToDo;
@@ -65,6 +67,8 @@ public class UIController {
 	private Button buttTerminate;
 	@FXML
 	private Slider drillSpeed;
+	@FXML
+	private Button buttRes;
 
 	// test
 	SimulateMill myThread = null;
@@ -176,7 +180,8 @@ public class UIController {
 	}
 
 	@FXML
-	void onPressStart(ActionEvent event) {
+	public void onPressStartStop(ActionEvent event) {
+		buttTerminate.setDisable(false);
 		UIController that = this;
 		if (myThread == null) {
 			buttTerminate.setDisable(false);
@@ -200,18 +205,34 @@ public class UIController {
 
 	@FXML
 	public void onPressTerminate(ActionEvent event) {
-		myThread.terminate();
+		myThread.pause();
+		buttSP.setText("Start");
+		buttSP.setDisable(true);
+		buttTerminate.setDisable(true);
+		buttUplCom.setDisable(true);
+		comboBox.setDisable(true);
+		buttRes.setDisable(false);
+		commandsToDo.clear();
+		cp.logMessage("Terminate", "Process terminated", "reset or close");
+		cp.logAll();
+		showMessage("Process successfully terminated");
+	}
+	
+	@FXML
+	public void onPressReset(ActionEvent event) {
+		myThread.reset();
 		myThread = null;
 		buttSP.setText("Start");
 		buttSP.setDisable(true);
 		buttTerminate.setDisable(true);
-		commandsToDo.clear();
+		buttRes.setDisable(true);
+		buttUplCom.setDisable(false);
+		comboBox.setDisable(false);
 		commandsDone.clear();
 		uiLog.clear();
 		logCount = 0;
-		showMessage("Process terminated successfully");
+		showMessage("Worksurface successfully reset");
 	}
-
 	@FXML
 	void onPressLog(ActionEvent event) {
 		File log = new File("data//CNC_Fraese_Log.json");
@@ -222,6 +243,13 @@ public class UIController {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	public void millEnd() {
+		buttRes.setDisable(false);
+		buttSP.setText("Start");
+		buttSP.setDisable(true);
+		buttTerminate.setDisable(true);
 	}
 
 	private void onInputChanged(char field, String newText) {

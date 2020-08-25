@@ -47,7 +47,8 @@ public class SimulateMill {
 					if (counter < coordinates.size()) {
 						draw();
 					} else {
-						// Speicherung des Logs im File - muss ans Ende der Simulate Mill
+						//End of milling process
+						ui.millEnd();
 						cp.logAll();
 					}
 					lastUpdateTime = now;
@@ -128,7 +129,7 @@ public class SimulateMill {
 		timer.start();
 	}
 
-	public void terminate() {
+	public void reset() {
 		timer.stop();
 		coordinates.clear();
 		coordinates.add(new Coordinates(0, 0, false, false));
@@ -137,7 +138,7 @@ public class SimulateMill {
 		drillPointer.clearAll();
 		coolingSimulater.clearAll();
 		drillPointer = null;
-		cp.logMessage("Terminate", "Process terminated by User", "reset");
+		cp.logMessage("Reset", "Worksurface sucessfully reset", " by User");
 		cp.logAll();
 		cp.resetCpCounter();
 	}

@@ -99,10 +99,10 @@ public class CNC_Machine {
 			if (commandType.equals("M")) {
 				switch (commandNumber) {
 				case "00":
-					// Programmhalt;
+					ui.onPressTerminate(null);
 					break;
 				case "02":
-					// ProgrammEnde;
+					ui.millEnd();
 					break;
 				case "03":
 					drill.setSpindelStatus(true);
