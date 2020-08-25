@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import cnc_frase_testing.CNC_Machine;
@@ -141,7 +142,26 @@ public class UIController {
 
 	@FXML
 	void onPressSubmit(ActionEvent event) {
+		JSONObject newJson = new JSONObject();
+		JSONArray jsonArr = new JSONArray();
 		JSONObject newCommand = new JSONObject();
+		JSONObject parameters = new JSONObject();
+		newCommand.put("number", "");
+		newCommand.put("code", comboBox.getValue());
+		if (numVar == 2) {
+			
+			parameters.put("x", Integer.parseInt(tfX.getText()));
+			parameters.put("y", Integer.parseInt(tfY.getText()));
+			if (numVar == 4) {
+				parameters.put("i", Integer.parseInt(tfI.getText()));
+				parameters.put("j", Integer.parseInt(tfJ.getText()));
+			}
+		}
+		newCommand.put("parameters", parameters);
+		jsonArr.put(newCommand);
+		newJson.put("commands", jsonArr);
+		cnc_machine.machineControl(newJson);
+		buttSP.setDisable(false);
 	}
 
 	void changeDrillspeed() {

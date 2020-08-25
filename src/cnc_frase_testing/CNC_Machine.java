@@ -47,8 +47,8 @@ public class CNC_Machine {
 	}
 
 	/**
-	 * Function to coordinate all. Reads commands, checks for numbering and sorts
-	 * them. Then processes individual commands and writes them to the worklist and
+	 * Function to coordinate all. It will be triggered by the UI with entered comments to start calculation.
+	 * Reads commands, checks for numbering and sorts them. Then processes individual commands and writes them to the worklist and
 	 * UiLog.
 	 * 
 	 * @author Tim
@@ -58,16 +58,17 @@ public class CNC_Machine {
 		JSONArray commands = new JSONArray();
 		try {
 			commands = commandJson.getJSONArray("commands");
+			
+			// check for numbering
+			if (commands.getJSONObject(0).getString("number") != null) {
+				// sort array
+				commands = cp.arraySort(commands);
+			}
 		} catch (JSONException e) {
 			ExceptionHandler.logError(cp, "Corrupt JSONFile, can't load commands", "wait for new Entry");
 			return;
 		}
-		// check for numbering
-		if (commands.getJSONObject(0).getString("number") != null) {
-			// sort array
-			commands = cp.arraySort(commands);
-		}
-
+		
 		// Processesing individual commands, writing them to the worklist and UiLog
 		commands.forEach(item -> {
 			JSONObject commandJSON = (JSONObject) item;
