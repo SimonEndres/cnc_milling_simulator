@@ -5,17 +5,31 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.effect.GaussianBlur;
 import javafx.scene.paint.Color;
 
-public class CoolingSimulater extends Canvas {
+/**
+ * 
+ * Class needed to simulate the cooling function on the UI.
+ * 
+ * @author Simon
+ *
+ */
+public class CoolingSimulator extends Canvas {
 
 	private GraphicsContext gc;
 	private GaussianBlur gausBlur;
 
-	public CoolingSimulater(int i, int j) {
+	public CoolingSimulator(int i, int j) {
 		super(i, j);
 		this.gc = this.getGraphicsContext2D();
 		this.gausBlur = new GaussianBlur(8);
 	}
-
+	
+	/**
+	 * 
+	 * Simulates the cooling using a GaussianBlur effect
+	 * 
+	 * @param x
+	 * @param y
+	 */
 	public void drawPoint(int x, int y) {
 
 //		gc.clearRect(0, 0, 840, 630);

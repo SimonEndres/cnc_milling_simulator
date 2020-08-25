@@ -31,7 +31,7 @@ public class UIController {
 
 	private WorkSurface workSurface;
 	private DrillPointer drillPointer;
-	private CoolingSimulater coolingSimulater;
+	private CoolingSimulator coolingSimulater;
 	private CommandProcessor cp;
 	private CNC_Machine cnc_machine;
 	private ArrayList<String> uiLog;
@@ -81,7 +81,7 @@ public class UIController {
 				"G00", "G01", "G02", "G03", "G28");
 	}
 
-	public void initFXML(Stage stage, WorkSurface workSurface, DrillPointer drillPointer, CoolingSimulater coolingSimulater) {
+	public void initFXML(Stage stage, WorkSurface workSurface, DrillPointer drillPointer, CoolingSimulator coolingSimulater) {
 		this.stage = stage;
 		this.workSurface = workSurface;
 		this.drillPointer = drillPointer;
