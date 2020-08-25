@@ -12,7 +12,7 @@ public class HomePoint extends Canvas {
 		super(i,j);
 		this.gc = this.getGraphicsContext2D();
 		this.gc.setFill(Color.GREEN);
-		gc.fillOval(420, 315, 7, 7);
+		gc.fillOval(420, 315, 6, 6);
 	}
 }
 

@@ -13,7 +13,7 @@ public class DrillPointer extends Canvas {
 	public DrillPointer(int i, int j) {
 		super(i, j);
 		this.gc = this.getGraphicsContext2D();
-		this.dropShadow = new DropShadow(5,5,30,Color.BLACK);
+		this.dropShadow = new DropShadow(8.0,15.0,15.0,Color.BLACK);
 		
 	}
 
