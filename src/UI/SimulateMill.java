@@ -66,8 +66,9 @@ public class SimulateMill {
 			cp.logCommandsDone();
 		} else {
 			if (coordinates.get(counter).isMill()) {
+				speedTmp = 0;
 				if (coordinates.get(counter).isCooling()) {
-					speed = 100000000;
+					speed = 70000000;
 					workSurface.drawPoint((coordinates.get(counter).getX() + 420),
 							(-coordinates.get(counter).getY() + 315));
 					drillPointer.drawPoint((coordinates.get(counter).getX() + 420),
@@ -75,7 +76,8 @@ public class SimulateMill {
 					coolingSimulater.drawPoint((coordinates.get(counter).getX() + 420),
 							(-coordinates.get(counter).getY() + 315));
 				} else {
-					speed = 150000000;
+					coolingSimulater.clearAll();
+					speed = 80000000;
 					workSurface.drawPoint((coordinates.get(counter).getX() + 420),
 							(-coordinates.get(counter).getY() + 315));
 					drillPointer.drawPoint((coordinates.get(counter).getX() + 420),
@@ -87,19 +89,19 @@ public class SimulateMill {
 					speedTmp = ui.getSpeed();
 					switch (speedTmp) {
 					case 4:
-						speed = 80000000;
+						speed = 60000000;
 						break;
 					case 5:
-						speed = 60000000;
+						speed = 50000000;
 						break;
 					case 6:
 						speed = 40000000;
 						break;
 					case 7:
-						speed = 20000000;
+						speed = 30000000;
 						break;
 					case 8:
-						speed = 9900000;
+						speed = 20000000;
 						break;
 					}
 
@@ -133,6 +135,7 @@ public class SimulateMill {
 		counter = 0;
 		workSurface.clearAll();
 		drillPointer.clearAll();
+		coolingSimulater.clearAll();
 		drillPointer = null;
 		cp.logMessage("Terminate", "Process terminated by User", "reset");
 		cp.logAll();

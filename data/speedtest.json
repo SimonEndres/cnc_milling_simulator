@@ -18,7 +18,7 @@
 			"number":"N30",
 			"code":"G01",
 			"parameters": { 
-				"x":50,
+				"x":200,
 				"y":0
 			}	
 		},
@@ -32,14 +32,21 @@
 		},
 		{
 			"number":"N50",
-			"code":"G01",
-			"parameters": { 
-				"x":0,
-				"y":50
+			"code":"M09",
+			"parameters": {
+
 			}	
 		},
 		{
 			"number":"N60",
+			"code":"G01",
+			"parameters": { 
+				"x":0,
+				"y":200
+			}	
+		},
+		{
+			"number":"N70",
 			"code":"G00",
 			"parameters": { 
 				"x":0,
