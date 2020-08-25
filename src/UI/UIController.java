@@ -160,7 +160,14 @@ public class UIController {
 		jsonArr.put(newCommand);
 		newJson.put("commands", jsonArr);
 		cnc_machine.machineControl(newJson);
+		//Enable Start
 		buttSP.setDisable(false);
+		//Clear textfields
+		tfX.setText("");
+		tfY.setText("");
+		tfI.setText("");
+		tfJ.setText("");
+		buttSubmit.setDisable(true);
 	}
 
 	void changeDrillspeed() {
