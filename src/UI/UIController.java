@@ -34,7 +34,7 @@ public class UIController {
 	private int logCount = 0;
 	private Stage stage;
 	private int numVar;
-	private int speed;
+	private int speed = 4;
 
 	private ObservableList<String> commandColl;
 	final FileChooser fileChooser = new FileChooser();

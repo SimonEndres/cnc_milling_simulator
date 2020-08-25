@@ -15,7 +15,7 @@ public class SimulateMill {
 	private CommandProcessor cp;
 	private int counter = 0;
 	private int speedTmp;
-	private int speed = 10000000;
+	private int speed = 150000000;
 	private boolean running;
 	AnimationTimer timer = null;
 
@@ -26,7 +26,7 @@ public class SimulateMill {
 		this.drillPointer = drillPointer;
 		this.cp = cp;
 		this.ui = ui;
-		this.speedTmp = ui.getSpeed();
+		this.speedTmp = 0;
 		this.running = true;
 		System.out.println("beep");
 	}
@@ -63,37 +63,42 @@ public class SimulateMill {
 			ui.updateCommandsToDo();
 			cp.logCommandsDone();
 		} else {
-			if (coordinates.get(counter).isCooling()) {
-				speed = 500000;
-			}else {
-				speed = 10000000;
-			}
 			if (coordinates.get(counter).isMill()) {
-				workSurface.drawPoint((coordinates.get(counter).getX() + 420), (-coordinates.get(counter).getY() + 315));
-				drillPointer.drawPoint((coordinates.get(counter).getX() + 420), (-coordinates.get(counter).getY() + 315));
-			}else {	
-				if(speedTmp != ui.getSpeed() ) {
+				if (coordinates.get(counter).isCooling()) {
+					speed = 100000000;
+//				System.out.println("speed: " + speed);
+				} else {
+					speed = 150000000;
+				}
+				workSurface.drawPoint((coordinates.get(counter).getX() + 420),
+						(-coordinates.get(counter).getY() + 315));
+				drillPointer.drawPoint((coordinates.get(counter).getX() + 420),
+						(-coordinates.get(counter).getY() + 315));
+			} else {
+				if (speedTmp != ui.getSpeed()) {
 					speedTmp = ui.getSpeed();
 					switch (speedTmp) {
 					case 4:
-						speed = 500000;
+						speed = 80000000;
+						System.out.println("speed4");
 						break;
 					case 5:
-						speed = 600000;
+						speed = 60000000;
 						break;
 					case 6:
-						speed = 700000;
+						speed = 40000000;
 						break;
 					case 7:
-						speed = 800000;
-						break;	
+						speed = 20000000;
+						break;
 					case 8:
-						speed = 900000;
-						break;						
+						speed = 9900000;
+						break;
 					}
-					
+
 				}
-				drillPointer.drawPoint((coordinates.get(counter).getX() + 420), (-coordinates.get(counter).getY() + 315));
+				drillPointer.drawPoint((coordinates.get(counter).getX() + 420),
+						(-coordinates.get(counter).getY() + 315));
 			}
 		}
 
