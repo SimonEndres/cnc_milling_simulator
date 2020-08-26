@@ -107,12 +107,10 @@ public class CNC_Machine {
 				case "03":
 					drill.setSpindleStatus(true);
 					drill.setRotationDirection("right");
-					ui.setRotDir("right");
 					break;
 				case "04":
 					drill.setSpindleStatus(true);
 					drill.setRotationDirection("left");
-					ui.setRotDir("left");
 					break;
 				case "05":
 					drill.setSpindleStatus(false);
@@ -120,25 +118,19 @@ public class CNC_Machine {
 					break;
 				case "08":
 					drill.setCooling(true);
-					ui.setCoolStat(true);
 					break;
 				case "09":
 					drill.setCooling(false);
-					ui.setCoolStat(false);
 					break;
 				case "13":
 					drill.setSpindleStatus(true);
 					drill.setRotationDirection("right");
 					drill.setCooling(true);
-					ui.setRotDir("right");
-					ui.setCoolStat(true);
 					break;
 				case "14":
 					drill.setSpindleStatus(true);
 					drill.setRotationDirection("left");
 					drill.setCooling(true);
-					ui.setRotDir("left");
-					ui.setCoolStat(true);
 					break;
 				case "":
 					success = false;

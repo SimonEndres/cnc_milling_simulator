@@ -11,22 +11,25 @@ public class Coordinates {
 	private int x, y;
 	private boolean mill;
 	private boolean cooling;
+	private String rotation;
 
 	private boolean end;
 
-	public Coordinates(int x, int y, boolean mill, boolean cooling) {
+	public Coordinates(int x, int y, boolean mill, boolean cooling, String rotation) {
 		this.x = x;
 		this.y = y;
 		this.mill = mill;
 		this.cooling = cooling;
+		this.rotation = rotation;
 	}
 
-	public Coordinates(int x, int y, boolean mill, boolean cooling, boolean end) {
+	public Coordinates(int x, int y, boolean mill, boolean cooling, boolean end, String rotation) {
 		this.x = x;
 		this.y = y;
 		this.mill = mill;
 		this.cooling = cooling;
 		this.end = end;
+		this.rotation = rotation;
 	}
 
 	public int getX() {
@@ -67,6 +70,14 @@ public class Coordinates {
 	
 	public void setCooling(boolean cooling) {
 		this.cooling = cooling;
+	}
+	
+	public String getRotation() {
+		return rotation;
+	}
+	
+	public void setRotation(String rotation) {
+		this.rotation = rotation;
 	}
 
 }

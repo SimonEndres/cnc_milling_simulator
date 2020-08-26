@@ -27,7 +27,7 @@ public class SimulateMill {
 	private int speed = 150000000;
 	private boolean running;
 	AnimationTimer timer = null;
-	
+
 	/**
 	 * Constructor for SimulateMill Class
 	 * 
@@ -38,9 +38,8 @@ public class SimulateMill {
 	 * @param ui
 	 */
 
-
-	public SimulateMill(ArrayList<Coordinates> coordinates, WorkSurface workSurface, DrillPointer drillPointer, CoolingSimulator coolingSimulater,
-			CommandProcessor cp, UIController ui) {
+	public SimulateMill(ArrayList<Coordinates> coordinates, WorkSurface workSurface, DrillPointer drillPointer,
+			CoolingSimulator coolingSimulater, CommandProcessor cp, UIController ui) {
 		this.coordinates = coordinates;
 		this.workSurface = workSurface;
 		this.drillPointer = drillPointer;
@@ -51,10 +50,10 @@ public class SimulateMill {
 		this.running = true;
 		System.out.println("beep");
 	}
-	
+
 	/**
-	 * Method to start drawing using a animation Timer
-	 * which is responsible for drawing the next coordinate after a given amount of time
+	 * Method to start drawing using a animation Timer which is responsible for
+	 * drawing the next coordinate after a given amount of time
 	 * 
 	 * @author Tim, Jonas, Simon
 	 */
@@ -72,7 +71,7 @@ public class SimulateMill {
 					if (counter < coordinates.size()) {
 						draw();
 					} else {
-						//End of milling process
+						// End of milling process
 						ui.millEnd();
 						cp.logAll();
 					}
@@ -84,10 +83,11 @@ public class SimulateMill {
 		timer.start();
 
 	}
-	
+
 	/**
-	 * Method to draw the coordinates. Also determines end off single commands to add them
-	 * to done commands, update commands toDo and log commands which are done.
+	 * Method to draw the coordinates. Also determines end off single commands to
+	 * add them to done commands, update commands toDo and log commands which are
+	 * done.
 	 * 
 	 * @author Tim, Jonas, Simon
 	 */
@@ -147,6 +147,10 @@ public class SimulateMill {
 			}
 		}
 
+		// checking if the rotation direction has changed
+		ui.setRotDir(coordinates.get(counter).getRotation());
+		ui.setCoolStat(coordinates.get(counter).isCooling());
+
 		counter++;
 //		System.out.println("( "+ ((coordinates.get(counter).getX() + 420)) + " / " + (( - coordinates.get(counter).getY() + 315)) + " )");
 
@@ -154,14 +158,16 @@ public class SimulateMill {
 
 	/**
 	 * Method to stop drawing by stopping the animation Timer
+	 * 
 	 * @author Tim, Jonas, Simon
 	 */
 	public void pause() {
 		timer.stop();
 	}
-	
+
 	/**
 	 * Method to start drawing by starting the animation Timer
+	 * 
 	 * @author Tim, Jonas, Simon
 	 */
 	public void unpause() {
@@ -169,13 +175,15 @@ public class SimulateMill {
 	}
 
 	/**
-	 * Method to reset worksurface and commands to start over. Also logs all commands and termination.
+	 * Method to reset worksurface and commands to start over. Also logs all
+	 * commands and termination.
+	 * 
 	 * @author Tim, Jonas, Simon
 	 */
 	public void reset() {
 		timer.stop();
 		coordinates.clear();
-		coordinates.add(new Coordinates(0, 0, false, false));
+		coordinates.add(new Coordinates(0, 0, false, false, "right"));
 		counter = 0;
 		workSurface.clearAll();
 		drillPointer.clearAll();
@@ -188,15 +196,17 @@ public class SimulateMill {
 
 	/**
 	 * Method to determine whether drawing is running.
+	 * 
 	 * @author Tim, Jonas, Simon
 	 */
 
 	public boolean isRunning() {
 		return running;
 	}
-	
+
 	/**
 	 * Method to set running attribute.
+	 * 
 	 * @author Tim, Jonas, Simon
 	 */
 	public void setRunning(boolean running) {

@@ -27,12 +27,12 @@ public class Drill {
 	 */
 	public Drill(ArrayList<Coordinates> coordinates) {
 		this.color = "red";
+		this.rotationDirection = "right";
 		this.coordinates = coordinates;
-		this.coordinates.add(new Coordinates(0, 0, false, false));
+		this.coordinates.add(new Coordinates(0, 0, false, false, this.rotationDirection));
 		this.spindleStatus = false;
 		this.cooling = false;
 		this.speedMode = false;
-		this.rotationDirection = "right";
 	}
 
 	public String getColor() {
@@ -80,9 +80,9 @@ public class Drill {
 	public void writeM() {
 		if (coordinates.size() > 0) {
 			Coordinates hilf = coordinates.get(coordinates.size() - 1);
-			coordinates.add(new Coordinates(hilf.getX(), hilf.getY(), true, this.cooling, true));
+			coordinates.add(new Coordinates(hilf.getX(), hilf.getY(), true, this.cooling, true, this.rotationDirection));
 		} else {
-			coordinates.add(new Coordinates(0, 0, true, this.cooling, true));
+			coordinates.add(new Coordinates(0, 0, true, this.cooling, true, this.rotationDirection));
 		}
 
 	}
@@ -115,14 +115,14 @@ public class Drill {
 				double x = startPoint.getX() + (deltaX / distance * i);
 				double y = startPoint.getY() + (deltaY / distance * i);
 
-				coordinates.add(new Coordinates((int) x, (int) y, mill, this.cooling));
+				coordinates.add(new Coordinates((int) x, (int) y, mill, this.cooling, this.rotationDirection));
 				System.out.println("( " + x + " / " + y + " )");
 			}
 		}
 
 //		Wird für Befehlstatus im UI gebraucht
 		Coordinates hilf = coordinates.get(coordinates.size() - 1);
-		coordinates.add(new Coordinates(hilf.getX(), hilf.getY(), true, this.cooling, true));
+		coordinates.add(new Coordinates(hilf.getX(), hilf.getY(), true, this.cooling, true, this.rotationDirection));
 
 	}
 
@@ -173,7 +173,7 @@ public class Drill {
 
 						alpha = (-(n - 1) * 2 * Math.PI / circumference + targetAngle);
 
-						coordinates.add(new Coordinates(x, y, true, this.cooling));
+						coordinates.add(new Coordinates(x, y, true, this.cooling, this.rotationDirection));
 						System.out.println("( " + x + " / " + y + " )");
 
 					}
@@ -198,7 +198,7 @@ public class Drill {
 
 						alpha = (-(n - 1) * 2 * Math.PI / circumference + targetAngle);
 
-						coordinates.add(new Coordinates(x, y, true, this.cooling));
+						coordinates.add(new Coordinates(x, y, true, this.cooling, this.rotationDirection));
 						System.out.println("( " + x + " / " + y + " )");
 
 					}
@@ -221,7 +221,7 @@ public class Drill {
 
 						alpha = (((n - 1) * 2 * Math.PI / circumference) + targetAngle);
 
-						coordinates.add(new Coordinates(x, y, true, this.cooling));
+						coordinates.add(new Coordinates(x, y, true, this.cooling, this.rotationDirection));
 						System.out.println("( " + x + " / " + y + " )   Alpha: " + alpha);
 
 					}
@@ -247,7 +247,7 @@ public class Drill {
 
 						alpha = ((n - 1) * 2 * Math.PI / circumference + targetAngle);
 
-						coordinates.add(new Coordinates(x, y, true, this.cooling));
+						coordinates.add(new Coordinates(x, y, true, this.cooling, this.rotationDirection));
 						System.out.println("( " + x + " / " + y + " )  n:" + n);
 
 					}
@@ -257,7 +257,7 @@ public class Drill {
 		}
 
 		Coordinates hilf = coordinates.get(coordinates.size() - 1);
-		coordinates.add(new Coordinates(hilf.getX(), hilf.getY(), true, this.cooling, true));
+		coordinates.add(new Coordinates(hilf.getX(), hilf.getY(), true, this.cooling, true, this.rotationDirection));
 	}
 
 	/**
