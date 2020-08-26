@@ -12,11 +12,22 @@ import javafx.scene.paint.Color;
 public class HomePoint extends Canvas {
 	
 	private GraphicsContext gc;
+	private Color color;
 	
 	public HomePoint(int i, int j) {
 		super(i,j);
 		this.gc = this.getGraphicsContext2D();
-		this.gc.setFill(Color.GREEN);
+		this.color = Color.GREEN;
+		setHomePoint(i,j);
+	}
+	
+	public void setColor(Color color) {
+		this.color = color;
+		setHomePoint(840, 630);
+	}
+	
+	private void setHomePoint(int i, int j) {
+		this.gc.setFill(this.color);
 		gc.fillOval(420, 315, 6, 6);
 	}
 }

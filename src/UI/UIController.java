@@ -19,8 +19,10 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.control.Button;
+import javafx.scene.control.ColorPicker;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
@@ -44,6 +46,8 @@ public class UIController {
 	private CoolingSimulator coolingSimulater;
 	private CommandProcessor cp;
 	private CNC_Machine cnc_machine;
+	private HomePoint homePoint;
+	private StackPane workSurfaceGroup;
 	private ArrayList<String> uiLog;
 	private int logCount;
 	private Stage stage;
@@ -89,6 +93,8 @@ public class UIController {
 	private Label currPosition;
 	@FXML
 	private Button buttSettings;
+	@FXML
+	private ColorPicker colorPic;
 
 	SimulateMill myThread = null;
 	
@@ -117,11 +123,13 @@ public class UIController {
 	 * 
 	 * @author Tim
 	 */
-	public void initFXML(Stage stage, WorkSurface workSurface, DrillPointer drillPointer, CoolingSimulator coolingSimulater) {
+	public void initFXML(Stage stage, WorkSurface workSurface, DrillPointer drillPointer, CoolingSimulator coolingSimulater, HomePoint homePoint, StackPane workSurfaceGroup) {
 		this.stage = stage;
 		this.workSurface = workSurface;
 		this.drillPointer = drillPointer;
 		this.coolingSimulater = coolingSimulater;
+		this.homePoint = homePoint;
+		this.workSurfaceGroup = workSurfaceGroup;
 		comboBox.setItems(commandColl);
 		tfX.textProperty().addListener((obs, oldText, newText) -> onInputChanged('X', newText));
 		tfY.textProperty().addListener((obs, oldText, newText) -> onInputChanged('Y', newText));
@@ -487,6 +495,23 @@ public class UIController {
 	
 	public void setPosition(String newPos) {
 		currPosition.setText(newPos);
+	}
+	
+	@FXML
+	public void setHomeColor(ActionEvent event) {
+		System.out.println(colorPic.getValue());
+		homePoint.setColor(colorPic.getValue());
+		setWorkColor();
+	}
+	
+	public void setWorkColor() {
+		System.out.println();
+		workSurfaceGroup.setStyle("-fx-background-color: " + colorPic.getValue().toString().replaceAll("0x", "#"));
+		setDrillColor();
+	}
+	
+	public void setDrillColor() {
+		drillPointer.setColor(colorPic.getValue());
 	}
 
 }
