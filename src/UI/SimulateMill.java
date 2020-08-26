@@ -22,11 +22,11 @@ public class SimulateMill {
 	private CoolingSimulator coolingSimulater;
 	private UIController ui;
 	private CommandProcessor cp;
-	private int counter = 0;
+	private int counter;
 	private int speedTmp;
-	private int speed = 150000000;
+	private int speed;
 	private boolean running;
-	AnimationTimer timer = null;
+	AnimationTimer timer;
 
 	/**
 	 * Constructor for SimulateMill Class
@@ -46,7 +46,10 @@ public class SimulateMill {
 		this.coolingSimulater = coolingSimulater;
 		this.cp = cp;
 		this.ui = ui;
+		this.counter = 0;
+		this.speed = 150000000;
 		this.speedTmp = 0;
+		this.timer = null;
 		this.running = true;
 		System.out.println("beep");
 	}

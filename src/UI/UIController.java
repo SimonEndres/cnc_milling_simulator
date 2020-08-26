@@ -45,10 +45,10 @@ public class UIController {
 	private CommandProcessor cp;
 	private CNC_Machine cnc_machine;
 	private ArrayList<String> uiLog;
-	private int logCount = 0;
+	private int logCount;
 	private Stage stage;
 	private int numVar;
-	private int speed = 4;
+	private int speed;
 
 	private ObservableList<String> commandColl;
 	final FileChooser fileChooser = new FileChooser();
@@ -87,6 +87,8 @@ public class UIController {
 	private Button buttRes;
 	@FXML
 	private Label currPosition;
+	@FXML
+	private Button buttSettings;
 
 	SimulateMill myThread = null;
 	
@@ -99,6 +101,8 @@ public class UIController {
 		this.cp = new CommandProcessor();
 		this.cnc_machine = new CNC_Machine(this, cp);
 		this.uiLog = new ArrayList<String>();
+		this.logCount = 0;
+		this.speed = 4;
 		commandColl = FXCollections.observableArrayList("M00", "M02", "M03", "M04", "M05", "M08", "M09", "M13", "M14",
 				"G00", "G01", "G02", "G03", "G28");
 	}
@@ -435,8 +439,8 @@ public class UIController {
 	}
 
 	/**
-	 * Method to show message on popups
-	 * @param text
+	 * Method to show message on a dialog
+	 * @param message	- Message which is shown
 	 * @author Tim
 	 */
 	public void showMessage(String message) {
@@ -446,8 +450,8 @@ public class UIController {
 	}
 
 	/**
-	 * Method to show error message on popups
-	 * @param text
+	 * Method to show error message on a dialog
+	 * @param message	- Message which is shown
 	 * @author Tim
 	 */
 	public void showError(String message) {
@@ -457,8 +461,8 @@ public class UIController {
 	}
 
 	/**
-	 * Method to get the speed
-	 * @param text
+	 * Method to get the speed of the drill (speed while not milling)
+	 * 
 	 * @author Tim
 	 */
 	public int getSpeed() {

@@ -34,10 +34,10 @@ public class CommandProcessor {
 	 * JSONArray contains all commands with parameters and runtime, that were executed successfully and will later be logged by the logger
 	 */
 	public JSONArray logArray;
-	private int counterWorkList = 0;
+	private int counterWorkList;
 	public long startTime;
-	private int logCounter = 0;
-	private Logger logger = Logger.getInstance();
+	private int logCounter;
+	private Logger logger;
 	
 	/**
 	 * Constructor to initialize Arrays
@@ -47,6 +47,9 @@ public class CommandProcessor {
 	public CommandProcessor () {
 		this.workList = new JSONArray();
 		this.logArray = new JSONArray();
+		this.counterWorkList = 0;
+		this.logCounter = 0;
+		this.logger = Logger.getInstance();
 	}
 	/**
 	 * Sets start time for runtime calculation
