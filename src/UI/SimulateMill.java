@@ -150,7 +150,7 @@ public class SimulateMill {
 		// checking if the rotation direction has changed
 		ui.setRotDir(coordinates.get(counter).getRotation());
 		ui.setCoolStat(coordinates.get(counter).isCooling());
-
+		ui.setPosition(coordinates.get(counter).getX() + " / " + coordinates.get(counter).getY());
 		counter++;
 //		System.out.println("( "+ ((coordinates.get(counter).getX() + 420)) + " / " + (( - coordinates.get(counter).getY() + 315)) + " )");
 

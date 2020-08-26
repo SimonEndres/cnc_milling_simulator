@@ -85,6 +85,8 @@ public class UIController {
 	private Slider drillSpeed;
 	@FXML
 	private Button buttRes;
+	@FXML
+	private Label currPosition;
 
 	SimulateMill myThread = null;
 	
@@ -261,7 +263,7 @@ public class UIController {
 	}
 
 	/**
-	 * Resetting UI when terminated
+	 * Terminating UI by User (Button) or Exception
 	 * 
 	 * @author Tim
 	 * @param event
@@ -282,6 +284,12 @@ public class UIController {
 		showMessage("Process successfully terminated");
 	}
 	
+	/**
+	 * Resetting UI by User (Button)
+	 * 
+	 * @author Tim
+	 * @param event
+	 */
 	@FXML
 	public void onPressReset(ActionEvent event) {
 		myThread.reset();
@@ -296,6 +304,9 @@ public class UIController {
 		commandsDone.clear();
 		uiLog.clear();
 		logCount = 0;
+		setRotDir("right");
+		setCoolStat(false);
+		setPosition("0.0 / 0.0");
 		showMessage("Worksurface successfully reset");
 	}
 	/**
@@ -468,6 +479,10 @@ public class UIController {
 		} else {
 			coolStat.setFill(Color.RED);
 		}
+	}
+	
+	public void setPosition(String newPos) {
+		currPosition.setText(newPos);
 	}
 
 }

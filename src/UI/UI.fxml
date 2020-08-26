@@ -83,14 +83,19 @@
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </HBox.margin>
             </Button>
-            <Button fx:id="buttRes" disable="true" mnemonicParsing="false" onAction="#onPressReset" prefHeight="25.0" prefWidth="51.0" text="Reset">
+            <Button fx:id="buttRes" cancelButton="true" disable="true" mnemonicParsing="false" onAction="#onPressReset" prefHeight="25.0" prefWidth="51.0" text="Reset">
                <HBox.margin>
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </HBox.margin>
             </Button>
             <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#onPressLog" prefHeight="25.0" prefWidth="78.0" text="Open Log">
                <HBox.margin>
-                  <Insets bottom="10.0" left="1100.0" right="10.0" top="10.0" />
+                  <Insets bottom="10.0" left="1050.0" right="10.0" top="10.0" />
+               </HBox.margin>
+            </Button>
+            <Button mnemonicParsing="false" text="Button">
+               <HBox.margin>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </HBox.margin>
             </Button>
          </children>
@@ -128,7 +133,7 @@
                   </Label>
                   <Label fx:id="spinStat" text="false">
                      <HBox.margin>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                        <Insets bottom="10.0" left="35.0" right="10.0" top="10.0" />
                      </HBox.margin>
                   </Label>
                </children>
@@ -165,6 +170,20 @@
                </VBox.margin>
             </Label>
             <HBox prefHeight="53.0" prefWidth="300.0">
+               <children>
+                  <Label text="Current position:">
+                     <HBox.margin>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </HBox.margin>
+                  </Label>
+                  <Label fx:id="currPosition" prefHeight="17.0" prefWidth="72.0" text="0.0 / 0.0">
+                     <HBox.margin>
+                        <Insets bottom="10.0" left="14.0" right="10.0" top="10.0" />
+                     </HBox.margin>
+                  </Label>
+               </children>
+            </HBox>
+            <HBox prefHeight="79.0" prefWidth="300.0">
                <children>
                   <Label prefHeight="17.0" prefWidth="84.0" text="Cooling status:">
                      <HBox.margin>
