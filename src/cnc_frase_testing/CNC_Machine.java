@@ -47,8 +47,8 @@ public class CNC_Machine {
 	}
 
 	/**
-	 * Function to coordinate all. Reads commands, checks for numbering and sorts
-	 * them. Then processes individual commands and writes them to the worklist and
+	 * Function to coordinate all. It will be triggered by the UI with entered comments to start calculation.
+	 * Reads commands, checks for numbering and sorts them. Then processes individual commands and writes them to the worklist and
 	 * UiLog.
 	 * 
 	 * @author Tim
@@ -58,16 +58,17 @@ public class CNC_Machine {
 		JSONArray commands = new JSONArray();
 		try {
 			commands = commandJson.getJSONArray("commands");
+			
+			// check for numbering
+			if (commands.getJSONObject(0).getString("number") != null) {
+				// sort array
+				commands = cp.arraySort(commands);
+			}
 		} catch (JSONException e) {
 			ExceptionHandler.logError(cp, "Corrupt JSONFile, can't load commands", "wait for new Entry");
 			return;
 		}
-		// check for numbering
-		if (commands.getJSONObject(0).getString("number") != null) {
-			// sort array
-			commands = cp.arraySort(commands);
-		}
-
+		
 		// Processesing individual commands, writing them to the worklist and UiLog
 		commands.forEach(item -> {
 			JSONObject commandJSON = (JSONObject) item;
@@ -98,37 +99,46 @@ public class CNC_Machine {
 			if (commandType.equals("M")) {
 				switch (commandNumber) {
 				case "00":
-					// Programmhalt;
+					ui.onPressTerminate(null);
 					break;
 				case "02":
-					// ProgrammEnde;
+					ui.millEnd();
 					break;
 				case "03":
-					drill.setSpindelStatus(true);
-					drill.setDrehrichtung("rechts");
+					drill.setSpindleStatus(true);
+					drill.setRotationDirection("right");
+					ui.setRotDir("right");
 					break;
 				case "04":
-					drill.setSpindelStatus(true);
-					drill.setDrehrichtung("links");
+					drill.setSpindleStatus(true);
+					drill.setRotationDirection("left");
+					ui.setRotDir("left");
 					break;
 				case "05":
-					drill.setSpindelStatus(false);
+					drill.setSpindleStatus(false);
+					ui.onPressStartStop(null);
 					break;
 				case "08":
-					drill.setKühlmittel(true);
+					drill.setCooling(true);
+					ui.setCoolStat(true);
 					break;
 				case "09":
-					drill.setKühlmittel(false);
+					drill.setCooling(false);
+					ui.setCoolStat(false);
 					break;
 				case "13":
-					drill.setSpindelStatus(true);
-					drill.setDrehrichtung("rechts");
-					drill.setKühlmittel(true);
+					drill.setSpindleStatus(true);
+					drill.setRotationDirection("right");
+					drill.setCooling(true);
+					ui.setRotDir("right");
+					ui.setCoolStat(true);
 					break;
 				case "14":
-					drill.setSpindelStatus(true);
-					drill.setDrehrichtung("links");
-					drill.setKühlmittel(true);
+					drill.setSpindleStatus(true);
+					drill.setRotationDirection("left");
+					drill.setCooling(true);
+					ui.setRotDir("left");
+					ui.setCoolStat(true);
 					break;
 				case "":
 					success = false;

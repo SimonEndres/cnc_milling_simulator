@@ -20,9 +20,9 @@ public class Main extends Application {
 		WorkSurface workSurface = new WorkSurface(840, 630);
 		DrillPointer drillPointer = new DrillPointer(840, 630);
 		HomePoint homePoint = new HomePoint(840, 630);
-		CoolingSimulater coolingSimulater = new CoolingSimulater(840, 630);
+		CoolingSimulator coolingSimulater = new CoolingSimulator(840, 630);
 		
-		StackPane workSurfaceGroup = new StackPane(workSurface, coolingSimulater, drillPointer, homePoint);		
+		StackPane workSurfaceGroup = new StackPane(workSurface, coolingSimulater, homePoint, drillPointer);		
 		
 		BorderPane mainPane = (BorderPane) loader.load();
 		mainPane.setCenter(workSurfaceGroup);

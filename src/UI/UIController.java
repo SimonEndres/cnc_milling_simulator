@@ -5,6 +5,9 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import cnc_frase_testing.CNC_Machine;
 import cnc_frase_testing.CommandProcessor;
 import javafx.application.Platform;
@@ -16,11 +19,14 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.paint.Color;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.shape.Circle;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
@@ -35,7 +41,7 @@ public class UIController {
 
 	private WorkSurface workSurface;
 	private DrillPointer drillPointer;
-	private CoolingSimulater coolingSimulater;
+	private CoolingSimulator coolingSimulater;
 	private CommandProcessor cp;
 	private CNC_Machine cnc_machine;
 	private ArrayList<String> uiLog;
@@ -48,11 +54,19 @@ public class UIController {
 	final FileChooser fileChooser = new FileChooser();
 
 	@FXML
+	private Button buttUplCom;
+	@FXML
 	private ComboBox<String> comboBox;
 	@FXML
 	private TextArea commandsToDo;
 	@FXML
 	private TextArea commandsDone;
+	@FXML
+	private Label spinStat;
+	@FXML
+	private Label rotDir;
+	@FXML
+	private Circle coolStat;
 	@FXML
 	private TextField tfX;
 	@FXML
@@ -69,6 +83,8 @@ public class UIController {
 	private Button buttTerminate;
 	@FXML
 	private Slider drillSpeed;
+	@FXML
+	private Button buttRes;
 
 	SimulateMill myThread = null;
 	
@@ -95,8 +111,7 @@ public class UIController {
 	 * 
 	 * @author Tim
 	 */
-
-	public void initFXML(Stage stage, WorkSurface workSurface, DrillPointer drillPointer, CoolingSimulater coolingSimulater) {
+	public void initFXML(Stage stage, WorkSurface workSurface, DrillPointer drillPointer, CoolingSimulator coolingSimulater) {
 		this.stage = stage;
 		this.workSurface = workSurface;
 		this.drillPointer = drillPointer;
@@ -170,7 +185,32 @@ public class UIController {
 
 	@FXML
 	void onPressSubmit(ActionEvent event) {
-
+		JSONObject newJson = new JSONObject();
+		JSONArray jsonArr = new JSONArray();
+		JSONObject newCommand = new JSONObject();
+		JSONObject parameters = new JSONObject();
+		newCommand.put("number", "");
+		newCommand.put("code", comboBox.getValue());
+		if (numVar >= 2) {
+			parameters.put("x", Integer.parseInt(tfX.getText()));
+			parameters.put("y", Integer.parseInt(tfY.getText()));
+			if (numVar == 4) {
+				parameters.put("i", Integer.parseInt(tfI.getText()));
+				parameters.put("j", Integer.parseInt(tfJ.getText()));
+			}
+		}
+		newCommand.put("parameters", parameters);
+		jsonArr.put(newCommand);
+		newJson.put("commands", jsonArr);
+		cnc_machine.machineControl(newJson);
+		//Enable Start
+		buttSP.setDisable(false);
+		//Clear textfields
+		tfX.setText("");
+		tfY.setText("");
+		tfI.setText("");
+		tfJ.setText("");
+		buttSubmit.setDisable(true);
 	}
 	
 	/**
@@ -194,7 +234,8 @@ public class UIController {
 	 * @author Jonas und Tim
 	 */
 	@FXML
-	void onPressStart(ActionEvent event) {
+	public void onPressStartStop(ActionEvent event) {
+		buttTerminate.setDisable(false);
 		UIController that = this;
 		if (myThread == null) {
 			buttTerminate.setDisable(false);
@@ -205,14 +246,17 @@ public class UIController {
 				}
 			});
 			buttSP.setText("Stop");
+			setSpinStat("true");
 		} else if (myThread.isRunning()) {
 			myThread.pause();
 			myThread.setRunning(false);
 			buttSP.setText("Start");
+			setSpinStat("false");
 		} else {
 			myThread.unpause();
 			myThread.setRunning(true);
 			buttSP.setText("Stop");
+			setSpinStat("true");
 		}
 	}
 
@@ -224,18 +268,36 @@ public class UIController {
 	 */
 	@FXML
 	public void onPressTerminate(ActionEvent event) {
-		myThread.terminate();
-		myThread = null;
+		myThread.pause();
+		setSpinStat("false");
 		buttSP.setText("Start");
 		buttSP.setDisable(true);
 		buttTerminate.setDisable(true);
+		buttUplCom.setDisable(true);
+		comboBox.setDisable(true);
+		buttRes.setDisable(false);
 		commandsToDo.clear();
+		cp.logMessage("Terminate", "Process terminated", "reset or close");
+		cp.logAll();
+		showMessage("Process successfully terminated");
+	}
+	
+	@FXML
+	public void onPressReset(ActionEvent event) {
+		myThread.reset();
+		myThread = null;
+		setSpinStat("false");
+		buttSP.setText("Start");
+		buttSP.setDisable(true);
+		buttTerminate.setDisable(true);
+		buttRes.setDisable(true);
+		buttUplCom.setDisable(false);
+		comboBox.setDisable(false);
 		commandsDone.clear();
 		uiLog.clear();
 		logCount = 0;
-		showMessage("Process terminated successfully");
+		showMessage("Worksurface successfully reset");
 	}
-
 	/**
 	 * Method to open Logfile
 	 * @param event
@@ -251,6 +313,16 @@ public class UIController {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	public void millEnd() {
+		myThread.pause();
+		myThread.setRunning(false);
+		setSpinStat("false");
+		buttRes.setDisable(false);
+		buttSP.setText("Start");
+		buttSP.setDisable(true);
+		buttTerminate.setDisable(true);
 	}
 
 	/**
@@ -274,8 +346,7 @@ public class UIController {
 			}
 			if (numVar == 4) {
 				// Input X,Y,I,J needed for submit
-				if (!tfX.getText().equals("") && !tfY.getText().equals("") && !tfI.getText().equals("")
-						&& !tfJ.getText().equals("")) {
+				if (!tfX.getText().equals("") && !tfY.getText().equals("") && !tfI.getText().equals("") && !tfJ.getText().equals("")) {
 					buttSubmit.setDisable(false);
 				} else {
 					buttSubmit.setDisable(true);
@@ -381,6 +452,22 @@ public class UIController {
 	 */
 	public int getSpeed() {
 		return speed;
+	}
+	
+	public void setSpinStat(String status) {
+		spinStat.setText(status);
+	}
+
+	public void setRotDir(String direction) {
+		rotDir.setText(direction);
+	}
+
+	public void setCoolStat(boolean status) {
+		if (status) {
+			coolStat.setFill(Color.SKYBLUE);
+		} else {
+			coolStat.setFill(Color.RED);
+		}
 	}
 
 }

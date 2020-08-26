@@ -14,9 +14,9 @@ import Exceptions.OutOfWorksurfaceException;
 public class Drill {
 
 	protected ArrayList<Coordinates> coordinates;
-	final private String farbe;
-	private boolean spindelStatus;
-	private String drehrichtung;
+	final private String color;
+	private boolean spindleStatus;
+	private String rotationDirection;
 	private boolean cooling;
 	private boolean speedMode;
 
@@ -25,49 +25,43 @@ public class Drill {
 	 * 
 	 * @param coordinates
 	 */
-
 	public Drill(ArrayList<Coordinates> coordinates) {
-		this.farbe = "rot";
+		this.color = "red";
 		this.coordinates = coordinates;
 		this.coordinates.add(new Coordinates(0, 0, false, false));
-		this.spindelStatus = false;
+		this.spindleStatus = false;
 		this.cooling = false;
 		this.speedMode = false;
-		setDrehrichtung("rechts");
+		this.rotationDirection = "right";
 	}
 
-	public String getFarbe() {
-		return farbe;
+	public String getColor() {
+		return color;
 	}
 
-	public boolean isStatus() {
-		return spindelStatus;
+	public boolean getSpindleStatus() {
+		return spindleStatus;
 	}
 
-	public void setSpindelStatus(boolean status) {
-		this.spindelStatus = status;
+	public void setSpindleStatus(boolean status) {
+		this.spindleStatus = status;
 	}
 
-	public String getDrehrichtung() {
-		return drehrichtung;
+	public String getRotationDirection() {
+		return rotationDirection;
 	}
 
-	public void setDrehrichtung(String drehrichtung) {
-		if (drehrichtung.equals("rechts") || drehrichtung.equals("links")) {
-			this.drehrichtung = drehrichtung;
-		} else {
-			System.out.println("Die eingegebene Drehrichtung existiert nicht. Drehrichtung auf rechts gesetzt");
-			this.drehrichtung = "rechts";
-		}
+	public void setRotationDirection(String rotationDirection) {
+		this.rotationDirection = rotationDirection;
 	}
 
-	public boolean isKuehlmittel() {
+	public boolean getCooling() {
 		return cooling;
 	}
 
-	public void setKühlmittel(boolean kuehlmittel) {
-		this.cooling = kuehlmittel;
-		if (kuehlmittel) {
+	public void setCooling(boolean cooling) {
+		this.cooling = cooling;
+		if (cooling) {
 			this.speedMode = true;
 		} else {
 			this.speedMode = false;
@@ -76,19 +70,6 @@ public class Drill {
 
 	public boolean isSpeedMode() {
 		return speedMode;
-	}
-
-	// evtl unnötig, je nach Verhalten von Speedmode
-	public void setSpeedMode(boolean speedMode) {
-		this.speedMode = speedMode;
-		if (speedMode) {
-			if (isKuehlmittel()) {
-				this.speedMode = speedMode;
-			} else {
-				System.out.println("SpeedMode ohne Kühlmittel nicht möglich");
-				this.speedMode = false;
-			}
-		}
 	}
 
 	/**

@@ -19,7 +19,7 @@ public class SimulateMill {
 	protected ArrayList<Coordinates> coordinates;
 	private WorkSurface workSurface;
 	private DrillPointer drillPointer;
-	private CoolingSimulater coolingSimulater;
+	private CoolingSimulator coolingSimulater;
 	private UIController ui;
 	private CommandProcessor cp;
 	private int counter = 0;
@@ -38,7 +38,8 @@ public class SimulateMill {
 	 * @param ui
 	 */
 
-	public SimulateMill(ArrayList<Coordinates> coordinates, WorkSurface workSurface, DrillPointer drillPointer, CoolingSimulater coolingSimulater,
+
+	public SimulateMill(ArrayList<Coordinates> coordinates, WorkSurface workSurface, DrillPointer drillPointer, CoolingSimulator coolingSimulater,
 			CommandProcessor cp, UIController ui) {
 		this.coordinates = coordinates;
 		this.workSurface = workSurface;
@@ -71,7 +72,8 @@ public class SimulateMill {
 					if (counter < coordinates.size()) {
 						draw();
 					} else {
-						// Speicherung des Logs im File - muss ans Ende der Simulate Mill
+						//End of milling process
+						ui.millEnd();
 						cp.logAll();
 					}
 					lastUpdateTime = now;
@@ -96,20 +98,22 @@ public class SimulateMill {
 			cp.logCommandsDone();
 		} else {
 			if (coordinates.get(counter).isMill()) {
+				speedTmp = 0;
 				if (coordinates.get(counter).isCooling()) {
-					speed = 100000000;
+					speed = 70000000;
 					workSurface.drawPoint((coordinates.get(counter).getX() + 420),
 							(-coordinates.get(counter).getY() + 315));
 					drillPointer.drawPoint((coordinates.get(counter).getX() + 420),
-							(-coordinates.get(counter).getY() + 315));
+							(-coordinates.get(counter).getY() + 315), true);
 					coolingSimulater.drawPoint((coordinates.get(counter).getX() + 420),
 							(-coordinates.get(counter).getY() + 315));
 				} else {
-					speed = 150000000;
+					coolingSimulater.clearAll();
+					speed = 80000000;
 					workSurface.drawPoint((coordinates.get(counter).getX() + 420),
 							(-coordinates.get(counter).getY() + 315));
 					drillPointer.drawPoint((coordinates.get(counter).getX() + 420),
-							(-coordinates.get(counter).getY() + 315));
+							(-coordinates.get(counter).getY() + 315), true);
 
 				}
 			} else {
@@ -117,25 +121,25 @@ public class SimulateMill {
 					speedTmp = ui.getSpeed();
 					switch (speedTmp) {
 					case 4:
-						speed = 80000000;
+						speed = 60000000;
 						break;
 					case 5:
-						speed = 60000000;
+						speed = 50000000;
 						break;
 					case 6:
 						speed = 40000000;
 						break;
 					case 7:
-						speed = 20000000;
+						speed = 30000000;
 						break;
 					case 8:
-						speed = 9900000;
+						speed = 20000000;
 						break;
 					}
 
 				}
 				drillPointer.drawPoint((coordinates.get(counter).getX() + 420),
-						(-coordinates.get(counter).getY() + 315));
+						(-coordinates.get(counter).getY() + 315), false);
 				if (coordinates.get(counter).isCooling()) {
 					coolingSimulater.drawPoint((coordinates.get(counter).getX() + 420),
 							(-coordinates.get(counter).getY() + 315));
@@ -168,15 +172,16 @@ public class SimulateMill {
 	 * Method to reset worksurface and commands to start over. Also logs all commands and termination.
 	 * @author Tim, Jonas, Simon
 	 */
-	public void terminate() {
+	public void reset() {
 		timer.stop();
 		coordinates.clear();
 		coordinates.add(new Coordinates(0, 0, false, false));
 		counter = 0;
 		workSurface.clearAll();
 		drillPointer.clearAll();
+		coolingSimulater.clearAll();
 		drillPointer = null;
-		cp.logMessage("Terminate", "Process terminated by User", "reset");
+		cp.logMessage("Reset", "Worksurface sucessfully reset", " by User");
 		cp.logAll();
 		cp.resetCpCounter();
 	}

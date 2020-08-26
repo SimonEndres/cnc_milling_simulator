@@ -11,12 +11,13 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Circle?>
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="UI.UIController">
    <top>
       <HBox BorderPane.alignment="TOP_LEFT">
          <children>
-            <Button mnemonicParsing="false" onAction="#onPressUploadSettings" text="Upload Commmands">
+            <Button fx:id="buttUplCom" mnemonicParsing="false" onAction="#onPressUploadSettings" text="Upload Commmands">
                <HBox.margin>
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </HBox.margin>
@@ -61,7 +62,7 @@
                   <Insets bottom="10.0" left="370.0" right="10.0" top="10.0" />
                </HBox.margin>
             </Label>
-            <Slider fx:id="drillSpeed" onValueChange="doTest" blockIncrement="1.0" majorTickUnit="1.0" max="8.0" maxHeight="-Infinity" maxWidth="-Infinity" min="4.0" minHeight="-Infinity" minWidth="-Infinity" minorTickCount="0" prefHeight="14.0" prefWidth="204.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="4.0">
+            <Slider fx:id="drillSpeed" blockIncrement="1.0" majorTickUnit="1.0" max="8.0" maxHeight="-Infinity" maxWidth="-Infinity" min="4.0" minHeight="-Infinity" minWidth="-Infinity" minorTickCount="0" onValueChange="doTest" prefHeight="14.0" prefWidth="204.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="4.0">
                <HBox.margin>
                   <Insets bottom="10.0" left="10.0" right="10.0" top="20.0" />
                </HBox.margin>
@@ -72,7 +73,7 @@
    <bottom>
       <HBox prefHeight="13.0" prefWidth="1038.0" BorderPane.alignment="BOTTOM_LEFT">
          <children>
-            <Button fx:id="buttSP" disable="true" mnemonicParsing="false" onAction="#onPressStart" text="Start">
+            <Button fx:id="buttSP" disable="true" mnemonicParsing="false" onAction="#onPressStartStop" text="Start">
                <HBox.margin>
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </HBox.margin>
@@ -82,9 +83,14 @@
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </HBox.margin>
             </Button>
+            <Button fx:id="buttRes" disable="true" mnemonicParsing="false" onAction="#onPressReset" prefHeight="25.0" prefWidth="51.0" text="Reset">
+               <HBox.margin>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </HBox.margin>
+            </Button>
             <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#onPressLog" prefHeight="25.0" prefWidth="78.0" text="Open Log">
                <HBox.margin>
-                  <Insets bottom="10.0" left="1200.0" right="10.0" top="10.0" />
+                  <Insets bottom="10.0" left="1100.0" right="10.0" top="10.0" />
                </HBox.margin>
             </Button>
          </children>
@@ -100,26 +106,78 @@
       <Region maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="630.0" prefWidth="840.0" BorderPane.alignment="CENTER" />
    </center>
    <left>
-      <VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" BorderPane.alignment="TOP_CENTER">
+      <VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="630.0" prefWidth="300.0" BorderPane.alignment="TOP_CENTER">
          <children>
             <Label text="Commands To Do">
                <VBox.margin>
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </VBox.margin>
             </Label>
-            <TextArea fx:id="commandsToDo" editable="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="300.0" />
+            <TextArea fx:id="commandsToDo" editable="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="300.0" />
+            <Label text="Drill Information">
+               <VBox.margin>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </VBox.margin>
+            </Label>
+            <HBox prefHeight="50.0" prefWidth="300.0">
+               <children>
+                  <Label text="Spindle status:">
+                     <HBox.margin>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </HBox.margin>
+                  </Label>
+                  <Label fx:id="spinStat" text="false">
+                     <HBox.margin>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </HBox.margin>
+                  </Label>
+               </children>
+            </HBox>
+            <HBox layoutX="10.0" layoutY="534.0" prefHeight="50.0" prefWidth="300.0">
+               <children>
+                  <Label prefHeight="17.0" prefWidth="101.0" text="Rotation direction:">
+                     <HBox.margin>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </HBox.margin>
+                  </Label>
+                  <Label fx:id="rotDir" text="right">
+                     <HBox.margin>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </HBox.margin>
+                  </Label>
+               </children>
+            </HBox>
          </children>
       </VBox>
    </left>
    <right>
-      <VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" BorderPane.alignment="TOP_CENTER">
+      <VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="630.0" prefWidth="300.0" BorderPane.alignment="TOP_CENTER">
          <children>
             <Label text="Commands Done">
                <VBox.margin>
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </VBox.margin>
             </Label>
-            <TextArea fx:id="commandsDone" editable="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="300.0" />
+            <TextArea fx:id="commandsDone" editable="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="300.0" />
+            <Label text="Drill Information">
+               <VBox.margin>
+                  <Insets top="10.0" />
+               </VBox.margin>
+            </Label>
+            <HBox prefHeight="53.0" prefWidth="300.0">
+               <children>
+                  <Label prefHeight="17.0" prefWidth="84.0" text="Cooling status:">
+                     <HBox.margin>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="32.0" />
+                     </HBox.margin>
+                  </Label>
+                  <Circle fx:id="coolStat" fill="RED" radius="20.0" stroke="BLACK" strokeType="INSIDE">
+                     <HBox.margin>
+                        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                     </HBox.margin>
+                  </Circle>
+               </children>
+            </HBox>
          </children>
       </VBox>
    </right>

@@ -1,1 +1,5 @@
+<<<<<<< HEAD
 [{"command":"10: M03  |  Runtime(in ms): 110"},{"command":"20: M08  |  Runtime(in ms): 205"},{"command":"30: G01 X:50 Y:0  |  Runtime(in ms): 5901"},{"command":"40: G00  |  Runtime(in ms): 9055"},{"command":"50: G01 X:0 Y:50  |  Runtime(in ms): 14653"},{"command":"60: G00  |  Runtime(in ms): 16014"}]
+=======
+[{"command":"10: M03  |  Runtime(in ms): 79"},{"command":"20: M08  |  Runtime(in ms): 143"},{"command":"30: G02 X:0 Y:100 I:0 J:50  |  Runtime(in ms): 12847"},{"command":"40: G01 X:100 Y:100  |  Runtime(in ms): 20926"},{"command":"50: G02 X:100 Y:0 I:0 J:-50  |  Runtime(in ms): 33646"},{"command":"60: G01 X:0 Y:0  |  Runtime(in ms): 41726"},{"command":"70: G28  |  Runtime(in ms): 41806"}]
+>>>>>>> branch 'master' of https://github.com/SimonEndres/cnc_frase_testing
