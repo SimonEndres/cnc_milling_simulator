@@ -19,6 +19,7 @@ public class SimulateMill {
 	protected ArrayList<Coordinates> coordinates;
 	private WorkSurface workSurface;
 	private DrillPointer drillPointer;
+	private CoolingSimulater coolingSimulater;
 	private UIController ui;
 	private CommandProcessor cp;
 	private int counter = 0;
@@ -36,11 +37,13 @@ public class SimulateMill {
 	 * @param cp
 	 * @param ui
 	 */
-	public SimulateMill(ArrayList<Coordinates> coordinates, WorkSurface workSurface, DrillPointer drillPointer,
+
+	public SimulateMill(ArrayList<Coordinates> coordinates, WorkSurface workSurface, DrillPointer drillPointer, CoolingSimulater coolingSimulater,
 			CommandProcessor cp, UIController ui) {
 		this.coordinates = coordinates;
 		this.workSurface = workSurface;
 		this.drillPointer = drillPointer;
+		this.coolingSimulater = coolingSimulater;
 		this.cp = cp;
 		this.ui = ui;
 		this.speedTmp = 0;
@@ -95,21 +98,26 @@ public class SimulateMill {
 			if (coordinates.get(counter).isMill()) {
 				if (coordinates.get(counter).isCooling()) {
 					speed = 100000000;
-//				System.out.println("speed: " + speed);
+					workSurface.drawPoint((coordinates.get(counter).getX() + 420),
+							(-coordinates.get(counter).getY() + 315));
+					drillPointer.drawPoint((coordinates.get(counter).getX() + 420),
+							(-coordinates.get(counter).getY() + 315));
+					coolingSimulater.drawPoint((coordinates.get(counter).getX() + 420),
+							(-coordinates.get(counter).getY() + 315));
 				} else {
 					speed = 150000000;
+					workSurface.drawPoint((coordinates.get(counter).getX() + 420),
+							(-coordinates.get(counter).getY() + 315));
+					drillPointer.drawPoint((coordinates.get(counter).getX() + 420),
+							(-coordinates.get(counter).getY() + 315));
+
 				}
-				workSurface.drawPoint((coordinates.get(counter).getX() + 420),
-						(-coordinates.get(counter).getY() + 315));
-				drillPointer.drawPoint((coordinates.get(counter).getX() + 420),
-						(-coordinates.get(counter).getY() + 315));
 			} else {
 				if (speedTmp != ui.getSpeed()) {
 					speedTmp = ui.getSpeed();
 					switch (speedTmp) {
 					case 4:
 						speed = 80000000;
-						System.out.println("speed4");
 						break;
 					case 5:
 						speed = 60000000;
@@ -128,6 +136,10 @@ public class SimulateMill {
 				}
 				drillPointer.drawPoint((coordinates.get(counter).getX() + 420),
 						(-coordinates.get(counter).getY() + 315));
+				if (coordinates.get(counter).isCooling()) {
+					coolingSimulater.drawPoint((coordinates.get(counter).getX() + 420),
+							(-coordinates.get(counter).getY() + 315));
+				}
 			}
 		}
 
@@ -168,22 +180,12 @@ public class SimulateMill {
 		cp.logAll();
 		cp.resetCpCounter();
 	}
-	// zum zeichnen eines Punktes auf der Oberfläche
-//		void drawPoint(int x, int y, boolean fraesen) {
-//			Circle bohrkopf = new Circle();
-//			bohrkopf.setCenterX((float) x);
-//			bohrkopf.setCenterY((float) y);
-//			bohrkopf.setRadius(2.0f);
-//	
-//			bohrkopf.setFill(Color.ORANGE);
-//			if (fraesen)
-//				cutLine.getChildren().add(bohrkopf);
-//		}
-	
+
 	/**
 	 * Method to determine whether drawing is running.
 	 * @author Tim, Jonas, Simon
 	 */
+
 	public boolean isRunning() {
 		return running;
 	}

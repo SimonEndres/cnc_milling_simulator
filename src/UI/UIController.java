@@ -35,6 +35,7 @@ public class UIController {
 
 	private WorkSurface workSurface;
 	private DrillPointer drillPointer;
+	private CoolingSimulater coolingSimulater;
 	private CommandProcessor cp;
 	private CNC_Machine cnc_machine;
 	private ArrayList<String> uiLog;
@@ -94,10 +95,12 @@ public class UIController {
 	 * 
 	 * @author Tim
 	 */
-	public void initFXML(Stage stage, WorkSurface workSurface, DrillPointer drillPointer) {
+
+	public void initFXML(Stage stage, WorkSurface workSurface, DrillPointer drillPointer, CoolingSimulater coolingSimulater) {
 		this.stage = stage;
 		this.workSurface = workSurface;
 		this.drillPointer = drillPointer;
+		this.coolingSimulater = coolingSimulater;
 		comboBox.setItems(commandColl);
 		tfX.textProperty().addListener((obs, oldText, newText) -> onInputChanged('X', newText));
 		tfY.textProperty().addListener((obs, oldText, newText) -> onInputChanged('Y', newText));
@@ -197,7 +200,7 @@ public class UIController {
 			buttTerminate.setDisable(false);
 			Platform.runLater(new Runnable() {
 				public void run() {
-					myThread = new SimulateMill(cnc_machine.getCoordinates(), workSurface, drillPointer, cp, that);
+					myThread = new SimulateMill(cnc_machine.getCoordinates(), workSurface, drillPointer, coolingSimulater, cp, that);
 					myThread.startDrawing();
 				}
 			});

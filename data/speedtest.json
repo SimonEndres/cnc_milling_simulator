@@ -16,15 +16,31 @@
 		},
 		{
 			"number":"N30",
-			"code":"G00",
+			"code":"G01",
 			"parameters": { 
-				"x":200,
+				"x":50,
 				"y":0
 			}	
 		},
 		{
 			"number":"N40",
+			"code":"G00",
+			"parameters": { 
+				"x":0,
+				"y":0
+			}	
+		},
+		{
+			"number":"N50",
 			"code":"G01",
+			"parameters": { 
+				"x":0,
+				"y":50
+			}	
+		},
+		{
+			"number":"N60",
+			"code":"G00",
 			"parameters": { 
 				"x":0,
 				"y":0

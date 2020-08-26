@@ -33,7 +33,6 @@ public class DrillPointer extends Canvas {
 
 		gc.clearRect(0, 0, 840, 630);
 		gc.fillOval(x, y, 4, 4);
-
 	}
 	
 	/**

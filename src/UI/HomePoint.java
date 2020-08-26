@@ -16,7 +16,7 @@ public class HomePoint extends Canvas {
 	public HomePoint(int i, int j) {
 		super(i,j);
 		this.gc = this.getGraphicsContext2D();
-		this.gc.setFill(Color.GREENYELLOW);
+		this.gc.setFill(Color.GREEN);
 		gc.fillOval(420, 315, 4, 4);
 	}
 }

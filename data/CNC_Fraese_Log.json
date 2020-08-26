@@ -1,1 +1,1 @@
-[{"command":"10: M03  |  Runtime(in ms): 98"},{"command":"20: M08  |  Runtime(in ms): 193"},{"Terminate":"Process terminated by User: reset  |  Runtime(in ms): 13715"}]
+[{"command":"10: M03  |  Runtime(in ms): 110"},{"command":"20: M08  |  Runtime(in ms): 205"},{"command":"30: G01 X:50 Y:0  |  Runtime(in ms): 5901"},{"command":"40: G00  |  Runtime(in ms): 9055"},{"command":"50: G01 X:0 Y:50  |  Runtime(in ms): 14653"},{"command":"60: G00  |  Runtime(in ms): 16014"}]

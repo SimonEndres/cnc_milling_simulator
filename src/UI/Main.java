@@ -20,15 +20,16 @@ public class Main extends Application {
 		WorkSurface workSurface = new WorkSurface(840, 630);
 		DrillPointer drillPointer = new DrillPointer(840, 630);
 		HomePoint homePoint = new HomePoint(840, 630);
+		CoolingSimulater coolingSimulater = new CoolingSimulater(840, 630);
 		
-		StackPane workSurfaceGroup = new StackPane(workSurface, drillPointer, homePoint);		
+		StackPane workSurfaceGroup = new StackPane(workSurface, coolingSimulater, drillPointer, homePoint);		
 		
 		BorderPane mainPane = (BorderPane) loader.load();
 		mainPane.setCenter(workSurfaceGroup);
 		primaryStage.setScene(new Scene(mainPane));
 		primaryStage.setTitle("CNC_Simulator");
 		UIController controller = (UIController) loader.getController();
-		controller.initFXML(primaryStage, workSurface, drillPointer);
+		controller.initFXML(primaryStage, workSurface, drillPointer, coolingSimulater);
 		primaryStage.centerOnScreen();
 		primaryStage.show();
 		primaryStage.setResizable(false);
