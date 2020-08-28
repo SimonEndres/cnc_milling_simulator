@@ -70,11 +70,10 @@ public class CommandProcessor {
 		String command;
 		String code = commandJSON.getString("code");
 		JSONObject logCommand = new JSONObject();
-		if (code.equals("G01") || code.equals("G02")) {
-			System.out.println("G");
+		if (code.equals("G00") || code.equals("G01") || code.equals("G02") || code.equals("G03")) {
 			JSONObject parameters = new JSONObject();
 			parameters = (JSONObject) commandJSON.getJSONObject("parameters");
-			if (code.equals("G01")) {
+			if (code.equals("G00") || code.equals("G01")) {
 				command = new String(this.counterWorkList + ": " + code + " X:" + parameters.getInt("x") + " Y:" + parameters.getInt("y") +  "  |  Runtime(in ms): ");
 			} else {
 				command = new String(this.counterWorkList + ": " + code + " X:" + parameters.getInt("x") + " Y:" + parameters.getInt("y") + " I:" + parameters.getInt("i") + " J:" + parameters.getInt("j") + "  |  Runtime(in ms): ");
