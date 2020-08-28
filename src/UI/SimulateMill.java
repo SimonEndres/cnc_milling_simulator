@@ -1,11 +1,14 @@
 package UI;
 
+import java.io.File;
 import java.util.ArrayList;
 
 import cnc_frase_testing.CommandProcessor;
 import cnc_frase_testing.Coordinates;
 import cnc_frase_testing.ExceptionHandler;
 import javafx.animation.AnimationTimer;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 
 /**
  * 
@@ -28,6 +31,8 @@ public class SimulateMill {
 	private int speed;
 	private boolean running;
 	AnimationTimer timer;
+	Media media;
+	MediaPlayer mediaPlayer;
 
 	/**
 	 * Constructor for SimulateMill Class
@@ -52,7 +57,11 @@ public class SimulateMill {
 		this.speedTmp = 0;
 		this.timer = null;
 		this.running = true;
-		System.out.println("beep");
+		String path = "audio//machine_3.wav";  
+		Media media = new Media(new File(path).toURI().toString());  
+		mediaPlayer = new MediaPlayer(media);
+		mediaPlayer.setVolume(0.5);
+		mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
 	}
 
 	/**
@@ -64,6 +73,8 @@ public class SimulateMill {
 	public void startDrawing() {
 		// für Logzeiten
 		cp.setStartTime();
+		
+		mediaPlayer.play();
 
 		timer = new AnimationTimer() {
 
@@ -173,6 +184,7 @@ public class SimulateMill {
 	 * @author Tim, Jonas, Simon
 	 */
 	public void pause() {
+		mediaPlayer.stop();
 		timer.stop();
 	}
 
@@ -182,6 +194,7 @@ public class SimulateMill {
 	 * @author Tim, Jonas, Simon
 	 */
 	public void unpause() {
+		mediaPlayer.play();
 		timer.start();
 	}
 
@@ -192,6 +205,7 @@ public class SimulateMill {
 	 * @author Tim, Jonas, Simon
 	 */
 	public void reset() {
+		mediaPlayer.stop();
 		timer.stop();
 		coordinates.clear();
 		coordinates.add(new Coordinates(0, 0, false, false, "right"));
