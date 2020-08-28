@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import cnc_frase_testing.CommandProcessor;
 import cnc_frase_testing.Coordinates;
+import cnc_frase_testing.ExceptionHandler;
 import javafx.animation.AnimationTimer;
 
 /**
@@ -76,7 +77,12 @@ public class SimulateMill {
 					} else {
 						// End of milling process
 						ui.millEnd();
-						cp.logAll();
+						try {
+							cp.logAll();
+						}
+						catch(Exception e){
+							ExceptionHandler.handleErrorByMessage(ui, cp, "Could not write log",  "retry");
+						}
 					}
 					lastUpdateTime = now;
 				}
@@ -193,7 +199,12 @@ public class SimulateMill {
 		coolingSimulater.clearAll();
 		drillPointer = null;
 		cp.logMessage("Reset", "Worksurface sucessfully reset", " by User");
-		cp.logAll();
+		try {
+			cp.logAll();
+		}
+		catch(Exception e){
+			ExceptionHandler.handleErrorByMessage(ui, cp, "Could not write log",  "retry");
+		}
 		cp.resetCpCounter();
 	}
 

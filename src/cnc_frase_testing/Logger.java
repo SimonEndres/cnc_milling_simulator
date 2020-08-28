@@ -26,13 +26,9 @@ public class Logger {
 	 * @param logArray
 	 * @author Tim
 	 */
-	public void logToFile(JSONArray logArray) {
-		try {
-			FileWriter file = new FileWriter("data//CNC_Fraese_Log.json");
-			file.write(logArray.toString());
-			file.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+	public void logToFile(JSONArray logArray) throws Exception{
+		FileWriter file = new FileWriter("data//CNC_Fraese_Log.json");
+		file.write(logArray.toString());
+		file.close();		
 	}
 }

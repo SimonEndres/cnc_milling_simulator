@@ -10,6 +10,7 @@ import org.json.JSONObject;
 
 import cnc_frase_testing.CNC_Machine;
 import cnc_frase_testing.CommandProcessor;
+import cnc_frase_testing.ExceptionHandler;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -300,7 +301,12 @@ public class UIController {
 		buttRes.setDisable(false);
 		commandsToDo.clear();
 		cp.logMessage("Terminate", "Process terminated", "reset or close");
-		cp.logAll();
+		try {
+			cp.logAll();
+		}
+		catch(Exception e){
+			ExceptionHandler.handleErrorByMessage(this, cp,"Could not write log",  "retry");
+		}
 		showMessage("Process successfully terminated");
 	}
 	
