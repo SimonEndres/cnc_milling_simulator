@@ -226,5 +226,13 @@ public class SimulateMill {
 	public void setRunning(boolean running) {
 		this.running = running;
 	}
+	
+	/**
+	 * Method to get current coordinate of drill
+	 * @author Jonas
+	 */
+	public Coordinates getCurrentCoordinate() {
+		return coordinates.get(counter);
+	}
 
 }

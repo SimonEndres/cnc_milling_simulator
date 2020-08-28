@@ -1,5 +1,6 @@
 package UI;
 
+import cnc_frase_testing.Coordinates;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.effect.DropShadow;
@@ -34,8 +35,11 @@ public class DrillPointer extends Canvas {
 		gc.clearRect(0, 0, this.getWidth(), this.getHeight());
 	}
 	
-	public void setColor(Color color) {
+	public void setColor(Color color, int x, int y) {
 		this.color = color;
+		gc.setFill(this.color);
+		gc.clearRect(0, 0, 840, 630);
+		gc.fillOval(x, y, 6, 6);
 	}
 
 }
