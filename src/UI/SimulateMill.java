@@ -92,6 +92,8 @@ public class SimulateMill {
 	 * add them to done commands, update commands toDo and log commands which are
 	 * done.
 	 * 
+	 * When drill is just moving water does not to be dispensed even when cooling is turned on.
+	 * 
 	 * @author Tim, Jonas, Simon
 	 */
 	private void draw() {
@@ -143,10 +145,10 @@ public class SimulateMill {
 				}
 				drillPointer.drawPoint((coordinates.get(counter).getX() + 420),
 						(-coordinates.get(counter).getY() + 315), false);
-				if (coordinates.get(counter).isCooling()) {
-					coolingSimulater.drawPoint((coordinates.get(counter).getX() + 420),
-							(-coordinates.get(counter).getY() + 315));
-				}
+//				if (coordinates.get(counter).isCooling()) {
+//					coolingSimulater.drawPoint((coordinates.get(counter).getX() + 420),
+//							(-coordinates.get(counter).getY() + 315));
+//				}
 			}
 		}
 

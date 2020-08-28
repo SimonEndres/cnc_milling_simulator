@@ -326,7 +326,7 @@ public class UIController {
 		logCount = 0;
 		setRotDir("right");
 		setCoolStat(false);
-		setPosition("0.0 / 0.0");
+		setPosition("0 / 0");
 		showMessage("Worksurface successfully reset");
 	}
 	
