@@ -125,8 +125,9 @@ public class CommandProcessor {
 	 * Triggers logger to write all commands of logArray into the logFile
 	 * 
 	 * @author Jonas, Tim
+	 * @throws Exception 
 	 */
-	public void logAll() {
+	public void logAll() throws Exception {
 		logger.logToFile(logArray);
 	}
 
@@ -181,11 +182,16 @@ public class CommandProcessor {
 			String jsonData = new String(Files.readAllBytes(Paths.get(file.toURI())), "UTF-8");
 			commandJson = new JSONObject(jsonData);
 		} catch (Exception e) {
-			System.out.println(e);
+			ExceptionHandler.logError(this, "Corrupt JSONFile, can't load commands", "wait for new Entry");
 		}
+		
 		return commandJson;
 	}
 	
+	/**
+	 * Method to reset counter to start over
+	 * @author Tim, Jonas
+	 */
 	public void resetCpCounter() {
 		counterWorkList = 0;
 		logCounter = 0;

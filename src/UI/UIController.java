@@ -10,6 +10,7 @@ import org.json.JSONObject;
 
 import cnc_frase_testing.CNC_Machine;
 import cnc_frase_testing.CommandProcessor;
+import cnc_frase_testing.ExceptionHandler;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -300,7 +301,12 @@ public class UIController {
 		buttRes.setDisable(false);
 		commandsToDo.clear();
 		cp.logMessage("Terminate", "Process terminated", "reset or close");
-		cp.logAll();
+		try {
+			cp.logAll();
+		}
+		catch(Exception e){
+			ExceptionHandler.handleErrorByMessage(this, cp,"Could not write log",  "retry");
+		}
 		showMessage("Process successfully terminated");
 	}
 	
@@ -339,7 +345,9 @@ public class UIController {
 	@FXML
 	void onColorChange(ActionEvent event) {
 		String value = comboSett.getValue();
-		if (value.equals("Drill")) {
+		if(value==null) {
+			this.showError("No setting selected use dropdown");
+		} else if (value.equals("Drill")) {
 			setDrillColor();
 		} else if (value.equals("Homepoint")) {
 			setHomeColor();
@@ -557,7 +565,11 @@ public class UIController {
 	 * @author Jonas, Tim
 	 */
 	public void setDrillColor() {
-		drillPointer.setColor(colorPic.getValue());
+		if(myThread!=null) {
+			drillPointer.setColor(colorPic.getValue(), myThread.getCurrentCoordinate().getX()+ 420, (-myThread.getCurrentCoordinate().getY())+315);
+		}
+		else
+			drillPointer.setColor(colorPic.getValue(), 420 , 315);
 	}
 
 }
