@@ -218,26 +218,30 @@ public class UIController {
 		JSONObject parameters = new JSONObject();
 		newCommand.put("number", "");
 		newCommand.put("code", comboBox.getValue());
-		if (numVar >= 2) {
-			parameters.put("x", Integer.parseInt(tfX.getText()));
-			parameters.put("y", Integer.parseInt(tfY.getText()));
-			if (numVar == 4) {
-				parameters.put("i", Integer.parseInt(tfI.getText()));
-				parameters.put("j", Integer.parseInt(tfJ.getText()));
+		try {
+			if (numVar >= 2) {
+				parameters.put("x", Integer.parseInt(tfX.getText()));
+				parameters.put("y", Integer.parseInt(tfY.getText()));
+				if (numVar == 4) {
+					parameters.put("i", Integer.parseInt(tfI.getText()));
+					parameters.put("j", Integer.parseInt(tfJ.getText()));
+				}
 			}
+			newCommand.put("parameters", parameters);
+			jsonArr.put(newCommand);
+			newJson.put("commands", jsonArr);
+			// Enable Start
+			buttSP.setDisable(false);
+			cnc_machine.machineControl(newJson);
+			// Clear textfields
+			tfX.setText("");
+			tfY.setText("");
+			tfI.setText("");
+			tfJ.setText("");
+			buttSubmit.setDisable(true);
+		}catch (NumberFormatException e) {
+			ExceptionHandler.handleErrorByMessage(this, cp, e.getMessage(), "Correct input");
 		}
-		newCommand.put("parameters", parameters);
-		jsonArr.put(newCommand);
-		newJson.put("commands", jsonArr);
-		// Enable Start
-		buttSP.setDisable(false);
-		cnc_machine.machineControl(newJson);
-		// Clear textfields
-		tfX.setText("");
-		tfY.setText("");
-		tfI.setText("");
-		tfJ.setText("");
-		buttSubmit.setDisable(true);
 	}
 
 	/**
