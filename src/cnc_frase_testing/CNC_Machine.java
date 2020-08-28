@@ -7,6 +7,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import Exceptions.OutOfWorksurfaceException;
+import Exceptions.UndefinedAngleException;
 import Exceptions.WrongCommandException;
 import UI.UIController;
 
@@ -70,13 +71,15 @@ public class CNC_Machine {
 		}
 		
 		// Processesing individual commands, writing them to the worklist and UiLog
-		commands.forEach(item -> {
-			JSONObject commandJSON = (JSONObject) item;
+		for (int i = 0; i < commands.length(); i++) {
+			JSONObject commandJSON = (JSONObject) commands.get(i);
 			boolean success = BefehlSwitch(commandJSON);
 			if (success) {
 				cp.writeListAndLog(commandJSON, ui);
+			}else {
+				break;
 			}
-		});
+		}
 	}
 
 	/**
@@ -170,10 +173,16 @@ public class CNC_Machine {
 			}
 		} catch (WrongCommandException e) {
 			ExceptionHandler.handleErrorByTerminating(ui, cp, e.getMessage(), "Terminate");
+			success = false;
 		} catch (JSONException e) {
 			ExceptionHandler.handleErrorByTerminating(ui, cp, e.getMessage(), "Terminate");
+			success = false;		
 		} catch (OutOfWorksurfaceException e) {
 			ExceptionHandler.handleErrorByTerminating(ui, cp, e.getMessage(), "Terminate");
+			success = false;
+		} catch (UndefinedAngleException e) {
+			ExceptionHandler.handleErrorByTerminating(ui, cp, e.getMessage(), "Terminate");
+			success = false;
 		}
 		return success;
 	}

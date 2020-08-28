@@ -2,6 +2,16 @@
 	"commands":[ 
 		{
 			"number":"N10",
+			"code":"G02",
+			"parameters": {
+				"x":100,
+				"y":100,
+				"i":100,
+				"j":100
+			}	
+		},
+		{
+			"number":"N20",
 			"code":"G03",
 			"parameters": {
 				"x":100,
@@ -11,7 +21,7 @@
 			}	
 		},
 		{
-			"number":"N20",
+			"number":"N30",
 			"code":"G01",
 			"parameters": {
 				"x":-11,
@@ -19,7 +29,7 @@
 			}	
 		},
 		{
-			"number":"N50",
+			"number":"N40",
 			"code":"G02",
 			"parameters": {
 				"x":213,

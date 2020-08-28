@@ -3,6 +3,7 @@ package cnc_frase_testing;
 import java.util.ArrayList;
 
 import Exceptions.OutOfWorksurfaceException;
+import Exceptions.UndefinedAngleException;
 
 /**
  * 
@@ -132,8 +133,9 @@ public class Drill {
 	 * @param circleDirection (true -> counter clockwise direction; false ->
 	 *                        clockwise direction
 	 * @throws OutOfWorksurfaceException
+	 * @throws UndefinedAngleException 
 	 */
-	public void drawCircle(int x2, int y2, int i, int j, boolean circleDirection) throws OutOfWorksurfaceException {
+	public void drawCircle(int x2, int y2, int i, int j, boolean circleDirection) throws OutOfWorksurfaceException, UndefinedAngleException {
 
 		int mX = (int) coordinates.get(coordinates.size() - 1).getX() + i; // x coordinate of circle center
 		int mY = (int) coordinates.get(coordinates.size() - 1).getY() + j; // y coordinate of circle center
@@ -263,8 +265,9 @@ public class Drill {
 	 * @param posY - y coordinate of angle that is calculated
 	 * @return returns value of angle between straight line parallel to x coordinate
 	 *         on circlecenter point
+	 * @throws UndefinedAngleException 
 	 */
-	private double calcAngle(double mX, double mY, double posX, double posY) {
+	private double calcAngle(double mX, double mY, double posX, double posY) throws UndefinedAngleException {
 		// rechts von der Y-Achse
 		if (mX < posX) {
 			if (mY < posY) { // Oberhalb der X-Achse
@@ -281,7 +284,10 @@ public class Drill {
 				return Math.PI;
 			}
 		} else if (mX == posX) {// Auf der Y-Achse
-			if (mY < posY) { // Oberhalb der X-Achse
+			if (mY == posY) {
+				throw new UndefinedAngleException("Targetangle and center are equal");
+			}
+			else if (mY < posY) { // Oberhalb der X-Achse
 				return (0.5 * Math.PI);
 			} else { // Unterhalb der X-Achse
 				return (1.5 * Math.PI);

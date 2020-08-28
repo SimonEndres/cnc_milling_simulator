@@ -34,8 +34,8 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 /**
- * Class for controlling the user Interface of the cnc machine simulator
- * Ui design is done using fxml
+ * Class for controlling the user Interface of the cnc machine simulator Ui
+ * design is done using fxml
  * 
  * @author Tim
  *
@@ -99,7 +99,7 @@ public class UIController {
 	private ColorPicker colorPic;
 
 	SimulateMill myThread = null;
-	
+
 	/**
 	 * Constructor for UIControllerClass
 	 * 
@@ -117,8 +117,8 @@ public class UIController {
 	}
 
 	/**
-	 * Initializing FXML setting items for combo box adding event Listeners to textfields, and
-	 * and adding changelistener to Drillspeed Slider
+	 * Initializing FXML setting items for combo box adding event Listeners to
+	 * textfields, and and adding changelistener to Drillspeed Slider
 	 * 
 	 * @param stage
 	 * @param workSurface
@@ -126,7 +126,8 @@ public class UIController {
 	 * 
 	 * @author Tim
 	 */
-	public void initFXML(Stage stage, WorkSurface workSurface, DrillPointer drillPointer, CoolingSimulator coolingSimulater, HomePoint homePoint, StackPane workSurfaceGroup) {
+	public void initFXML(Stage stage, WorkSurface workSurface, DrillPointer drillPointer,
+			CoolingSimulator coolingSimulater, HomePoint homePoint, StackPane workSurfaceGroup) {
 		this.stage = stage;
 		this.workSurface = workSurface;
 		this.drillPointer = drillPointer;
@@ -141,35 +142,37 @@ public class UIController {
 		tfJ.textProperty().addListener((obs, oldText, newText) -> onInputChanged('J', newText));
 		drillSpeed.valueProperty().addListener(new ChangeListener<Number>() {
 			@Override
-	        public void changed(ObservableValue<? extends Number> observableValue, Number previous, Number now) {
-	            if (!drillSpeed.isValueChanging() || now.doubleValue() == 4 || now.doubleValue() == 8) {
-	                // This only fires when we're done or when the slider is dragged to its max/min.
-	            	changeDrillspeed();
-	            }
+			public void changed(ObservableValue<? extends Number> observableValue, Number previous, Number now) {
+				if (!drillSpeed.isValueChanging() || now.doubleValue() == 4 || now.doubleValue() == 8) {
+					// This only fires when we're done or when the slider is dragged to its max/min.
+					changeDrillspeed();
+				}
 			}
 		});
 	}
 
 	/**
 	 * Event method for clicking Button to Upload Commands
+	 * 
 	 * @param event
 	 */
 	@FXML
 	void onPressUploadSettings(ActionEvent event) {
 		File file = fileChooser.showOpenDialog(stage);
 		if (file != null) {
-			cnc_machine.machineControl(cp.loadJson(file));
 			buttSP.setDisable(false);
+			cnc_machine.machineControl(cp.loadJson(file));
 		}
 	}
-	
+
 	@FXML
 	void doTest(ActionEvent event) {
 		System.out.println(drillSpeed.getValue());
 	}
-	
+
 	/**
 	 * Event method for choosing g-code in dropdown (For manual entry)
+	 * 
 	 * @param event
 	 * @author Tim
 	 */
@@ -203,6 +206,7 @@ public class UIController {
 
 	/**
 	 * Submit for manual entry - start process of checking and calculating command
+	 * 
 	 * @author Tim
 	 * @param event
 	 */
@@ -225,19 +229,20 @@ public class UIController {
 		newCommand.put("parameters", parameters);
 		jsonArr.put(newCommand);
 		newJson.put("commands", jsonArr);
-		cnc_machine.machineControl(newJson);
-		//Enable Start
+		// Enable Start
 		buttSP.setDisable(false);
-		//Clear textfields
+		cnc_machine.machineControl(newJson);
+		// Clear textfields
 		tfX.setText("");
 		tfY.setText("");
 		tfI.setText("");
 		tfJ.setText("");
 		buttSubmit.setDisable(true);
 	}
-	
+
 	/**
 	 * Event method for changing driving speed of the drill (when it isn't milling)
+	 * 
 	 * @param event
 	 * @author Tim
 	 */
@@ -247,12 +252,13 @@ public class UIController {
 	}
 
 	/**
-	 * Event method for pressing start/stop button
-	 * if there is no thread for simulating the milling a thread is started and drawing is started
-	 * if thread is running and counter is running so the machine is drawing the machine is stopped.
-	 * else if the counter is not running this method starts it.
+	 * Event method for pressing start/stop button if there is no thread for
+	 * simulating the milling a thread is started and drawing is started if thread
+	 * is running and counter is running so the machine is drawing the machine is
+	 * stopped. else if the counter is not running this method starts it.
 	 * 
 	 * This functionality makes the button a toggle for drawing
+	 * 
 	 * @param event
 	 * @author Jonas und Tim
 	 */
@@ -264,7 +270,8 @@ public class UIController {
 			buttTerminate.setDisable(false);
 			Platform.runLater(new Runnable() {
 				public void run() {
-					myThread = new SimulateMill(cnc_machine.getCoordinates(), workSurface, drillPointer, coolingSimulater, cp, that);
+					myThread = new SimulateMill(cnc_machine.getCoordinates(), workSurface, drillPointer,
+							coolingSimulater, cp, that);
 					myThread.startDrawing();
 				}
 			});
@@ -284,14 +291,27 @@ public class UIController {
 	}
 
 	/**
-	 * Terminating UI by User (Button) or Exception
+	 * Terminating UI by User (Button)
 	 * 
 	 * @author Tim
 	 * @param event
 	 */
 	@FXML
 	public void onPressTerminate(ActionEvent event) {
-		myThread.pause();
+		terminate();
+		showMessage("Process successfully terminated");
+	}
+
+	/**
+	 * Terminating UI by Error
+	 * 
+	 * @author Tim
+	 * @param event
+	 */
+	public void terminate() {
+		if (myThread != null) {
+			myThread.pause();
+		}
 		setSpinStat("false");
 		buttSP.setText("Start");
 		buttSP.setDisable(true);
@@ -303,13 +323,11 @@ public class UIController {
 		cp.logMessage("Terminate", "Process terminated", "reset or close");
 		try {
 			cp.logAll();
+		} catch (Exception e) {
+			ExceptionHandler.handleErrorByMessage(this, cp, "Could not write log", "retry");
 		}
-		catch(Exception e){
-			ExceptionHandler.handleErrorByMessage(this, cp,"Could not write log",  "retry");
-		}
-		showMessage("Process successfully terminated");
 	}
-	
+
 	/**
 	 * Resetting UI by User (Button) - like changing the work surface
 	 * 
@@ -318,7 +336,9 @@ public class UIController {
 	 */
 	@FXML
 	public void onPressReset(ActionEvent event) {
-		myThread.reset();
+		if (myThread != null) {
+			myThread.reset();
+		}
 		myThread = null;
 		setSpinStat("false");
 		buttSP.setText("Start");
@@ -335,17 +355,17 @@ public class UIController {
 		setPosition("0 / 0");
 		showMessage("Worksurface successfully reset");
 	}
-	
-	
+
 	/**
 	 * Enable changeing color of Drill, Homepoint and work surface
+	 * 
 	 * @author Jonas, Tim
 	 * @param event
 	 */
 	@FXML
 	void onColorChange(ActionEvent event) {
 		String value = comboSett.getValue();
-		if(value==null) {
+		if (value == null) {
 			this.showError("No setting selected use dropdown");
 		} else if (value.equals("Drill")) {
 			setDrillColor();
@@ -355,8 +375,10 @@ public class UIController {
 			setWorkColor();
 		}
 	}
+
 	/**
 	 * Method to open Logfile
+	 * 
 	 * @param event
 	 * @author Simon
 	 */
@@ -371,8 +393,10 @@ public class UIController {
 			e.printStackTrace();
 		}
 	}
-	
-	/**Method triggered by process end. Enables Reset.
+
+	/**
+	 * Method triggered by process end. Enables Reset.
+	 * 
 	 * @author Tim
 	 */
 	public void millEnd() {
@@ -386,7 +410,9 @@ public class UIController {
 	}
 
 	/**
-	 * Method for changed input. Determines validity of input and enables submit button
+	 * Method for changed input. Determines validity of input and enables submit
+	 * button
+	 * 
 	 * @param field
 	 * @param newText
 	 * 
@@ -406,7 +432,8 @@ public class UIController {
 			}
 			if (numVar == 4) {
 				// Input X,Y,I,J needed for submit
-				if (!tfX.getText().equals("") && !tfY.getText().equals("") && !tfI.getText().equals("") && !tfJ.getText().equals("")) {
+				if (!tfX.getText().equals("") && !tfY.getText().equals("") && !tfI.getText().equals("")
+						&& !tfJ.getText().equals("")) {
 					buttSubmit.setDisable(false);
 				} else {
 					buttSubmit.setDisable(true);
@@ -419,8 +446,9 @@ public class UIController {
 
 	/**
 	 * Method to format inputs only allowing integer values
-	 * @param field		- defines changed inputfield
-	 * @param newText	- entered Text
+	 * 
+	 * @param field   - defines changed inputfield
+	 * @param newText - entered Text
 	 * @author Tim
 	 */
 	private void numberFormatter(char field, String newText) {
@@ -446,16 +474,18 @@ public class UIController {
 
 	/**
 	 * Method to set commands that must be processed (To Do)
-	 * @param text		- entered Command (with parameters)
+	 * 
+	 * @param text - entered Command (with parameters)
 	 * @author Tim
 	 */
 	public void setCommandsToDo(String text) {
 		uiLog.add(text);
 		this.commandsToDo.appendText(text + " - " + "\n");
 	}
-	
+
 	/**
 	 * Method to update To Do commands on UI
+	 * 
 	 * @author Tim
 	 */
 	public void updateCommandsToDo() {
@@ -464,8 +494,10 @@ public class UIController {
 			this.commandsToDo.appendText(uiLog.get(i) + "\n");
 		}
 	}
+
 	/**
 	 * Method to set commands done, also displaying runtime
+	 * 
 	 * @author Tim
 	 */
 	public void setCommandsDone() {
@@ -476,7 +508,8 @@ public class UIController {
 
 	/**
 	 * Method to show message on a dialog
-	 * @param message	- Message which is shown
+	 * 
+	 * @param message - Message which is shown
 	 * @author Tim
 	 */
 	public void showMessage(String message) {
@@ -487,7 +520,8 @@ public class UIController {
 
 	/**
 	 * Method to show error message on a dialog
-	 * @param message	- Message which is shown
+	 * 
+	 * @param message - Message which is shown
 	 * @author Tim
 	 */
 	public void showError(String message) {
@@ -498,16 +532,18 @@ public class UIController {
 
 	/**
 	 * Method to get the speed of the drill (speed while not milling)
+	 * 
 	 * @author Tim
 	 */
 	public int getSpeed() {
 		return speed;
 	}
-	
+
 	/**
 	 * Update Drill Information spindle status
+	 * 
 	 * @author Tim
-	 * @param status	- spindle status
+	 * @param status - spindle status
 	 */
 	public void setSpinStat(String status) {
 		spinStat.setText(status);
@@ -515,8 +551,9 @@ public class UIController {
 
 	/**
 	 * Update Drill Information rotation direction
+	 * 
 	 * @author Tim
-	 * @param direction		- new rotation direction
+	 * @param direction - new rotation direction
 	 */
 	public void setRotDir(String direction) {
 		rotDir.setText(direction);
@@ -524,8 +561,9 @@ public class UIController {
 
 	/**
 	 * Update Drill Information cooling status
+	 * 
 	 * @author Tim
-	 * @param status		- new cooling status
+	 * @param status - new cooling status
 	 */
 	public void setCoolStat(boolean status) {
 		if (status) {
@@ -534,42 +572,46 @@ public class UIController {
 			coolStat.setFill(Color.RED);
 		}
 	}
-	
+
 	/**
 	 * Update Drill Information current position (as coordinates)
+	 * 
 	 * @author Tim
-	 * @param newPos		- new current position 
+	 * @param newPos - new current position
 	 */
 	public void setPosition(String newPos) {
 		currPosition.setText(newPos);
 	}
-	
+
 	/**
 	 * Changes Color of Homepoint
+	 * 
 	 * @author Jonas, Tim
 	 */
 	public void setHomeColor() {
 		homePoint.setColor(colorPic.getValue());
 	}
-	
+
 	/**
 	 * Changes Color of Work surface
+	 * 
 	 * @author Jonas, Tim
 	 */
 	public void setWorkColor() {
 		workSurfaceGroup.setStyle("-fx-background-color: " + colorPic.getValue().toString().replaceAll("0x", "#"));
 	}
-	
+
 	/**
 	 * Changes Color of Drill
+	 * 
 	 * @author Jonas, Tim
 	 */
 	public void setDrillColor() {
-		if(myThread!=null) {
-			drillPointer.setColor(colorPic.getValue(), myThread.getCurrentCoordinate().getX()+ 420, (-myThread.getCurrentCoordinate().getY())+315);
-		}
-		else
-			drillPointer.setColor(colorPic.getValue(), 420 , 315);
+		if (myThread != null) {
+			drillPointer.setColor(colorPic.getValue(), myThread.getCurrentCoordinate().getX() + 420,
+					(-myThread.getCurrentCoordinate().getY()) + 315);
+		} else
+			drillPointer.setColor(colorPic.getValue(), 420, 315);
 	}
 
 }
