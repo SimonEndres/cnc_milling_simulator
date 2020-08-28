@@ -14,7 +14,6 @@ import Exceptions.OutOfWorksurfaceException;
 public class Drill {
 
 	protected ArrayList<Coordinates> coordinates;
-	final private String color;
 	private boolean spindleStatus;
 	private String rotationDirection;
 	private boolean cooling;
@@ -26,17 +25,12 @@ public class Drill {
 	 * @param coordinates
 	 */
 	public Drill(ArrayList<Coordinates> coordinates) {
-		this.color = "red";
 		this.rotationDirection = "right";
 		this.coordinates = coordinates;
 		this.coordinates.add(new Coordinates(0, 0, false, false, this.rotationDirection));
 		this.spindleStatus = false;
 		this.cooling = false;
 		this.speedMode = false;
-	}
-
-	public String getColor() {
-		return color;
 	}
 
 	public boolean getSpindleStatus() {

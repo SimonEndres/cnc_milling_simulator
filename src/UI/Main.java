@@ -41,7 +41,7 @@ public class Main extends Application {
 		primaryStage.setScene(new Scene(mainPane));
 		primaryStage.setTitle("CNC_Simulator");
 		UIController controller = (UIController) loader.getController();
-		controller.initFXML(primaryStage, workSurface, drillPointer, coolingSimulater);
+		controller.initFXML(primaryStage, workSurface, drillPointer, coolingSimulater, homePoint, workSurfaceGroup);
 		primaryStage.centerOnScreen();
 		primaryStage.show();
 		primaryStage.setResizable(false);

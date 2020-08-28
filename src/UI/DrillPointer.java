@@ -9,9 +9,11 @@ public class DrillPointer extends Canvas {
 
 	private GraphicsContext gc;
 	private DropShadow dropShadow;
+	private Color color;
 
 	public DrillPointer(int i, int j) {
 		super(i, j);
+		this.color = Color.RED;
 		this.gc = this.getGraphicsContext2D();
 		this.dropShadow = new DropShadow(8.0,15.0,15.0,Color.BLACK);
 		
@@ -21,7 +23,7 @@ public class DrillPointer extends Canvas {
 
 		gc.clearRect(0, 0, 840, 630);
 		gc.fillOval(x, y, 6, 6);
-		gc.setFill(Color.RED);
+		gc.setFill(this.color);
 		if(!milling) {
 			gc.applyEffect(dropShadow);			
 		}
@@ -30,6 +32,10 @@ public class DrillPointer extends Canvas {
 	
 	public void clearAll() {
 		gc.clearRect(0, 0, this.getWidth(), this.getHeight());
+	}
+	
+	public void setColor(Color color) {
+		this.color = color;
 	}
 
 }

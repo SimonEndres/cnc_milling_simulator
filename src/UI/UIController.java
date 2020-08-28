@@ -19,8 +19,10 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.control.Button;
+import javafx.scene.control.ColorPicker;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
@@ -44,6 +46,8 @@ public class UIController {
 	private CoolingSimulator coolingSimulater;
 	private CommandProcessor cp;
 	private CNC_Machine cnc_machine;
+	private HomePoint homePoint;
+	private StackPane workSurfaceGroup;
 	private ArrayList<String> uiLog;
 	private int logCount;
 	private Stage stage;
@@ -51,6 +55,7 @@ public class UIController {
 	private int speed;
 
 	private ObservableList<String> commandColl;
+	private ObservableList<String> settingsColl;
 	final FileChooser fileChooser = new FileChooser();
 
 	@FXML
@@ -88,7 +93,9 @@ public class UIController {
 	@FXML
 	private Label currPosition;
 	@FXML
-	private Button buttSettings;
+	private ComboBox<String> comboSett;
+	@FXML
+	private ColorPicker colorPic;
 
 	SimulateMill myThread = null;
 	
@@ -105,6 +112,7 @@ public class UIController {
 		this.speed = 4;
 		commandColl = FXCollections.observableArrayList("M00", "M02", "M03", "M04", "M05", "M08", "M09", "M13", "M14",
 				"G00", "G01", "G02", "G03", "G28");
+		settingsColl = FXCollections.observableArrayList("Drill", "Homepoint", "Work surface");
 	}
 
 	/**
@@ -117,12 +125,15 @@ public class UIController {
 	 * 
 	 * @author Tim
 	 */
-	public void initFXML(Stage stage, WorkSurface workSurface, DrillPointer drillPointer, CoolingSimulator coolingSimulater) {
+	public void initFXML(Stage stage, WorkSurface workSurface, DrillPointer drillPointer, CoolingSimulator coolingSimulater, HomePoint homePoint, StackPane workSurfaceGroup) {
 		this.stage = stage;
 		this.workSurface = workSurface;
 		this.drillPointer = drillPointer;
 		this.coolingSimulater = coolingSimulater;
+		this.homePoint = homePoint;
+		this.workSurfaceGroup = workSurfaceGroup;
 		comboBox.setItems(commandColl);
+		comboSett.setItems(settingsColl);
 		tfX.textProperty().addListener((obs, oldText, newText) -> onInputChanged('X', newText));
 		tfY.textProperty().addListener((obs, oldText, newText) -> onInputChanged('Y', newText));
 		tfI.textProperty().addListener((obs, oldText, newText) -> onInputChanged('I', newText));
@@ -157,7 +168,7 @@ public class UIController {
 	}
 	
 	/**
-	 * Event method for choosing g-code in dropdown
+	 * Event method for choosing g-code in dropdown (For manual entry)
 	 * @param event
 	 * @author Tim
 	 */
@@ -189,6 +200,11 @@ public class UIController {
 		onInputChanged('p', "proof");
 	}
 
+	/**
+	 * Submit for manual entry - start process of checking and calculating command
+	 * @author Tim
+	 * @param event
+	 */
 	@FXML
 	void onPressSubmit(ActionEvent event) {
 		JSONObject newJson = new JSONObject();
@@ -220,7 +236,7 @@ public class UIController {
 	}
 	
 	/**
-	 * Event method for changing drillspeed
+	 * Event method for changing driving speed of the drill (when it isn't milling)
 	 * @param event
 	 * @author Tim
 	 */
@@ -289,7 +305,7 @@ public class UIController {
 	}
 	
 	/**
-	 * Resetting UI by User (Button)
+	 * Resetting UI by User (Button) - like changing the work surface
 	 * 
 	 * @author Tim
 	 * @param event
@@ -313,10 +329,28 @@ public class UIController {
 		setPosition("0.0 / 0.0");
 		showMessage("Worksurface successfully reset");
 	}
+	
+	
+	/**
+	 * Enable changeing color of Drill, Homepoint and work surface
+	 * @author Jonas, Tim
+	 * @param event
+	 */
+	@FXML
+	void onColorChange(ActionEvent event) {
+		String value = comboSett.getValue();
+		if (value.equals("Drill")) {
+			setDrillColor();
+		} else if (value.equals("Homepoint")) {
+			setHomeColor();
+		} else {
+			setWorkColor();
+		}
+	}
 	/**
 	 * Method to open Logfile
 	 * @param event
-	 * @author Tim
+	 * @author Simon
 	 */
 	@FXML
 	void onPressLog(ActionEvent event) {
@@ -330,6 +364,9 @@ public class UIController {
 		}
 	}
 	
+	/**Method triggered by process end. Enables Reset.
+	 * @author Tim
+	 */
 	public void millEnd() {
 		myThread.pause();
 		myThread.setRunning(false);
@@ -374,31 +411,24 @@ public class UIController {
 
 	/**
 	 * Method to format inputs only allowing integer values
-	 * @param field
-	 * @param newText
+	 * @param field		- defines changed inputfield
+	 * @param newText	- entered Text
 	 * @author Tim
 	 */
 	private void numberFormatter(char field, String newText) {
-		String value;
+		String value = newText;
+		value = value.replaceAll("\\b-?[^0-9]", "");
 		switch (field) {
 		case 'X':
-			value = tfX.getText();
-			value = value.replaceAll("\\b-?[^0-9]", "");
 			tfX.setText(value);
 			break;
 		case 'Y':
-			value = tfY.getText();
-			value = value.replaceAll("\\b-?[^0-9]", "");
 			tfY.setText(value);
 			break;
 		case 'I':
-			value = tfI.getText();
-			value = value.replaceAll("\\b-?[^0-9]", "");
 			tfI.setText(value);
 			break;
 		case 'J':
-			value = tfJ.getText();
-			value = value.replaceAll("\\b-?[^0-9]", "");
 			tfJ.setText(value);
 			break;
 		default:
@@ -407,8 +437,8 @@ public class UIController {
 	}
 
 	/**
-	 * Method to set commands which are toDo
-	 * @param text
+	 * Method to set commands that must be processed (To Do)
+	 * @param text		- entered Command (with parameters)
 	 * @author Tim
 	 */
 	public void setCommandsToDo(String text) {
@@ -417,8 +447,7 @@ public class UIController {
 	}
 	
 	/**
-	 * Method to update ToDocommands on Ui
-	 * @param text
+	 * Method to update To Do commands on UI
 	 * @author Tim
 	 */
 	public void updateCommandsToDo() {
@@ -428,8 +457,7 @@ public class UIController {
 		}
 	}
 	/**
-	 * Method to set Commands done also displaying time taken
-	 * @param text
+	 * Method to set commands done, also displaying runtime
 	 * @author Tim
 	 */
 	public void setCommandsDone() {
@@ -462,21 +490,35 @@ public class UIController {
 
 	/**
 	 * Method to get the speed of the drill (speed while not milling)
-	 * 
 	 * @author Tim
 	 */
 	public int getSpeed() {
 		return speed;
 	}
 	
+	/**
+	 * Update Drill Information spindle status
+	 * @author Tim
+	 * @param status	- spindle status
+	 */
 	public void setSpinStat(String status) {
 		spinStat.setText(status);
 	}
 
+	/**
+	 * Update Drill Information rotation direction
+	 * @author Tim
+	 * @param direction		- new rotation direction
+	 */
 	public void setRotDir(String direction) {
 		rotDir.setText(direction);
 	}
 
+	/**
+	 * Update Drill Information cooling status
+	 * @author Tim
+	 * @param status		- new cooling status
+	 */
 	public void setCoolStat(boolean status) {
 		if (status) {
 			coolStat.setFill(Color.SKYBLUE);
@@ -485,8 +527,37 @@ public class UIController {
 		}
 	}
 	
+	/**
+	 * Update Drill Information current position (as coordinates)
+	 * @author Tim
+	 * @param newPos		- new current position 
+	 */
 	public void setPosition(String newPos) {
 		currPosition.setText(newPos);
+	}
+	
+	/**
+	 * Changes Color of Homepoint
+	 * @author Jonas, Tim
+	 */
+	public void setHomeColor() {
+		homePoint.setColor(colorPic.getValue());
+	}
+	
+	/**
+	 * Changes Color of Work surface
+	 * @author Jonas, Tim
+	 */
+	public void setWorkColor() {
+		workSurfaceGroup.setStyle("-fx-background-color: " + colorPic.getValue().toString().replaceAll("0x", "#"));
+	}
+	
+	/**
+	 * Changes Color of Drill
+	 * @author Jonas, Tim
+	 */
+	public void setDrillColor() {
+		drillPointer.setColor(colorPic.getValue());
 	}
 
 }
