@@ -68,7 +68,7 @@ public class Drill {
 	}
 
 	/**
-	 * Saves end of MCode for later use for CommandProcessing
+	 * Saves end of MCode for later use for CommandProcessing.
 	 * 
 	 * @author Jonas, Tim
 	 */
@@ -257,6 +257,9 @@ public class Drill {
 	}
 
 	/**
+	 * 
+	 * Method used to calculate the angle between a point and the relative beginning coordinate of a circle.
+	 * 
 	 * @author Simon
 	 * 
 	 * @param mX   - x coordinate of circlecenter
