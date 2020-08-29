@@ -28,7 +28,7 @@ public class Drill {
 	public Drill(ArrayList<Coordinates> coordinates) {
 		this.rotationDirection = "right";
 		this.coordinates = coordinates;
-		this.coordinates.add(new Coordinates(0, 0, false, false, this.rotationDirection));
+		this.coordinates.add(new Coordinates(0, 0, false, false, null));
 		this.spindleStatus = false;
 		this.cooling = false;
 		this.speedMode = false;
