@@ -680,6 +680,11 @@ public class UIController {
 			drillPointer.setColor(colorPic.getValue(), 420, 315);
 	}
 	
+	/**
+	 * Change system audio
+	 * @author Simon, Tim
+	 * @param first		- true for initial activation of the system audio
+	 */
 	public void changeAudio(boolean first) {
 		String source;
 		if (mediaPlayer.isMute() || first) {
