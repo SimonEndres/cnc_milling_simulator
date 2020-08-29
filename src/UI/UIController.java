@@ -309,6 +309,7 @@ public class UIController {
 			myThread.pause();
 			myThread.setRunning(false);
 			buttSP.setText("Start");
+			setCurrSpeed(0);
 			setSpinStat("false");
 		} else {
 			myThread.unpause();
@@ -342,6 +343,7 @@ public class UIController {
 		}
 		setSpinStat("false");
 		buttSP.setText("Start");
+		setCurrSpeed(0);
 		buttSP.setDisable(true);
 		buttTerminate.setDisable(true);
 		buttUplCom.setDisable(true);

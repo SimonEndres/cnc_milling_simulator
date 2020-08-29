@@ -53,7 +53,7 @@ public class SimulateMill {
 		this.cp = cp;
 		this.ui = ui;
 		this.counter = 0;
-		this.speed = 90000000;
+		this.speed = 100000000;
 		this.speedTmp = 0;
 		this.timer = null;
 		this.running = true;
@@ -125,10 +125,10 @@ public class SimulateMill {
 				}
 				switch (speedTmp) {
 				case 1:
-					speed = 90000000;
+					speed = 100000000;
 					break;
 				case 2:
-					speed = 80000000;
+					speed = 85000000;
 					break;
 				case 3:
 					speed = 70000000;
@@ -174,7 +174,7 @@ public class SimulateMill {
 					}
 
 				}
-				//Case M command
+				//Speed on UI should be updated for all G-Commands (not for StartPoint and M Commands - value null)
 				if (coordinates.get(counter).getRotation() != null) {
 					ui.setCurrSpeed(speedTmp);
 				}
