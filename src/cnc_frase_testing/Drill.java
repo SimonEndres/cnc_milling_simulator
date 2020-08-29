@@ -75,9 +75,9 @@ public class Drill {
 	public void writeM() {
 		if (coordinates.size() > 0) {
 			Coordinates hilf = coordinates.get(coordinates.size() - 1);
-			coordinates.add(new Coordinates(hilf.getX(), hilf.getY(), true, this.cooling, true, this.rotationDirection));
+			coordinates.add(new Coordinates(hilf.getX(), hilf.getY(), false, this.cooling, true, null));
 		} else {
-			coordinates.add(new Coordinates(0, 0, true, this.cooling, true, this.rotationDirection));
+			coordinates.add(new Coordinates(0, 0, false, this.cooling, true, null));
 		}
 
 	}

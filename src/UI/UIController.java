@@ -20,6 +20,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.layout.Border;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.control.Button;
@@ -53,7 +54,8 @@ public class UIController {
 	private int logCount;
 	private Stage stage;
 	private int numVar;
-	private int speed;
+	private int millSpeed;
+	private int driveSpeed;
 
 	private ObservableList<String> commandColl;
 	private ObservableList<String> settingsColl;
@@ -88,7 +90,11 @@ public class UIController {
 	@FXML
 	private Button buttTerminate;
 	@FXML
-	private Slider drillSpeed;
+	private Slider slidMillSpeed;
+	@FXML
+	private Slider slidDriveSpeed;
+	@FXML 
+	private Label currSpeed;
 	@FXML
 	private Button buttRes;
 	@FXML
@@ -110,7 +116,8 @@ public class UIController {
 		this.cnc_machine = new CNC_Machine(this, cp);
 		this.uiLog = new ArrayList<String>();
 		this.logCount = 0;
-		this.speed = 4;
+		this.millSpeed = 2;
+		this.driveSpeed = 4;
 		commandColl = FXCollections.observableArrayList("M00", "M02", "M03", "M04", "M05", "M08", "M09", "M13", "M14",
 				"G00", "G01", "G02", "G03", "G28");
 		settingsColl = FXCollections.observableArrayList("Drill", "Homepoint", "Work surface");
@@ -134,21 +141,32 @@ public class UIController {
 		this.coolingSimulater = coolingSimulater;
 		this.homePoint = homePoint;
 		this.workSurfaceGroup = workSurfaceGroup;
+		workSurfaceGroup.setStyle("-fx-border-color: #cccccc");
 		comboBox.setItems(commandColl);
 		comboSett.setItems(settingsColl);
 		tfX.textProperty().addListener((obs, oldText, newText) -> onInputChanged('X', newText));
 		tfY.textProperty().addListener((obs, oldText, newText) -> onInputChanged('Y', newText));
 		tfI.textProperty().addListener((obs, oldText, newText) -> onInputChanged('I', newText));
 		tfJ.textProperty().addListener((obs, oldText, newText) -> onInputChanged('J', newText));
-		drillSpeed.valueProperty().addListener(new ChangeListener<Number>() {
+		slidMillSpeed.valueProperty().addListener(new ChangeListener<Number>() {
 			@Override
 			public void changed(ObservableValue<? extends Number> observableValue, Number previous, Number now) {
-				if (!drillSpeed.isValueChanging() || now.doubleValue() == 4 || now.doubleValue() == 8) {
+				if (!slidMillSpeed.isValueChanging() || now.doubleValue() == 1 || now.doubleValue() == 3) {
 					// This only fires when we're done or when the slider is dragged to its max/min.
-					changeDrillspeed();
+					changeMillSpeed();
 				}
 			}
 		});
+		slidDriveSpeed.valueProperty().addListener(new ChangeListener<Number>() {
+			@Override
+			public void changed(ObservableValue<? extends Number> observableValue, Number previous, Number now) {
+				if (!slidDriveSpeed.isValueChanging() || now.doubleValue() == 4 || now.doubleValue() == 8) {
+					// This only fires when we're done or when the slider is dragged to its max/min.
+					changeDriveSpeed();
+				}
+			}
+		});
+		
 	}
 
 	/**
@@ -163,11 +181,6 @@ public class UIController {
 			buttSP.setDisable(false);
 			cnc_machine.machineControl(cp.loadJson(file));
 		}
-	}
-
-	@FXML
-	void doTest(ActionEvent event) {
-		System.out.println(drillSpeed.getValue());
 	}
 
 	/**
@@ -243,16 +256,25 @@ public class UIController {
 			ExceptionHandler.handleErrorByMessage(this, cp, e.getMessage(), "Correct input");
 		}
 	}
-
+	
+	/**
+	 * Event method for changing driving speed of the drill (when it's milling)
+	 * 
+	 * @param event
+	 * @author Tim, Simon
+	 */
+	private void changeMillSpeed() {
+		this.millSpeed = (int) slidMillSpeed.getValue();
+	}
+	
 	/**
 	 * Event method for changing driving speed of the drill (when it isn't milling)
 	 * 
 	 * @param event
 	 * @author Tim
 	 */
-	void changeDrillspeed() {
-		this.speed = (int) drillSpeed.getValue();
-		System.out.println(speed);
+	private void changeDriveSpeed() {
+		this.driveSpeed = (int) slidDriveSpeed.getValue();
 	}
 
 	/**
@@ -361,7 +383,7 @@ public class UIController {
 	}
 
 	/**
-	 * Enable changeing color of Drill, Homepoint and work surface
+	 * Enable changing color of Drill, Homepoint and work surface
 	 * 
 	 * @author Jonas, Tim
 	 * @param event
@@ -535,12 +557,25 @@ public class UIController {
 	}
 
 	/**
+	 * Method to get the speed of the drill (speed while milling)
+	 * 
+	 * @author Tim
+	 */
+	public int getMillSpeed() {
+		return millSpeed;
+	}
+	
+	/**
 	 * Method to get the speed of the drill (speed while not milling)
 	 * 
 	 * @author Tim
 	 */
-	public int getSpeed() {
-		return speed;
+	public int getDriveSpeed() {
+		return driveSpeed;
+	}
+	
+	public void setCurrSpeed(int speed) {
+		currSpeed.setText(speed + " m/min");
 	}
 
 	/**
@@ -602,7 +637,7 @@ public class UIController {
 	 * @author Jonas, Tim
 	 */
 	public void setWorkColor() {
-		workSurfaceGroup.setStyle("-fx-background-color: " + colorPic.getValue().toString().replaceAll("0x", "#"));
+		workSurfaceGroup.setStyle("-fx-border-color: #cccccc;-fx-background-color: " + colorPic.getValue().toString().replaceAll("0x", "#"));
 	}
 
 	/**

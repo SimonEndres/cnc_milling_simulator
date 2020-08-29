@@ -53,7 +53,7 @@ public class SimulateMill {
 		this.cp = cp;
 		this.ui = ui;
 		this.counter = 0;
-		this.speed = 150000000;
+		this.speed = 90000000;
 		this.speedTmp = 0;
 		this.timer = null;
 		this.running = true;
@@ -120,27 +120,41 @@ public class SimulateMill {
 			cp.logCommandsDone();
 		} else {
 			if (coordinates.get(counter).isMill()) {
-				speedTmp = 0;
-				if (coordinates.get(counter).isCooling()) {
+				if (speedTmp!= ui.getMillSpeed()) {
+					speedTmp = ui.getMillSpeed();
+				}
+				switch (speedTmp) {
+				case 1:
+					speed = 90000000;
+					break;
+				case 2:
+					speed = 80000000;
+					break;
+				case 3:
 					speed = 70000000;
+					break;
+				}
+				
+				if (coordinates.get(counter).isCooling()) {
+					speed-= 10000000;
 					workSurface.drawPoint((coordinates.get(counter).getX() + 420),
 							(-coordinates.get(counter).getY() + 315));
 					drillPointer.drawPoint((coordinates.get(counter).getX() + 420),
 							(-coordinates.get(counter).getY() + 315), true);
 					coolingSimulater.drawPoint((coordinates.get(counter).getX() + 420),
 							(-coordinates.get(counter).getY() + 315));
+					ui.setCurrSpeed(speedTmp + 1);
 				} else {
 					coolingSimulater.clearAll();
-					speed = 80000000;
 					workSurface.drawPoint((coordinates.get(counter).getX() + 420),
 							(-coordinates.get(counter).getY() + 315));
 					drillPointer.drawPoint((coordinates.get(counter).getX() + 420),
 							(-coordinates.get(counter).getY() + 315), true);
-
+					ui.setCurrSpeed(speedTmp);
 				}
 			} else {
-				if (speedTmp != ui.getSpeed()) {
-					speedTmp = ui.getSpeed();
+				if (speedTmp != ui.getDriveSpeed()) {
+					speedTmp = ui.getDriveSpeed();
 					switch (speedTmp) {
 					case 4:
 						speed = 60000000;
@@ -160,6 +174,10 @@ public class SimulateMill {
 					}
 
 				}
+				//Case M command
+				if (coordinates.get(counter).getRotation() != null) {
+					ui.setCurrSpeed(speedTmp);
+				}
 				drillPointer.drawPoint((coordinates.get(counter).getX() + 420),
 						(-coordinates.get(counter).getY() + 315), false);
 //				if (coordinates.get(counter).isCooling()) {
@@ -169,7 +187,6 @@ public class SimulateMill {
 			}
 		}
 
-		// checking if the rotation direction has changed
 		ui.setRotDir(coordinates.get(counter).getRotation());
 		ui.setCoolStat(coordinates.get(counter).isCooling());
 		ui.setPosition(coordinates.get(counter).getX() + " / " + coordinates.get(counter).getY());
