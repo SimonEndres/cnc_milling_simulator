@@ -455,6 +455,7 @@ public class UIController {
 	public void millEnd() {
 		myThread.pause();
 		myThread.setRunning(false);
+		mediaPlayer.pause();
 		setSpinStat("false");
 		buttRes.setDisable(false);
 		buttSP.setText("Start");
