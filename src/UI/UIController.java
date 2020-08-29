@@ -2,7 +2,10 @@ package UI;
 
 import java.awt.Desktop;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 
 import org.json.JSONArray;
@@ -22,6 +25,8 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.Border;
 import javafx.scene.layout.StackPane;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.scene.control.Button;
 import javafx.scene.control.ColorPicker;
@@ -30,6 +35,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.shape.Circle;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -56,6 +63,7 @@ public class UIController {
 	private int numVar;
 	private int millSpeed;
 	private int driveSpeed;
+	private MediaPlayer mediaPlayer;
 
 	private ObservableList<String> commandColl;
 	private ObservableList<String> settingsColl;
@@ -120,6 +128,11 @@ public class UIController {
 		this.logCount = 0;
 		this.millSpeed = 2;
 		this.driveSpeed = 4;
+		
+		mediaPlayer = new MediaPlayer(new Media(new File("audio//machine_3.wav").toURI().toString()));
+		mediaPlayer.setVolume(0.5);
+		mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
+		
 		commandColl = FXCollections.observableArrayList("M00", "M02", "M03", "M04", "M05", "M08", "M09", "M13", "M14",
 				"G00", "G01", "G02", "G03", "G28");
 		settingsColl = FXCollections.observableArrayList("Drill", "Homepoint", "Work surface");
@@ -143,6 +156,7 @@ public class UIController {
 		this.coolingSimulater = coolingSimulater;
 		this.homePoint = homePoint;
 		this.workSurfaceGroup = workSurfaceGroup;
+		changeAudio(true);
 		workSurfaceGroup.setStyle("-fx-border-color: #cccccc");
 		comboBox.setItems(commandColl);
 		comboSett.setItems(settingsColl);
@@ -303,18 +317,21 @@ public class UIController {
 					myThread.startDrawing();
 				}
 			});
+			mediaPlayer.play();
 			buttSP.setText("Stop");
 			setSpinStat("true");
 		} else if (myThread.isRunning()) {
 			myThread.pause();
 			myThread.setRunning(false);
 			buttSP.setText("Start");
+			mediaPlayer.pause();
 			setCurrSpeed(0);
 			setSpinStat("false");
 		} else {
 			myThread.unpause();
 			myThread.setRunning(true);
 			buttSP.setText("Stop");
+			mediaPlayer.play();
 			setSpinStat("true");
 		}
 	}
@@ -341,6 +358,7 @@ public class UIController {
 		if (myThread != null) {
 			myThread.pause();
 		}
+		mediaPlayer.pause();
 		setSpinStat("false");
 		buttSP.setText("Start");
 		setCurrSpeed(0);
@@ -426,7 +444,7 @@ public class UIController {
 	
 	@FXML
 	void onPressAudio(ActionEvent event) {
-		buttAudio.setStyle("-fx-background-image: url('img//SoundOff.png')");
+		changeAudio(false);
 	}
 
 	/**
@@ -660,6 +678,24 @@ public class UIController {
 					(-myThread.getCurrentCoordinate().getY()) + 315);
 		} else
 			drillPointer.setColor(colorPic.getValue(), 420, 315);
+	}
+	
+	public void changeAudio(boolean first) {
+		String source;
+		if (mediaPlayer.isMute() || first) {
+			source = "img//SoundOn.png";
+			mediaPlayer.setMute(false);
+		} else {
+			source = "img//SoundOff.png";
+			mediaPlayer.setMute(true);
+		}
+		try (InputStream is = new FileInputStream(source);){
+			Image image = new Image(is);
+			buttAudio.setGraphic(new ImageView(image));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
 	}
 
 }

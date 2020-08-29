@@ -30,9 +30,7 @@ public class SimulateMill {
 	private int speedTmp;
 	private int speed;
 	private boolean running;
-	AnimationTimer timer;
-	Media media;
-	MediaPlayer mediaPlayer;
+	private AnimationTimer timer;
 
 	/**
 	 * Constructor for SimulateMill Class
@@ -43,7 +41,6 @@ public class SimulateMill {
 	 * @param cp
 	 * @param ui
 	 */
-
 	public SimulateMill(ArrayList<Coordinates> coordinates, WorkSurface workSurface, DrillPointer drillPointer,
 			CoolingSimulator coolingSimulater, CommandProcessor cp, UIController ui) {
 		this.coordinates = coordinates;
@@ -57,11 +54,6 @@ public class SimulateMill {
 		this.speedTmp = 0;
 		this.timer = null;
 		this.running = true;
-		String path = "audio//machine_3.wav";  
-		Media media = new Media(new File(path).toURI().toString());  
-		mediaPlayer = new MediaPlayer(media);
-		mediaPlayer.setVolume(0.5);
-		mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
 	}
 
 	/**
@@ -73,8 +65,6 @@ public class SimulateMill {
 	public void startDrawing() {
 		// für Logzeiten
 		cp.setStartTime();
-		
-		mediaPlayer.play();
 
 		timer = new AnimationTimer() {
 
@@ -201,7 +191,6 @@ public class SimulateMill {
 	 * @author Tim, Jonas, Simon
 	 */
 	public void pause() {
-		mediaPlayer.stop();
 		timer.stop();
 	}
 
@@ -211,7 +200,6 @@ public class SimulateMill {
 	 * @author Tim, Jonas, Simon
 	 */
 	public void unpause() {
-		mediaPlayer.play();
 		timer.start();
 	}
 
@@ -222,7 +210,6 @@ public class SimulateMill {
 	 * @author Tim, Jonas, Simon
 	 */
 	public void reset() {
-		mediaPlayer.stop();
 		timer.stop();
 		coordinates.clear();
 		coordinates.add(new Coordinates(0, 0, false, false, "right"));
