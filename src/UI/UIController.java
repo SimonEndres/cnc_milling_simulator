@@ -66,16 +66,6 @@ public class UIController {
 	@FXML
 	private ComboBox<String> comboBox;
 	@FXML
-	private TextArea commandsToDo;
-	@FXML
-	private TextArea commandsDone;
-	@FXML
-	private Label spinStat;
-	@FXML
-	private Label rotDir;
-	@FXML
-	private Circle coolStat;
-	@FXML
 	private TextField tfX;
 	@FXML
 	private TextField tfY;
@@ -86,23 +76,35 @@ public class UIController {
 	@FXML
 	private Button buttSubmit;
 	@FXML
-	private Button buttSP;
-	@FXML
-	private Button buttTerminate;
-	@FXML
 	private Slider slidMillSpeed;
 	@FXML
 	private Slider slidDriveSpeed;
 	@FXML 
 	private Label currSpeed;
 	@FXML
-	private Button buttRes;
+	private TextArea commandsToDo;
+	@FXML
+	private TextArea commandsDone;
+	@FXML
+	private Label spinStat;
+	@FXML
+	private Label rotDir;
 	@FXML
 	private Label currPosition;
+	@FXML
+	private Circle coolStat;
+	@FXML
+	private Button buttSP;
+	@FXML
+	private Button buttTerminate;
+	@FXML
+	private Button buttRes;
 	@FXML
 	private ComboBox<String> comboSett;
 	@FXML
 	private ColorPicker colorPic;
+	@FXML
+	private Button buttAudio;
 
 	SimulateMill myThread = null;
 
@@ -418,6 +420,11 @@ public class UIController {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	@FXML
+	void onPressAudio(ActionEvent event) {
+		buttAudio.setStyle("-fx-background-image: url('img//SoundOff.png')");
 	}
 
 	/**
