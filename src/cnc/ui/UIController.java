@@ -491,6 +491,12 @@ public class UIController {
 		buttSP.setText("Start");
 		buttSP.setDisable(true);
 		buttTerminate.setDisable(true);
+		comboBox.setValue("");
+		comboBox.setDisable(true);
+		tfX.setDisable(true);
+		tfY.setDisable(true);
+		tfI.setDisable(true);
+		tfJ.setDisable(true);
 	}
 
 	/**
