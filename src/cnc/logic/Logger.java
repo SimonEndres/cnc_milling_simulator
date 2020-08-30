@@ -26,7 +26,7 @@ public class Logger {
 	 * @author Tim
 	 */
 	public void logToFile(JSONArray logArray) throws Exception{
-		FileWriter file = new FileWriter("data//CNC_Fraese_Log.json");
+		FileWriter file = new FileWriter("data//cnc_simulator_log.json");
 		file.write(logArray.toString());
 		file.close();		
 	}
