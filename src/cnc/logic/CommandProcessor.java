@@ -1,4 +1,4 @@
-package cnc_frase_testing;
+package cnc.logic;
 
 import java.io.File;
 
@@ -14,7 +14,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import UI.UIController;
+import cnc.ui.UIController;
 
 /**
  * The class is used to provide several functions:

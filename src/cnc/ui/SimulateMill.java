@@ -1,9 +1,10 @@
-package UI;
+package cnc.ui;
 
 import java.util.ArrayList;
-import cnc_frase_testing.CommandProcessor;
-import cnc_frase_testing.Coordinates;
-import cnc_frase_testing.ExceptionHandler;
+
+import cnc.logic.CommandProcessor;
+import cnc.logic.Coordinates;
+import cnc.logic.ExceptionHandler;
 import javafx.animation.AnimationTimer;
 
 /**

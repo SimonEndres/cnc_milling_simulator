@@ -1,4 +1,4 @@
-package cnc_frase_testing;
+package cnc.logic;
 
 import java.util.ArrayList;
 
@@ -6,10 +6,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import Exceptions.OutOfWorksurfaceException;
-import Exceptions.UndefinedAngleException;
-import Exceptions.WrongCommandException;
-import UI.UIController;
+import cnc.exceptions.OutOfWorksurfaceException;
+import cnc.exceptions.UndefinedAngleException;
+import cnc.exceptions.WrongCommandException;
+import cnc.ui.UIController;
 
 /**
  * 

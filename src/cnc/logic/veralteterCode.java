@@ -1,3 +1,4 @@
+package cnc.logic;
 //package cnc_frase_testing;
 //
 //public class veralteterCode {

@@ -1,4 +1,4 @@
-package cnc_frase_testing;
+package cnc.logic;
 
 import java.io.FileWriter;
 import java.io.IOException;

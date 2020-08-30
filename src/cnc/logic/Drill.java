@@ -1,9 +1,9 @@
-package cnc_frase_testing;
+package cnc.logic;
 
 import java.util.ArrayList;
 
-import Exceptions.OutOfWorksurfaceException;
-import Exceptions.UndefinedAngleException;
+import cnc.exceptions.OutOfWorksurfaceException;
+import cnc.exceptions.UndefinedAngleException;
 
 /**
  * 

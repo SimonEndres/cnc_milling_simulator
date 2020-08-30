@@ -1,4 +1,4 @@
-package UI;
+package cnc.ui;
 
 import java.awt.Desktop;
 import java.io.File;
@@ -11,9 +11,9 @@ import java.util.ArrayList;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import cnc_frase_testing.CNC_Machine;
-import cnc_frase_testing.CommandProcessor;
-import cnc_frase_testing.ExceptionHandler;
+import cnc.logic.CNC_Machine;
+import cnc.logic.CommandProcessor;
+import cnc.logic.ExceptionHandler;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;

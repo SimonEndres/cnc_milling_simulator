@@ -1,4 +1,4 @@
-package UI;
+package cnc.ui;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;

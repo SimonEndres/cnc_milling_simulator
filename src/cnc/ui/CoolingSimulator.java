@@ -1,4 +1,4 @@
-package UI;
+package cnc.ui;
 
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;

@@ -1,6 +1,6 @@
-package UI;
+package cnc.ui;
 
-import cnc_frase_testing.Coordinates;
+import cnc.logic.Coordinates;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.effect.DropShadow;

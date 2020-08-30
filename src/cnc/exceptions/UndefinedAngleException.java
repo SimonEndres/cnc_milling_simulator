@@ -1,4 +1,4 @@
-package Exceptions;
+package cnc.exceptions;
 
 public class UndefinedAngleException extends Exception{
 	

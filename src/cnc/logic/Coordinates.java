@@ -1,4 +1,4 @@
-package cnc_frase_testing;
+package cnc.logic;
 
 /**
  * Class used to store coordinates and regarding information needed for the UI.

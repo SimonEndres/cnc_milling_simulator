@@ -1,6 +1,6 @@
-package cnc_frase_testing;
+package cnc.logic;
 
-import UI.UIController;
+import cnc.ui.UIController;
 /**
  * 
  * Class that includes handling of occured errors.
