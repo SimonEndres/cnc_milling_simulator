@@ -21,11 +21,25 @@ public class HomePoint extends Canvas {
 		setHomePoint();
 	}
 	
+	/**
+	 * 
+	 * Changing color of home point
+	 * 
+	 * @author Jonas, Tim
+	 * @param color
+	 */
 	public void setColor(Color color) {
 		this.color = color;
 		setHomePoint();
 	}
 	
+	
+	/**
+	 * 
+	 * Draws home point on the UI
+	 * 
+	 * @author Jonas, Simon
+	 */
 	private void setHomePoint() {
 		this.gc.setFill(this.color);
 		gc.fillOval(424, 322, 6, 6);

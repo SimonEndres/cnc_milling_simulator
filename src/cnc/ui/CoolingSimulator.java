@@ -27,6 +27,7 @@ public class CoolingSimulator extends Canvas {
 	 * 
 	 * Simulates the cooling using a GaussianBlur effect
 	 * 
+	 * @author Simon
 	 * @param x
 	 * @param y
 	 */
@@ -37,7 +38,13 @@ public class CoolingSimulator extends Canvas {
 		gc.applyEffect(gausBlur);
 
 	}
-
+	
+	/**
+	 *
+	 * Clears the water simulation effect on the UI
+	 *
+	 * @author Simon
+	 */
 	public void clearAll() {
 		gc.clearRect(0, 0, this.getWidth(), this.getHeight());
 	}
