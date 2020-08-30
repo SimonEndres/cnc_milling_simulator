@@ -2,6 +2,7 @@ package cnc.logic;
 
 import java.util.ArrayList;
 
+import cnc.exceptions.CanNotMillException;
 import cnc.exceptions.OutOfWorksurfaceException;
 import cnc.exceptions.UndefinedAngleException;
 
@@ -92,10 +93,13 @@ public class Drill {
 	 * @param y2   - target value for y coordinate
 	 * @param mill - true -> milling on; false -> milling off
 	 * @throws OutOfWorksurfaceException
+	 * @throws CanNotMillException 
 	 * 
 	 */
-	public void drawLine(int x2, int y2, boolean mill) throws OutOfWorksurfaceException {
-
+	public void drawLine(int x2, int y2, boolean mill) throws OutOfWorksurfaceException, CanNotMillException {
+		if (mill && !this.spindleStatus) {
+			throw new CanNotMillException("Milling impossible if spindle status is false");
+		}
 		if (x2 > 700 || x2 < -700 || y2 > 525 || y2 < -525) {
 			throw new OutOfWorksurfaceException("Target coordinate out of worksurface");
 		}
@@ -133,9 +137,12 @@ public class Drill {
 	 *                        clockwise direction
 	 * @throws OutOfWorksurfaceException
 	 * @throws UndefinedAngleException 
+	 * @throws CanNotMillException 
 	 */
-	public void drawCircle(int x2, int y2, int i, int j, boolean circleDirection) throws OutOfWorksurfaceException, UndefinedAngleException {
-
+	public void drawCircle(int x2, int y2, int i, int j, boolean circleDirection) throws OutOfWorksurfaceException, UndefinedAngleException, CanNotMillException {
+		if (!this.spindleStatus) {
+			throw new CanNotMillException("Milling impossible if spindle status is false");
+		}
 		int mX = (int) coordinates.get(coordinates.size() - 1).getX() + i; // x coordinate of circle center
 		int mY = (int) coordinates.get(coordinates.size() - 1).getY() + j; // y coordinate of circle center
 
