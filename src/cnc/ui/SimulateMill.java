@@ -170,7 +170,7 @@ public class SimulateMill {
 				if (coordinates.get(counter).getRotation() != null) {
 					ui.setCurrSpeed(speedTmp);
 				}
-				drillPointer.drawPoint(x,y,true);
+				drillPointer.drawPoint(x,y,false);
 			}
 		}
 		ui.setSpinStat(coordinates.get(counter).isSpindleStatus());
