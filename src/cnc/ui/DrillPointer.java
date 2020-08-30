@@ -1,6 +1,5 @@
 package cnc.ui;
 
-import cnc.logic.Coordinates;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.effect.DropShadow;
