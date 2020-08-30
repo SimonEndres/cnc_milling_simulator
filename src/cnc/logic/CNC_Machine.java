@@ -175,13 +175,13 @@ public class CNC_Machine {
 			ExceptionHandler.handleErrorByTerminating(ui, cp, e.getMessage(), "Terminate");
 			success = false;
 		} catch (JSONException e) {
-			ExceptionHandler.handleErrorByTerminating(ui, cp, e.getMessage(), "Terminate");
+			ExceptionHandler.handleErrorByTerminating(ui, cp, e.getMessage() + " - Command:" + commandJSON.getString("code"), "Terminate");
 			success = false;		
 		} catch (OutOfWorksurfaceException e) {
-			ExceptionHandler.handleErrorByTerminating(ui, cp, e.getMessage(), "Terminate");
+			ExceptionHandler.handleErrorByTerminating(ui, cp, e.getMessage() + " - Command:" + commandJSON.getString("code"), "Terminate");
 			success = false;
 		} catch (UndefinedAngleException e) {
-			ExceptionHandler.handleErrorByTerminating(ui, cp, e.getMessage(), "Terminate");
+			ExceptionHandler.handleErrorByTerminating(ui, cp, e.getMessage() + " - Command:" + commandJSON.getString("code"), "Terminate");
 			success = false;
 		}
 		return success;
