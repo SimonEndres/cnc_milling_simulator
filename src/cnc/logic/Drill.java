@@ -111,7 +111,6 @@ public class Drill {
 				double y = startPoint.getY() + (deltaY / distance * i);
 
 				coordinates.add(new Coordinates((int) x, (int) y, mill, this.cooling, this.rotationDirection));
-				System.out.println("( " + x + " / " + y + " )");
 			}
 		}
 
@@ -150,7 +149,6 @@ public class Drill {
 			double begingAngle = calcAngle(mX, mY, coordinates.get(coordinates.size() - 1).getX(),
 					coordinates.get(coordinates.size() - 1).getY());
 			double targetAngle = calcAngle(mX, mY, x2, y2);
-			System.out.println("Begin: " + begingAngle + " / end: " + targetAngle);
 
 			if (circleDirection) { // gegen den Uhrzeigersinn
 				if (begingAngle < targetAngle) {
@@ -170,8 +168,6 @@ public class Drill {
 						alpha = (-(n - 1) * 2 * Math.PI / circumference + targetAngle);
 
 						coordinates.add(new Coordinates(x, y, true, this.cooling, this.rotationDirection));
-						System.out.println("( " + x + " / " + y + " )");
-
 					}
 
 				} else {
@@ -195,8 +191,6 @@ public class Drill {
 						alpha = (-(n - 1) * 2 * Math.PI / circumference + targetAngle);
 
 						coordinates.add(new Coordinates(x, y, true, this.cooling, this.rotationDirection));
-						System.out.println("( " + x + " / " + y + " )");
-
 					}
 
 				}
@@ -218,8 +212,6 @@ public class Drill {
 						alpha = (((n - 1) * 2 * Math.PI / circumference) + targetAngle);
 
 						coordinates.add(new Coordinates(x, y, true, this.cooling, this.rotationDirection));
-						System.out.println("( " + x + " / " + y + " )   Alpha: " + alpha);
-
 					}
 
 				} else {
@@ -244,8 +236,6 @@ public class Drill {
 						alpha = ((n - 1) * 2 * Math.PI / circumference + targetAngle);
 
 						coordinates.add(new Coordinates(x, y, true, this.cooling, this.rotationDirection));
-						System.out.println("( " + x + " / " + y + " )  n:" + n);
-
 					}
 				}
 
