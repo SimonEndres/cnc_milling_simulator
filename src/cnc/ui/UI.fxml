@@ -168,7 +168,7 @@
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                      </HBox.margin>
                   </Label>
-                  <Label fx:id="spinStat" text="false">
+                  <Label fx:id="spinStat" text="off">
                      <HBox.margin>
                         <Insets bottom="10.0" left="35.0" right="10.0" top="10.0" />
                      </HBox.margin>

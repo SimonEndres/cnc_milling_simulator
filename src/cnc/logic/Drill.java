@@ -28,10 +28,10 @@ public class Drill {
 	public Drill(ArrayList<Coordinates> coordinates) {
 		this.rotationDirection = "right";
 		this.coordinates = coordinates;
-		this.coordinates.add(new Coordinates(0, 0, false, false, null));
 		this.spindleStatus = false;
 		this.cooling = false;
 		this.speedMode = false;
+		this.coordinates.add(new Coordinates(0, 0, false, this.cooling, this.rotationDirection, 0, this.spindleStatus));
 	}
 
 	public boolean getSpindleStatus() {
@@ -71,15 +71,15 @@ public class Drill {
 	 * Saves end of MCode for later use for CommandProcessing.
 	 * 
 	 * @author Jonas, Tim
+	 * @param pauseStop		- Case 1: end simulation, 0: nothing, -1: pause
 	 */
-	public void writeM() {
+	public void writeM(int pauseStop) {
 		if (coordinates.size() > 0) {
 			Coordinates hilf = coordinates.get(coordinates.size() - 1);
-			coordinates.add(new Coordinates(hilf.getX(), hilf.getY(), false, this.cooling, true, null));
+			coordinates.add(new Coordinates(hilf.getX(), hilf.getY(), false, this.cooling, true, null, pauseStop, this.spindleStatus));
 		} else {
-			coordinates.add(new Coordinates(0, 0, false, this.cooling, true, null));
+			coordinates.add(new Coordinates(0, 0, false, this.cooling, true, null, pauseStop, this.spindleStatus));
 		}
-
 	}
 
 	/**
@@ -110,13 +110,13 @@ public class Drill {
 				double x = startPoint.getX() + (deltaX / distance * i);
 				double y = startPoint.getY() + (deltaY / distance * i);
 
-				coordinates.add(new Coordinates((int) x, (int) y, mill, this.cooling, this.rotationDirection));
+				coordinates.add(new Coordinates((int) x, (int) y, mill, this.cooling, this.rotationDirection, 0, this.spindleStatus));
 			}
 		}
 
 //		Wird für Befehlstatus im UI gebraucht
 		Coordinates hilf = coordinates.get(coordinates.size() - 1);
-		coordinates.add(new Coordinates(hilf.getX(), hilf.getY(), true, this.cooling, true, this.rotationDirection));
+		coordinates.add(new Coordinates(hilf.getX(), hilf.getY(), true, this.cooling, true, this.rotationDirection, 0, this.spindleStatus));
 
 	}
 
@@ -167,7 +167,7 @@ public class Drill {
 
 						alpha = (-(n - 1) * 2 * Math.PI / circumference + targetAngle);
 
-						coordinates.add(new Coordinates(x, y, true, this.cooling, this.rotationDirection));
+						coordinates.add(new Coordinates(x, y, true, this.cooling, this.rotationDirection, 0, this.spindleStatus));
 					}
 
 				} else {
@@ -190,7 +190,7 @@ public class Drill {
 
 						alpha = (-(n - 1) * 2 * Math.PI / circumference + targetAngle);
 
-						coordinates.add(new Coordinates(x, y, true, this.cooling, this.rotationDirection));
+						coordinates.add(new Coordinates(x, y, true, this.cooling, this.rotationDirection, 0, this.spindleStatus));
 					}
 
 				}
@@ -211,7 +211,7 @@ public class Drill {
 
 						alpha = (((n - 1) * 2 * Math.PI / circumference) + targetAngle);
 
-						coordinates.add(new Coordinates(x, y, true, this.cooling, this.rotationDirection));
+						coordinates.add(new Coordinates(x, y, true, this.cooling, this.rotationDirection, 0, this.spindleStatus));
 					}
 
 				} else {
@@ -235,7 +235,7 @@ public class Drill {
 
 						alpha = ((n - 1) * 2 * Math.PI / circumference + targetAngle);
 
-						coordinates.add(new Coordinates(x, y, true, this.cooling, this.rotationDirection));
+						coordinates.add(new Coordinates(x, y, true, this.cooling, this.rotationDirection, 0, this.spindleStatus));
 					}
 				}
 
@@ -243,7 +243,7 @@ public class Drill {
 		}
 
 		Coordinates hilf = coordinates.get(coordinates.size() - 1);
-		coordinates.add(new Coordinates(hilf.getX(), hilf.getY(), true, this.cooling, true, this.rotationDirection));
+		coordinates.add(new Coordinates(hilf.getX(), hilf.getY(), true, this.cooling, true, this.rotationDirection, 0, this.spindleStatus));
 	}
 
 	/**

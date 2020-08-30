@@ -103,6 +103,11 @@ public class SimulateMill {
 	 * @author Tim, Jonas, Simon
 	 */
 	private void draw() {
+		if (coordinates.get(counter).getPauseStop() == -1) {
+			ui.onPressStartStop(null);
+		} else if (coordinates.get(counter).getPauseStop() == 1) {
+			ui.millEnd();
+		}
 		if (coordinates.get(counter).isEnd()) {
 			ui.setCommandsDone();
 			ui.updateCommandsToDo();
@@ -168,7 +173,7 @@ public class SimulateMill {
 				drillPointer.drawPoint(x,y,true);
 			}
 		}
-
+		ui.setSpinStat(coordinates.get(counter).isSpindleStatus());
 		ui.setRotDir(coordinates.get(counter).getRotation());
 		ui.setCoolStat(coordinates.get(counter).isCooling());
 		ui.setPosition(coordinates.get(counter).getX() + " / " + coordinates.get(counter).getY());
@@ -202,7 +207,7 @@ public class SimulateMill {
 	public void reset() {
 		timer.stop();
 		coordinates.clear();
-		coordinates.add(new Coordinates(0, 0, false, false, "right"));
+		coordinates.add(new Coordinates(0, 0, false, false, "right", 0, false));
 		counter = 0;
 		workSurface.clearAll();
 		drillPointer.clearAll();

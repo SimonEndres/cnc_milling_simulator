@@ -11,25 +11,31 @@ public class Coordinates {
 	private int x, y;
 	private boolean mill;
 	private boolean cooling;
+	private boolean commandFinished;
 	private String rotation;
+	private int pauseStop;
+	private boolean spindleStatus;
 
-	private boolean end;
 
-	public Coordinates(int x, int y, boolean mill, boolean cooling, String rotation) {
+	public Coordinates(int x, int y, boolean mill, boolean cooling, String rotation, int pauseStop, boolean spindleStatus) {
 		this.x = x;
 		this.y = y;
 		this.mill = mill;
 		this.cooling = cooling;
 		this.rotation = rotation;
+		this.pauseStop = pauseStop;
+		this.spindleStatus = spindleStatus;
 	}
 
-	public Coordinates(int x, int y, boolean mill, boolean cooling, boolean end, String rotation) {
+	public Coordinates(int x, int y, boolean mill, boolean cooling, boolean commandFinished, String rotation, int pauseStop, boolean spindleStatus) {
 		this.x = x;
 		this.y = y;
 		this.mill = mill;
 		this.cooling = cooling;
-		this.end = end;
+		this.commandFinished = commandFinished;
 		this.rotation = rotation;
+		this.pauseStop = pauseStop;
+		this.spindleStatus = spindleStatus;
 	}
 
 	public int getX() {
@@ -57,11 +63,11 @@ public class Coordinates {
 	}
 
 	public boolean isEnd() {
-		return end;
+		return commandFinished;
 	}
 
-	public void setEnd(boolean end) {
-		this.end = end;
+	public void setEnd(boolean commandFinished) {
+		this.commandFinished = commandFinished;
 	}
 
 	public boolean isCooling() {
@@ -78,6 +84,22 @@ public class Coordinates {
 	
 	public void setRotation(String rotation) {
 		this.rotation = rotation;
+	}
+	
+	public int getPauseStop() {
+		return pauseStop;
+	}
+
+	public void setPauseStop(int pauseStop) {
+		this.pauseStop = pauseStop;
+	}
+
+	public boolean isSpindleStatus() {
+		return spindleStatus;
+	}
+
+	public void setSpindleStatus(boolean spindleStatus) {
+		this.spindleStatus = spindleStatus;
 	}
 
 }

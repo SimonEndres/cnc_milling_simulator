@@ -102,45 +102,49 @@ public class CNC_Machine {
 			if (commandType.equals("M")) {
 				switch (commandNumber) {
 				case "00":
-					ui.onPressTerminate(null);
+					drill.writeM(-1);
 					break;
 				case "02":
-					ui.millEnd();
+					drill.writeM(1);
 					break;
 				case "03":
 					drill.setSpindleStatus(true);
 					drill.setRotationDirection("right");
+					drill.writeM(0);
 					break;
 				case "04":
 					drill.setSpindleStatus(true);
 					drill.setRotationDirection("left");
+					drill.writeM(0);
 					break;
 				case "05":
 					drill.setSpindleStatus(false);
-					ui.onPressStartStop(null);
+					drill.writeM(0);
 					break;
 				case "08":
 					drill.setCooling(true);
+					drill.writeM(0);
 					break;
 				case "09":
 					drill.setCooling(false);
+					drill.writeM(0);
 					break;
 				case "13":
 					drill.setSpindleStatus(true);
 					drill.setRotationDirection("right");
 					drill.setCooling(true);
+					drill.writeM(0);
 					break;
 				case "14":
 					drill.setSpindleStatus(true);
 					drill.setRotationDirection("left");
 					drill.setCooling(true);
+					drill.writeM(0);
 					break;
 				case "":
 					success = false;
 					throw new WrongCommandException(commandJSON.getString("code") + " - Commandnumber doesn't exist for M");
 				}
-				// Write M command to the command array (necessary for correct logging)
-				drill.writeM();
 			} else if (commandType.equals("G")) {
 				JSONObject parameters = new JSONObject();
 				parameters = (JSONObject) commandJSON.getJSONObject("parameters");

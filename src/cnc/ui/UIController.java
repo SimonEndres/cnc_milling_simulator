@@ -228,6 +228,8 @@ public class UIController {
 					tfI.setDisable(false);
 					tfJ.setDisable(false);
 				}
+			} else {
+				buttSubmit.setDisable(false);
 			}
 		} else {
 			// Case M code enable submit
@@ -324,20 +326,17 @@ public class UIController {
 			});
 			mediaPlayer.play();
 			buttSP.setText("Stop");
-			setSpinStat("true");
 		} else if (myThread.isRunning()) {
 			myThread.pause();
 			myThread.setRunning(false);
 			buttSP.setText("Start");
 			mediaPlayer.pause();
 			setCurrSpeed(0);
-			setSpinStat("false");
 		} else {
 			myThread.unpause();
 			myThread.setRunning(true);
 			buttSP.setText("Stop");
 			mediaPlayer.play();
-			setSpinStat("true");
 		}
 	}
 
@@ -364,7 +363,7 @@ public class UIController {
 			myThread.pause();
 		}
 		mediaPlayer.pause();
-		setSpinStat("false");
+		setSpinStat(false);
 		buttSP.setText("Start");
 		setCurrSpeed(0);
 		buttSP.setDisable(true);
@@ -393,13 +392,14 @@ public class UIController {
 			myThread.reset();
 		}
 		myThread = null;
-		setSpinStat("false");
+		setSpinStat(false);
 		buttSP.setText("Start");
 		buttSP.setDisable(true);
 		buttTerminate.setDisable(true);
 		buttRes.setDisable(true);
 		buttUplCom.setDisable(false);
 		comboBox.setDisable(false);
+		commandsToDo.clear();
 		commandsDone.clear();
 		uiLog.clear();
 		logCount = 0;
@@ -477,7 +477,8 @@ public class UIController {
 		myThread.pause();
 		myThread.setRunning(false);
 		mediaPlayer.pause();
-		setSpinStat("false");
+		setSpinStat(false);
+		commandsToDo.clear();
 		buttRes.setDisable(false);
 		buttSP.setText("Start");
 		buttSP.setDisable(true);
@@ -633,8 +634,12 @@ public class UIController {
 	 * @author Tim
 	 * @param status - spindle status
 	 */
-	public void setSpinStat(String status) {
-		spinStat.setText(status);
+	public void setSpinStat(boolean status) {
+		if (status) {
+			spinStat.setText("on");
+		} else {
+			spinStat.setText("off");
+		}
 	}
 
 	/**
