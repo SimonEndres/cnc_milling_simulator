@@ -1,14 +1,10 @@
 package UI;
 
-import java.io.File;
 import java.util.ArrayList;
-
 import cnc_frase_testing.CommandProcessor;
 import cnc_frase_testing.Coordinates;
 import cnc_frase_testing.ExceptionHandler;
 import javafx.animation.AnimationTimer;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
 
 /**
  * 
@@ -138,7 +134,6 @@ public class SimulateMill {
 					drillPointer.drawPoint(x,y,true);
 					coolingSimulater.drawPoint(x,y);
 				} else {
-					coolingSimulater.clearAll();
 					workSurface.drawPoint(x,y);
 					drillPointer.drawPoint(x,y,true);
 					ui.setCurrSpeed(speedTmp);

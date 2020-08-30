@@ -20,12 +20,10 @@ public class WorkSurface extends Canvas {
 	 * 
 	 * @author Tim und Jonas
 	 */
-	private GaussianBlur gausBlur;
 
 	public WorkSurface(int i, int j) {
 		super(i, j);
 		this.gc = this.getGraphicsContext2D();
-		this.gausBlur = new GaussianBlur(0.5);
 	}
 
 	/**
@@ -38,7 +36,6 @@ public class WorkSurface extends Canvas {
 	public void drawPoint(int x, int y) {
 
 		gc.fillOval(x + 1, y + 1, 4, 4);
-		gc.applyEffect(gausBlur);
 		
 	}
 	
