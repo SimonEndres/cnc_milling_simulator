@@ -64,6 +64,10 @@ public class UIController {
 	private int millSpeed;
 	private int driveSpeed;
 	private MediaPlayer mediaPlayer;
+	private SimulateMill myThread = null;
+	private Color drillColor;
+	private Color homeColor;
+	private Color workColor;
 
 	private ObservableList<String> commandColl;
 	private ObservableList<String> settingsColl;
@@ -114,7 +118,6 @@ public class UIController {
 	@FXML
 	private Button buttAudio;
 
-	SimulateMill myThread = null;
 
 	/**
 	 * Constructor for UIControllerClass
@@ -128,6 +131,9 @@ public class UIController {
 		this.logCount = 0;
 		this.millSpeed = 2;
 		this.driveSpeed = 4;
+		this.drillColor = Color.RED;
+		this.homeColor = Color.GREEN;
+		this.workColor = Color.valueOf("#f4f4f4");
 		
 		mediaPlayer = new MediaPlayer(new Media(new File("audio//machine_3.wav").toURI().toString()));
 		mediaPlayer.setVolume(0.5);
@@ -315,6 +321,7 @@ public class UIController {
 					myThread = new SimulateMill(cnc_machine.getCoordinates(), workSurface, drillPointer,
 							coolingSimulater, cp, that);
 					myThread.startDrawing();
+					setDrillColor();
 				}
 			});
 			mediaPlayer.play();
@@ -403,6 +410,17 @@ public class UIController {
 		setPosition("0 / 0");
 		showMessage("Worksurface successfully reset");
 	}
+	
+	@FXML
+	void onSettingsChange(ActionEvent event) {
+		if (comboSett.getValue().equals("Drill")) {
+			colorPic.setValue(drillColor);
+		} else if (comboSett.getValue().equals("Homepoint")) {
+			colorPic.setValue(homeColor);
+		} else {
+			colorPic.setValue(workColor);
+		}
+	}
 
 	/**
 	 * Enable changing color of Drill, Homepoint and work surface
@@ -442,6 +460,11 @@ public class UIController {
 		}
 	}
 	
+	/**
+	 * Method to mute/unmute the system audio
+	 * @author Simon, Tim
+	 * @param event
+	 */
 	@FXML
 	void onPressAudio(ActionEvent event) {
 		changeAudio(false);
@@ -649,6 +672,21 @@ public class UIController {
 	public void setPosition(String newPos) {
 		currPosition.setText(newPos);
 	}
+	
+	/**
+	 * Changes Color of Drill
+	 * 
+	 * @author Jonas, Tim
+	 */
+	public void setDrillColor() {
+		drillColor = colorPic.getValue();
+		if (myThread != null) {
+			drillPointer.setColor(drillColor, myThread.getCurrentCoordinate().getX() + 420,
+					(-myThread.getCurrentCoordinate().getY()) + 315);
+		} else {
+			drillColor = colorPic.getValue();
+		}
+	}
 
 	/**
 	 * Changes Color of Homepoint
@@ -656,7 +694,8 @@ public class UIController {
 	 * @author Jonas, Tim
 	 */
 	public void setHomeColor() {
-		homePoint.setColor(colorPic.getValue());
+		homeColor = colorPic.getValue();
+		homePoint.setColor(homeColor);
 	}
 
 	/**
@@ -665,22 +704,10 @@ public class UIController {
 	 * @author Jonas, Tim
 	 */
 	public void setWorkColor() {
-		workSurfaceGroup.setStyle("-fx-border-color: #cccccc;-fx-background-color: " + colorPic.getValue().toString().replaceAll("0x", "#"));
+		workColor = colorPic.getValue();
+		workSurfaceGroup.setStyle("-fx-border-color: #cccccc;-fx-background-color: " + workColor.toString().replaceAll("0x", "#"));
 	}
 
-	/**
-	 * Changes Color of Drill
-	 * 
-	 * @author Jonas, Tim
-	 */
-	public void setDrillColor() {
-		if (myThread != null) {
-			drillPointer.setColor(colorPic.getValue(), myThread.getCurrentCoordinate().getX() + 420,
-					(-myThread.getCurrentCoordinate().getY()) + 315);
-		} else
-			drillPointer.setColor(colorPic.getValue(), 420, 315);
-	}
-	
 	/**
 	 * Change system audio
 	 * @author Simon, Tim
