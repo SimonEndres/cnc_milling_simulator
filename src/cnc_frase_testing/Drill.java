@@ -96,7 +96,7 @@ public class Drill {
 	 */
 	public void drawLine(int x2, int y2, boolean mill) throws OutOfWorksurfaceException {
 
-		if (x2 > 420 || x2 < -420 || y2 > 315 || y2 < -315) {
+		if (x2 > 700 || x2 < -700 || y2 > 525 || y2 < -525) {
 			throw new OutOfWorksurfaceException("Target coordinate out of worksurface");
 		}
 		Coordinates startPoint = coordinates.get(coordinates.size() - 1);
@@ -163,7 +163,7 @@ public class Drill {
 						int x = (int) Math.round((mX + radius * Math.cos(alpha)));
 						int y = (int) Math.round((mY + radius * Math.sin(alpha)));
 
-						if (x > 420 || x < -420 || y > 315 || y < -315) {
+						if (x > 700 || x < -700 || y > 525 || y < -525) {
 							throw new OutOfWorksurfaceException("Calculated coordinate out of worksurface");
 						}
 
@@ -188,7 +188,7 @@ public class Drill {
 						int x = (int) Math.round((mX + radius * Math.cos(alpha)));
 						int y = (int) Math.round((mY + radius * Math.sin(alpha)));
 
-						if (x > 420 || x < -420 || y > 315 || y < -315) {
+						if (x > 700 || x < -700 || y > 525 || y < -525) {
 							throw new OutOfWorksurfaceException("Calculated coordinate out of worksurface");
 						}
 
@@ -211,7 +211,7 @@ public class Drill {
 						int x = (int) Math.round((mX + radius * Math.cos(alpha)));
 						int y = (int) Math.round((mY + radius * Math.sin(alpha)));
 
-						if (x > 420 || x < -420 || y > 315 || y < -315) {
+						if (x > 700 || x < -700 || y > 525 || y < -525) {
 							throw new OutOfWorksurfaceException("Calculated coordinate out of worksurface");
 						}
 
@@ -237,7 +237,7 @@ public class Drill {
 						int x = (int) Math.round((mX + radius * Math.cos(alpha)));
 						int y = (int) Math.round((mY + radius * Math.sin(alpha)));
 
-						if (x > 420 || x < -420 || y > 315 || y < -315) {
+						if (x > 700 || x < -700 || y > 525 || y < -525) {
 							throw new OutOfWorksurfaceException("Calculated coordinate out of worksurface");
 						}
 
