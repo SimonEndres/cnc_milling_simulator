@@ -18,17 +18,17 @@ public class HomePoint extends Canvas {
 		super(i,j);
 		this.gc = this.getGraphicsContext2D();
 		this.color = Color.GREEN;
-		setHomePoint(i,j);
+		setHomePoint();
 	}
 	
 	public void setColor(Color color) {
 		this.color = color;
-		setHomePoint(840, 630);
+		setHomePoint();
 	}
 	
-	private void setHomePoint(int i, int j) {
+	private void setHomePoint() {
 		this.gc.setFill(this.color);
-		gc.fillOval(420, 315, 6, 6);
+		gc.fillOval(424, 322, 6, 6);
 	}
 }
 

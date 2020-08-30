@@ -111,6 +111,10 @@ public class SimulateMill {
 			ui.updateCommandsToDo();
 			cp.logCommandsDone();
 		} else {
+			
+			int x = (int) (coordinates.get(counter).getX() * 0.6 + 424);
+			int y = (int) (-coordinates.get(counter).getY() * 0.6 + 322);
+			
 			if (coordinates.get(counter).isMill()) {
 				if (speedTmp!= ui.getMillSpeed()) {
 					speedTmp = ui.getMillSpeed();
@@ -129,19 +133,14 @@ public class SimulateMill {
 				
 				if (coordinates.get(counter).isCooling()) {
 					speed-= 10000000;
-					workSurface.drawPoint((int) (coordinates.get(counter).getX()*0.6 + 420),
-							(int) (-coordinates.get(counter).getY()*0.6 + 315));
-					drillPointer.drawPoint((int) (coordinates.get(counter).getX()*0.6 + 420),
-							(int) (-coordinates.get(counter).getY()*0.6 + 315), true);
-					coolingSimulater.drawPoint((int) (coordinates.get(counter).getX()*0.6 + 420),
-							(int) (-coordinates.get(counter).getY()*0.6 + 315));
 					ui.setCurrSpeed(speedTmp + 1);
+					workSurface.drawPoint(x,y);
+					drillPointer.drawPoint(x,y,true);
+					coolingSimulater.drawPoint(x,y);
 				} else {
 					coolingSimulater.clearAll();
-					workSurface.drawPoint((int) (coordinates.get(counter).getX()*0.6 + 420),
-							(int) (-coordinates.get(counter).getY()*0.6 + 315));
-					drillPointer.drawPoint((int) (coordinates.get(counter).getX()*0.6 + 420),
-							(int) (-coordinates.get(counter).getY()*0.6 + 315), true);
+					workSurface.drawPoint(x,y);
+					drillPointer.drawPoint(x,y,true);
 					ui.setCurrSpeed(speedTmp);
 				}
 			} else {
@@ -170,12 +169,7 @@ public class SimulateMill {
 				if (coordinates.get(counter).getRotation() != null) {
 					ui.setCurrSpeed(speedTmp);
 				}
-				drillPointer.drawPoint((int) (coordinates.get(counter).getX()*0.6 + 420),
-						(int) (-coordinates.get(counter).getY()*0.6 + 315), true);
-//				if (coordinates.get(counter).isCooling()) {
-//					coolingSimulater.drawPoint((coordinates.get(counter).getX() + 420),
-//							(-coordinates.get(counter).getY() + 315));
-//				}
+				drillPointer.drawPoint(x,y,true);
 			}
 		}
 
@@ -183,8 +177,6 @@ public class SimulateMill {
 		ui.setCoolStat(coordinates.get(counter).isCooling());
 		ui.setPosition(coordinates.get(counter).getX() + " / " + coordinates.get(counter).getY());
 		counter++;
-//		System.out.println("( "+ ((coordinates.get(counter).getX() + 420)) + " / " + (( - coordinates.get(counter).getY() + 315)) + " )");
-
 	}
 
 	/**

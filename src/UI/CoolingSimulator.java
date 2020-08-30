@@ -32,8 +32,7 @@ public class CoolingSimulator extends Canvas {
 	 */
 	public void drawPoint(int x, int y) {
 
-//		gc.clearRect(0, 0, 840, 630);
-		gc.fillOval(x-4, y-4, 14, 14);
+		gc.fillOval(x - 4, y - 4, 14, 14);
 		gc.setFill(Color.SKYBLUE);
 		gc.applyEffect(gausBlur);
 

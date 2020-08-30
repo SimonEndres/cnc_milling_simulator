@@ -37,7 +37,7 @@ public class WorkSurface extends Canvas {
 	 */
 	public void drawPoint(int x, int y) {
 
-		gc.fillOval(x, y, 4, 4);
+		gc.fillOval(x + 1, y + 1, 4, 4);
 		gc.applyEffect(gausBlur);
 		
 	}
