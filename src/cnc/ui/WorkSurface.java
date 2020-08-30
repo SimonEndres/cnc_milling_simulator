@@ -2,8 +2,6 @@ package cnc.ui;
 
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.effect.GaussianBlur;
-import javafx.scene.paint.Color;
 
 /**
  * Class for worksurface off CNC_Machine this is the drawing area
