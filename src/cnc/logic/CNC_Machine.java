@@ -97,7 +97,7 @@ public class CNC_Machine {
 		try {
 			if (hilf.length > 2) {
 				success = false;
-				throw new WrongCommandException("Command doesn't exist");
+				throw new WrongCommandException(commandJSON.getString("code") + " - Command doesn't exist");
 			}
 			if (commandType.equals("M")) {
 				switch (commandNumber) {
@@ -137,7 +137,7 @@ public class CNC_Machine {
 					break;
 				case "":
 					success = false;
-					throw new WrongCommandException("Command doesn't exist");
+					throw new WrongCommandException(commandJSON.getString("code") + " - Commandnumber doesn't exist for M");
 				}
 				// Write M command to the command array (necessary for correct logging)
 				drill.writeM();
@@ -164,12 +164,12 @@ public class CNC_Machine {
 						break;
 					case "":
 						success = false;
-						throw new WrongCommandException("Command doesn't exist");
+						throw new WrongCommandException(commandJSON.getString("code") + " - Commandnumber doesn't exist for G");
 					}
 			
 			} else {
 				success = false;
-				throw new WrongCommandException("Command doesn't exist");
+				throw new WrongCommandException(commandJSON.getString("code") + "Commanttype doesn't exist");
 			}
 		} catch (WrongCommandException e) {
 			ExceptionHandler.handleErrorByTerminating(ui, cp, e.getMessage(), "Terminate");
