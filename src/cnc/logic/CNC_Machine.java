@@ -86,7 +86,7 @@ public class CNC_Machine {
 	/**
 	 * Switch for the different commands and corresponding processing
 	 * 
-	 * @author Tim
+	 * @author Tim, Simon
 	 * @param commandJSON Contains entered commands for execution.
 	 * @return success - true -> calculation successful, logging
 	 */

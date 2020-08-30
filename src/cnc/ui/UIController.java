@@ -308,7 +308,7 @@ public class UIController {
 	 * This functionality makes the button a toggle for drawing
 	 * 
 	 * @param event
-	 * @author Jonas und Tim
+	 * @author Jonas, Simon und Tim
 	 */
 	@FXML
 	public void onPressStartStop(ActionEvent event) {
@@ -492,7 +492,7 @@ public class UIController {
 		buttSP.setDisable(true);
 		buttTerminate.setDisable(true);
 		comboBox.setValue("");
-		comboBox.setDisable(true);
+		comboBox.setDisable(false);
 		tfX.setDisable(true);
 		tfY.setDisable(true);
 		tfI.setDisable(true);
