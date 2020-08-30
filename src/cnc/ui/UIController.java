@@ -369,9 +369,16 @@ public class UIController {
 		buttSP.setDisable(true);
 		buttTerminate.setDisable(true);
 		buttUplCom.setDisable(true);
-		comboBox.setDisable(true);
 		buttRes.setDisable(false);
 		commandsToDo.clear();
+		
+		comboBox.setValue("");
+		comboBox.setDisable(true);
+		tfX.setDisable(true);
+		tfY.setDisable(true);
+		tfI.setDisable(true);
+		tfJ.setDisable(true);
+		
 		cp.logMessage("Terminate", "Process terminated", "reset or close");
 		try {
 			cp.logAll();
@@ -401,6 +408,7 @@ public class UIController {
 		comboBox.setDisable(false);
 		commandsToDo.clear();
 		commandsDone.clear();
+		cnc_machine.resetDrill();
 		uiLog.clear();
 		logCount = 0;
 		setRotDir("right");

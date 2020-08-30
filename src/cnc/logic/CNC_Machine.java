@@ -181,7 +181,7 @@ public class CNC_Machine {
 			success = false;
 		} catch (JSONException e) {
 			ExceptionHandler.handleErrorByTerminating(ui, cp, e.getMessage() + " - Command:" + commandJSON.getString("code"), "Process terminated");
-			success = false;		
+			success = false;
 		} catch (OutOfWorksurfaceException e) {
 			ExceptionHandler.handleErrorByTerminating(ui, cp, e.getMessage() + " - Command:" + commandJSON.getString("code"), "Process terminated");
 			success = false;
@@ -190,6 +190,7 @@ public class CNC_Machine {
 			success = false;
 		} catch (CanNotMillException e) {
 			ExceptionHandler.handleErrorByTerminating(ui, cp, e.getMessage() + " - Command:" + commandJSON.getString("code") + " - Use M03/M04 to turn on spindle", "Process terminated");
+			success = false;
 		}
 		return success;
 	}
@@ -203,5 +204,15 @@ public class CNC_Machine {
 	public ArrayList<Coordinates> getCoordinates() {
 		return coordinates;
 	}
-
+	
+	/**
+	 * Set drill values to default after reset
+	 * 
+	 * @author Jonas, Simon, Tim
+	 */
+	public void resetDrill() {
+		drill.setCooling(false);
+		drill.setRotationDirection("right");
+		drill.setSpindleStatus(false);
+	}
 }
