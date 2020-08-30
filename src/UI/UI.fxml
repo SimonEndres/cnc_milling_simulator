@@ -114,7 +114,7 @@
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </HBox.margin>
             </ComboBox>
-            <ColorPicker fx:id="colorPic" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#onColorChange" prefHeight="25.0" prefWidth="124.0" promptText="Select color">
+            <ColorPicker fx:id="colorPic" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#onColorChange" prefHeight="25.0" prefWidth="124.0">
                <HBox.margin>
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </HBox.margin>

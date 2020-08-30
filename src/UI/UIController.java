@@ -321,7 +321,7 @@ public class UIController {
 					myThread = new SimulateMill(cnc_machine.getCoordinates(), workSurface, drillPointer,
 							coolingSimulater, cp, that);
 					myThread.startDrawing();
-					setDrillColor();
+					setDrillColor(true);
 				}
 			});
 			mediaPlayer.play();
@@ -434,7 +434,7 @@ public class UIController {
 		if (value == null) {
 			this.showError("No setting selected use dropdown");
 		} else if (value.equals("Drill")) {
-			setDrillColor();
+			setDrillColor(false);
 		} else if (value.equals("Homepoint")) {
 			setHomeColor();
 		} else {
@@ -677,9 +677,12 @@ public class UIController {
 	 * Changes Color of Drill
 	 * 
 	 * @author Jonas, Tim
+	 * @param init		- true for initially setting color of drill 
 	 */
-	public void setDrillColor() {
-		drillColor = colorPic.getValue();
+	public void setDrillColor(boolean init) {
+		if (!init) {
+			drillColor = colorPic.getValue();
+		}
 		if (myThread != null) {
 			drillPointer.setColor(drillColor, myThread.getCurrentCoordinate().getX() + 420,
 					(-myThread.getCurrentCoordinate().getY()) + 315);
