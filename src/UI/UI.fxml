@@ -139,7 +139,7 @@
       </HBox>
    </bottom>
    <center>
-      <Region maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="630.0" prefWidth="840.0" style="-fx-border-color: #000000;" BorderPane.alignment="CENTER">
+      <Region maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="651.0" prefWidth="868.0" style="-fx-border-color: #000000;" BorderPane.alignment="CENTER">
          <BorderPane.margin>
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
          </BorderPane.margin></Region>

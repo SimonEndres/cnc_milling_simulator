@@ -22,7 +22,7 @@ public class DrillPointer extends Canvas {
 
 	public void drawPoint(int x, int y, boolean milling) {
 
-		gc.clearRect(0, 0, 840, 630);
+		gc.clearRect(0, 0, 854, 641);
 		gc.fillOval(x, y, 6, 6);
 		gc.setFill(this.color);
 		if(!milling) {
@@ -38,7 +38,7 @@ public class DrillPointer extends Canvas {
 	public void setColor(Color color, int x, int y) {
 		this.color = color;
 		gc.setFill(this.color);
-		gc.clearRect(0, 0, 840, 630);
+		gc.clearRect(0, 0, 854, 641);
 		gc.fillOval(x, y, 6, 6);
 	}
 

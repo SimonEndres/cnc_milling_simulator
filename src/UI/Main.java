@@ -29,10 +29,10 @@ public class Main extends Application {
 	public void start(Stage primaryStage) throws Exception {
 		FXMLLoader loader = new FXMLLoader(Main.class.getResource("UI.fxml"));
 		
-		WorkSurface workSurface = new WorkSurface(840, 630);
-		DrillPointer drillPointer = new DrillPointer(840, 630);
-		HomePoint homePoint = new HomePoint(840, 630);
-		CoolingSimulator coolingSimulater = new CoolingSimulator(840, 630);
+		WorkSurface workSurface = new WorkSurface(854, 641);
+		DrillPointer drillPointer = new DrillPointer(854, 641);
+		HomePoint homePoint = new HomePoint(854, 641);
+		CoolingSimulator coolingSimulater = new CoolingSimulator(854, 641);
 		
 		StackPane workSurfaceGroup = new StackPane(workSurface, coolingSimulater, homePoint, drillPointer);		
 		
