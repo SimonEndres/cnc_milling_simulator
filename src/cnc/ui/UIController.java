@@ -192,6 +192,7 @@ public class UIController {
 	/**
 	 * Event method for clicking Button to Upload Commands
 	 * 
+	 * @author Tim
 	 * @param event
 	 */
 	@FXML
@@ -355,7 +356,7 @@ public class UIController {
 	/**
 	 * Terminating UI by Error
 	 * 
-	 * @author Tim
+	 * @author Tim, Simon, Jonas
 	 * @param event
 	 */
 	public void terminate() {
@@ -378,6 +379,7 @@ public class UIController {
 		tfY.setDisable(true);
 		tfI.setDisable(true);
 		tfJ.setDisable(true);
+		buttSubmit.setDisable(true);
 		
 		cp.logMessage("Terminate", "Process terminated", "reset or close");
 		try {
