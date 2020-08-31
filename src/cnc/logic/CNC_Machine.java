@@ -177,19 +177,19 @@ public class CNC_Machine {
 				throw new WrongCommandException(commandJSON.getString("code") + "Commanttype doesn't exist");
 			}
 		} catch (WrongCommandException e) {
-			ExceptionHandler.handleErrorByTerminating(ui, cp, e.getMessage(), "Process terminated");
+			ExceptionHandler.handleErrorByTerminating(ui, cp, e.getMessage(), "Process terminated - Press 'Reset' to go on");
 			success = false;
 		} catch (JSONException e) {
-			ExceptionHandler.handleErrorByTerminating(ui, cp, e.getMessage() + " - Command:" + commandJSON.getString("code"), "Process terminated");
+			ExceptionHandler.handleErrorByTerminating(ui, cp, e.getMessage() + " - Command:" + commandJSON.getString("code"), "Process terminated - Press 'Reset' to go on");
 			success = false;
 		} catch (OutOfWorksurfaceException e) {
-			ExceptionHandler.handleErrorByTerminating(ui, cp, e.getMessage() + " - Command:" + commandJSON.getString("code"), "Process terminated");
+			ExceptionHandler.handleErrorByTerminating(ui, cp, e.getMessage() + " - Command:" + commandJSON.getString("code"), "Process terminated - Press 'Reset' to go on");
 			success = false;
 		} catch (UndefinedAngleException e) {
-			ExceptionHandler.handleErrorByTerminating(ui, cp, e.getMessage() + " - Command:" + commandJSON.getString("code"), "Process terminated");
+			ExceptionHandler.handleErrorByTerminating(ui, cp, e.getMessage() + " - Command:" + commandJSON.getString("code"), "Process terminated - Press 'Reset' to go on");
 			success = false;
 		} catch (CanNotMillException e) {
-			ExceptionHandler.handleErrorByTerminating(ui, cp, e.getMessage() + " - Command:" + commandJSON.getString("code") + " - Use M03/M04 to turn on spindle", "Process terminated");
+			ExceptionHandler.handleErrorByTerminating(ui, cp, e.getMessage() + " - Command:" + commandJSON.getString("code") + " - Use M03/M04 to turn on spindle", "Process terminated - Press 'Reset' to go on");
 			success = false;
 		}
 		return success;
